@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.271
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{42858E28-FD68-459C-8549-4E7AB049E335}"
+	ProjectSection(SolutionItems) = preProject
+		docs\ClientCodeGeneration.md = docs\ClientCodeGeneration.md
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuKaSo.Zonky", "src\LuKaSo.Zonky\LuKaSo.Zonky.csproj", "{C57E4A38-2CDB-42CA-896C-26994C2586E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuKaSo.Zonky.Tests", "tests\LuKaSo.Zonky.Tests\LuKaSo.Zonky.Tests.csproj", "{B332CB7B-ECF3-47B9-977A-875D314FF14C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C57E4A38-2CDB-42CA-896C-26994C2586E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C57E4A38-2CDB-42CA-896C-26994C2586E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C57E4A38-2CDB-42CA-896C-26994C2586E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C57E4A38-2CDB-42CA-896C-26994C2586E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B332CB7B-ECF3-47B9-977A-875D314FF14C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B332CB7B-ECF3-47B9-977A-875D314FF14C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B332CB7B-ECF3-47B9-977A-875D314FF14C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B332CB7B-ECF3-47B9-977A-875D314FF14C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {99E0D577-8B6F-4777-9CCC-A1B2870EC158}
+	EndGlobalSection
+EndGlobal
