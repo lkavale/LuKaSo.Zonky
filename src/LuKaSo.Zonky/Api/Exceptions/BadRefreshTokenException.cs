@@ -6,7 +6,7 @@ namespace LuKaSo.Zonky.Api.Exceptions
 {
     public class BadRefreshTokenException : Exception
     {
-        public BadRefreshTokenException(HttpResponseMessage message, AuthorizationToken token) : base($"Bad refresh token {token.RefreshToken}. \r\n Server return \r\n {message.ToString()}")
+        public BadRefreshTokenException(HttpResponseMessage message, AuthorizationToken token) : base($"Bad refresh token {token.RefreshToken.ToString()}. \r\n Server return \r\n {message.ToString()}")
         { }
     }
 }

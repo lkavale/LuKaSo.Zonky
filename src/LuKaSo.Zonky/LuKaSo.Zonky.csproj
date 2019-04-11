@@ -2,12 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Authors>Lukáš Kavale</Authors>
     <Company />
-    <Product>LuKaSo Zonky</Product>
+    <Product>LuKaSo.Zonky</Product>
     <Description>Zonky API client</Description>
     <PackageId>LuKaSo.Zonky</PackageId>
+    <PackageLicenseUrl>https://github.com/lkavale/LuKaSo.Zonky/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/lkavale/LuKaSo.Zonky</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/lkavale/LuKaSo.Zonky.git</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <PackageTags>Zonky API client</PackageTags>
+    <Copyright>LuKaSo 2019</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

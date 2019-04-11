@@ -2,8 +2,6 @@
 using LuKaSo.Zonky.Api.Extesions;
 using LuKaSo.Zonky.Api.Models.Loans;
 using LuKaSo.Zonky.Api.Models.Markets;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -19,16 +17,14 @@ namespace LuKaSo.Zonky.Api
         /// Get primary marketplace loans
         /// </summary>
         /// <param name="page">Page number, started from 0</param>
-        /// <param name="pageSize"></param>
+        /// <param name="pageSize">Items per page</param>
         /// <param name="ct"></param>
         /// <returns></returns>
         public async Task<IEnumerable<Loan>> GetPrimaryMarketPlaceAsync(int page, int pageSize, CancellationToken ct)
         {
-            var url = _baseUrl.Append("/loans/marketplace");
-
             using (var request = new HttpRequestMessage())
             {
-                request.RequestUri = url;
+                request.RequestUri = _baseUrl.Append("/loans/marketplace");
                 request.Method = new HttpMethod("GET");
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
                 request.Headers.Add("x-page", page.ToString());
@@ -42,16 +38,7 @@ namespace LuKaSo.Zonky.Api
                 {
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        var responseData = response.Content == null ? null : await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-                        try
-                        {
-                            return JsonConvert.DeserializeObject<IEnumerable<Loan>>(responseData, _settings.Value);
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new BadResponceException(response, ex);
-                        }
+                        return await ExtractDataAsync<IEnumerable<Loan>>(response).ConfigureAwait(false);
                     }
                     else
                     {
@@ -72,16 +59,14 @@ namespace LuKaSo.Zonky.Api
         /// Get secondary marketplace loans
         /// </summary>
         /// <param name="page">Page number, started from 0</param>
-        /// <param name="pageSize"></param>
+        /// <param name="pageSize">Items per page</param>
         /// <param name="ct"></param>
         /// <returns></returns>
         public async Task<IEnumerable<SecondaryMarketOffer>> GetSecondaryMarketplaceAsync(int page, int pageSize, CancellationToken ct)
         {
-            var url = _baseUrl.Append("/smp/investments");
-
             using (var request = new HttpRequestMessage())
             {
-                request.RequestUri = url;
+                request.RequestUri = _baseUrl.Append("/smp/investments");
                 request.Method = new HttpMethod("GET");
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
                 request.Headers.Add("x-page", page.ToString());
@@ -95,16 +80,7 @@ namespace LuKaSo.Zonky.Api
                 {
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        var responseData = response.Content == null ? null : await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-                        try
-                        {
-                            return JsonConvert.DeserializeObject<IEnumerable<SecondaryMarketOffer>>(responseData, _settings.Value);
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new BadResponceException(response, ex);
-                        }
+                        return await ExtractDataAsync<IEnumerable<SecondaryMarketOffer>>(response).ConfigureAwait(false);
                     }
                     else
                     {

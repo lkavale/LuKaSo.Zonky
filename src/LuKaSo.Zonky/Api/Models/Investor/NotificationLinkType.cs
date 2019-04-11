@@ -5,6 +5,7 @@
         LOAN_DELAY_INVESTOR,
         BORROWER_HEAL,
         LOAN_PREPAYMENT,
-        LOAN_PAID_OFF_DEBT
+        LOAN_PAID_OFF_DEBT,
+        LOAN_PENALTY_PAID
     }
 }

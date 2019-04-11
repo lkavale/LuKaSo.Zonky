@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace LuKaSo.Zonky.Api.Models.Markets
 {
@@ -11,5 +12,14 @@ namespace LuKaSo.Zonky.Api.Models.Markets
         [JsonProperty("amount", Required = Required.Always)]
         [Required]
         public decimal Amount { get; set; }
+
+        /// <summary>
+        /// Stringify object
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return $"Secondary market investment with amount {Amount.ToString(CultureInfo.InvariantCulture)}";
+        }
     }
 }

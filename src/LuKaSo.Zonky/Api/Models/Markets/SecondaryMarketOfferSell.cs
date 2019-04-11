@@ -25,5 +25,14 @@ namespace LuKaSo.Zonky.Api.Models.Markets
         [JsonProperty("remainingPrincipal", Required = Required.Always)]
         [Required]
         public decimal RemainingPrincipal { get; set; }
+
+        /// <summary>
+        /// Stringify object
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return $"Sell request of investment id {InvestmentId} with fee {FeeAmount}, remaining principal {RemainingPrincipal}.";
+        }
     }
 }

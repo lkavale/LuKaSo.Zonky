@@ -24,5 +24,14 @@ namespace LuKaSo.Zonky.Api.Models.Markets
         /// </summary>
         [JsonProperty("captcha_response", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
         public string CaptchaResponse { get; set; }
+
+        /// <summary>
+        /// Stringify object
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return $"Primary market buy participation of loan id {LoanId} with amount {Amount}, captcha responce {CaptchaResponse}";
+        }
     }
 }

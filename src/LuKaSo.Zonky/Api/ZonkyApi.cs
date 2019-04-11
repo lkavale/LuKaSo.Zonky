@@ -1,6 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using LuKaSo.Zonky.Api.Exceptions;
+using LuKaSo.Zonky.Api.Models.Login;
+using Newtonsoft.Json;
 using System;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace LuKaSo.Zonky.Api
 {
@@ -38,6 +41,38 @@ namespace LuKaSo.Zonky.Api
                 var settings = new JsonSerializerSettings();
                 return settings;
             });
+        }
+
+        /// <summary>
+        /// Extract data payload from message content and try to serialize
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="response"></param>
+        /// <returns></returns>
+        public async Task<T> ExtractDataAsync<T>(HttpResponseMessage response)
+        {
+            var responseData = response.Content == null ? null : await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(responseData, _settings.Value);
+            }
+            catch (JsonException ex)
+            {
+                throw new BadResponceException(response, ex);
+            }
+        }
+
+        /// <summary>
+        /// Check authorization token
+        /// </summary>
+        /// <param name="authorizationToken"></param>
+        public void CheckAuthorizationToken(AuthorizationToken authorizationToken)
+        {
+            if (authorizationToken == null)
+            {
+                throw new NotAuthorizedException();
+            }
         }
     }
 }

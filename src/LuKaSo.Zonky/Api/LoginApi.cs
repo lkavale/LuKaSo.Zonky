@@ -1,8 +1,6 @@
 ﻿using LuKaSo.Zonky.Api.Exceptions;
 using LuKaSo.Zonky.Api.Extesions;
 using LuKaSo.Zonky.Api.Models.Login;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -17,7 +15,7 @@ namespace LuKaSo.Zonky.Api
         /// <summary>
         /// Get access token exchange with password
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="user">User</param>
         /// <param name="ct"></param>
         /// <returns></returns>
         public async Task<AuthorizationToken> GetTokenExchangePasswordAsync(User user, CancellationToken ct)
@@ -43,26 +41,14 @@ namespace LuKaSo.Zonky.Api
 
                 try
                 {
-                    if (response.StatusCode == HttpStatusCode.OK)
+                    switch (response.StatusCode)
                     {
-                        var responseData = response.Content == null ? null : await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-                        try
-                        {
-                            return JsonConvert.DeserializeObject<AuthorizationToken>(responseData, _settings.Value);
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new BadResponceException(response, ex);
-                        }
-                    }
-                    else if (response.StatusCode == HttpStatusCode.BadRequest)
-                    {
-                        throw new BadLoginException(response, user);
-                    }
-                    else
-                    {
-                        throw new ServerErrorException(response);
+                        case HttpStatusCode.OK:
+                            return await ExtractDataAsync<AuthorizationToken>(response).ConfigureAwait(false);
+                        case HttpStatusCode.BadRequest:
+                            throw new BadLoginException(response, user);
+                        default:
+                            throw new ServerErrorException(response);
                     }
                 }
                 finally
@@ -78,15 +64,17 @@ namespace LuKaSo.Zonky.Api
         /// <summary>
         /// Get access token exchange with refresh token
         /// </summary>
-        /// <param name="token"></param>
+        /// <param name="authorizationToken"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<AuthorizationToken> GetTokenExchangeRefreshTokenAsync(AuthorizationToken token, CancellationToken ct)
+        public async Task<AuthorizationToken> GetTokenExchangeRefreshTokenAsync(AuthorizationToken authorizationToken, CancellationToken ct)
         {
+            CheckAuthorizationToken(authorizationToken);
+
             var url = _baseUrl
                 .Append("oauth/token")
                 .AttachQueryParameters(new Dictionary<string, string>() {
-                    { "refresh_token", token.RefreshToken.ToString() },
+                    { "refresh_token", authorizationToken.RefreshToken.ToString() },
                     { "grant_type", GrantType.refresh_token.ToString() },
                     { "scope", AuthorizationScope.SCOPE_APP_WEB.ToString()} });
 
@@ -103,26 +91,14 @@ namespace LuKaSo.Zonky.Api
 
                 try
                 {
-                    if (response.StatusCode == HttpStatusCode.OK)
+                    switch (response.StatusCode)
                     {
-                        var responseData = response.Content == null ? null : await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-                        try
-                        {
-                            return JsonConvert.DeserializeObject<AuthorizationToken>(responseData, _settings.Value);
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new BadResponceException(response, ex);
-                        }
-                    }
-                    else if (response.StatusCode == HttpStatusCode.BadRequest)
-                    {
-                        throw new BadRefreshTokenException(response, token);
-                    }
-                    else
-                    {
-                        throw new ServerErrorException(response);
+                        case HttpStatusCode.OK:
+                            return await ExtractDataAsync<AuthorizationToken>(response).ConfigureAwait(false);
+                        case HttpStatusCode.BadRequest:
+                            throw new BadRefreshTokenException(response, authorizationToken);
+                        default:
+                            throw new ServerErrorException(response);
                     }
                 }
                 finally

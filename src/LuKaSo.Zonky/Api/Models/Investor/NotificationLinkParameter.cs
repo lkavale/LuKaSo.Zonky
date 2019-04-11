@@ -30,6 +30,7 @@ namespace LuKaSo.Zonky.Api.Models.Investor
         /// Amount
         /// </summary>
         [JsonProperty("amount", Required = Required.Default)]
+        [JsonConverter(typeof(FormatedCurrencyConverter))]
         public decimal? Amount { get; set; }
 
         /// <summary>

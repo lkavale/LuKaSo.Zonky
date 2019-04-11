@@ -20,5 +20,14 @@ namespace LuKaSo.Zonky.Api.Models.Markets
         [JsonConverter(typeof(StringEnumConverter))]
         [Required]
         public SecondaryMarketOfferCancelErrorType Error { get; set; }
+
+        /// <summary>
+        /// Stringify object
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return $"Secondary market investment offer cancelation failed with {Error.ToString()} - {Description}";
+        }
     }
 }

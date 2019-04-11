@@ -2,8 +2,6 @@
 using LuKaSo.Zonky.Api.Extesions;
 using LuKaSo.Zonky.Api.Models.Loans;
 using LuKaSo.Zonky.Api.Models.Login;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -18,16 +16,14 @@ namespace LuKaSo.Zonky.Api
         /// <summary>
         /// Get loan
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="loanId">Loan Id</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<Loan> GetLoanAsync(int id, CancellationToken ct)
+        public async Task<Loan> GetLoanAsync(int loanId, CancellationToken ct)
         {
-            var url = _baseUrl.Append($"/loans/{id}");
-
             using (var request = new HttpRequestMessage())
             {
-                request.RequestUri = url;
+                request.RequestUri = _baseUrl.Append($"/loans/{loanId}");
                 request.Method = new HttpMethod("GET");
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -37,22 +33,12 @@ namespace LuKaSo.Zonky.Api
 
                 try
                 {
-                    if (response.StatusCode == HttpStatusCode.OK)
+                    switch (response.StatusCode)
                     {
-                        var responseData = response.Content == null ? null : await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-                        try
-                        {
-                            return JsonConvert.DeserializeObject<Loan>(responseData, _settings.Value);
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new BadResponceException(response, ex);
-                        }
-                    }
-                    else
-                    {
-                        throw new ServerErrorException(response);
+                        case HttpStatusCode.OK:
+                            return await ExtractDataAsync<Loan>(response).ConfigureAwait(false);
+                        default:
+                            throw new ServerErrorException(response);
                     }
                 }
                 finally
@@ -68,17 +54,17 @@ namespace LuKaSo.Zonky.Api
         /// <summary>
         /// Get list of investors and amounts engaged in the loan
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="loanId">Loan Id</param>
         /// <param name="authorizationToken"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<LoanInvestment>> GetLoanInvestmentsAsync(int id, AuthorizationToken authorizationToken, CancellationToken ct)
+        public async Task<IEnumerable<LoanInvestment>> GetLoanInvestmentsAsync(int loanId, AuthorizationToken authorizationToken, CancellationToken ct)
         {
-            var url = _baseUrl.Append($"/loans/{id}/investments");
+            CheckAuthorizationToken(authorizationToken);
 
             using (var request = new HttpRequestMessage())
             {
-                request.RequestUri = url;
+                request.RequestUri = _baseUrl.Append($"/loans/{loanId}/investments");
                 request.Method = new HttpMethod("GET");
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -89,26 +75,14 @@ namespace LuKaSo.Zonky.Api
 
                 try
                 {
-                    if (response.StatusCode == HttpStatusCode.OK)
+                    switch (response.StatusCode)
                     {
-                        var responseData = response.Content == null ? null : await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-                        try
-                        {
-                            return JsonConvert.DeserializeObject<IEnumerable<LoanInvestment>>(responseData, _settings.Value);
-                        }
-                        catch (Exception ex)
-                        {
-                            throw new BadResponceException(response, ex);
-                        }
-                    }
-                    else if (response.StatusCode == HttpStatusCode.Unauthorized)
-                    {
-                        throw new NotAuthorizedException();
-                    }
-                    else
-                    {
-                        throw new ServerErrorException(response);
+                        case HttpStatusCode.OK:
+                            return await ExtractDataAsync<IEnumerable<LoanInvestment>>(response).ConfigureAwait(false);
+                        case HttpStatusCode.Unauthorized:
+                            throw new NotAuthorizedException();
+                        default:
+                            throw new ServerErrorException(response);
                     }
                 }
                 finally
