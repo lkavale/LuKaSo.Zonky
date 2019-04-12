@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LuKaSo.Zonky.Api
 {
-    public partial class ZonkyApi : IZonkyApi
+    public partial class ZonkyApi : IZonkyApi, IDisposable
     {
         /// <summary>
         /// Zonky API base address
@@ -44,6 +44,14 @@ namespace LuKaSo.Zonky.Api
         }
 
         /// <summary>
+        /// Zonky API destructor
+        /// </summary>
+        ~ZonkyApi()
+        {
+            Dispose(false);
+        }
+
+        /// <summary>
         /// Extract data payload from message content and try to serialize
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -72,6 +80,27 @@ namespace LuKaSo.Zonky.Api
             if (authorizationToken == null)
             {
                 throw new NotAuthorizedException();
+            }
+        }
+
+        /// <summary>
+        /// Dispose
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Dispose
+        /// </summary>
+        /// <param name="disposing"></param>
+        private void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _httpClient.Dispose();
             }
         }
     }
