@@ -1,6 +1,8 @@
-﻿using System;
+﻿using LuKaSo.Zonky.Api.Models;
+using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Web;
 
 namespace LuKaSo.Zonky.Api.Extesions
 {
@@ -26,17 +28,43 @@ namespace LuKaSo.Zonky.Api.Extesions
         /// <param name="uri"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public static Uri AttachQueryParameters(this Uri uri, Dictionary<string, string> parameters)
+        public static Uri AttachQueryParameters(this Uri uri, IReadOnlyDictionary<string, string> parameters)
         {
-            var stringBuilder = new StringBuilder();
-            string str = "?";
+            var queryVars = HttpUtility.ParseQueryString(uri.Query);
 
-            foreach (KeyValuePair<string, string> parameter in parameters)
+            foreach (var kpv in parameters)
             {
-                stringBuilder.Append(str + parameter.Key + "=" + parameter.Value);
-                str = "&";
+                if (queryVars.AllKeys.Contains(kpv.Key))
+                {
+                    queryVars.Set(kpv.Key, kpv.Value);
+                    continue;
+                }
+
+                queryVars.Add(kpv.Key, kpv.Value);
             }
-            return new Uri(uri.ToString() + stringBuilder);
+
+            if (queryVars.Count > 0)
+            {
+                uri = new Uri(uri.GetLeftPart(UriPartial.Path) + "?" + queryVars.ToString());
+            }
+
+            return uri;
+        }
+
+        /// <summary>
+        /// Attach filter options to query string
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public static Uri AppendFilterOptions(this Uri uri, FilterOptions options)
+        {
+            if (options == null)
+            {
+                return uri;
+            }
+
+            return uri.AttachQueryParameters(options.ToDictionary());
         }
     }
 }

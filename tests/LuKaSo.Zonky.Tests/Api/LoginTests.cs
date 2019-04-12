@@ -24,7 +24,6 @@ namespace LuKaSo.Zonky.Api.Tests
         [TestMethod]
         public void LoginOk()
         {
-            
             var token = _zonkyClient.GetTokenExchangePasswordAsync(_secrets.LoginOk, CancellationToken.None).GetAwaiter().GetResult();
         }
 
@@ -46,6 +45,12 @@ namespace LuKaSo.Zonky.Api.Tests
         {
             AuthorizationToken token = new AuthorizationToken() { RefreshToken = Guid.NewGuid() };
             Assert.ThrowsExceptionAsync<BadRefreshTokenException>(() => _zonkyClient.GetTokenExchangeRefreshTokenAsync(token, CancellationToken.None));
+        }
+
+        [TestMethod]
+        public void RefreshTokenMissing()
+        {
+            Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => _zonkyClient.GetTokenExchangeRefreshTokenAsync(null, CancellationToken.None));
         }
     }
 }

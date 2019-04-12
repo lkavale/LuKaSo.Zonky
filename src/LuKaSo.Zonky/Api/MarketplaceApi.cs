@@ -1,5 +1,6 @@
 ﻿using LuKaSo.Zonky.Api.Exceptions;
 using LuKaSo.Zonky.Api.Extesions;
+using LuKaSo.Zonky.Api.Models;
 using LuKaSo.Zonky.Api.Models.Loans;
 using LuKaSo.Zonky.Api.Models.Markets;
 using System.Collections.Generic;
@@ -18,13 +19,14 @@ namespace LuKaSo.Zonky.Api
         /// </summary>
         /// <param name="page">Page number, started from 0</param>
         /// <param name="pageSize">Items per page</param>
+        /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Loan>> GetPrimaryMarketPlaceAsync(int page, int pageSize, CancellationToken ct)
+        public async Task<IEnumerable<Loan>> GetPrimaryMarketPlaceAsync(int page, int pageSize, FilterOptions filter, CancellationToken ct)
         {
             using (var request = new HttpRequestMessage())
             {
-                request.RequestUri = _baseUrl.Append("/loans/marketplace");
+                request.RequestUri = _baseUrl.Append("/loans/marketplace").AppendFilterOptions(filter);
                 request.Method = new HttpMethod("GET");
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
                 request.Headers.Add("x-page", page.ToString());
@@ -60,13 +62,14 @@ namespace LuKaSo.Zonky.Api
         /// </summary>
         /// <param name="page">Page number, started from 0</param>
         /// <param name="pageSize">Items per page</param>
+        /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<SecondaryMarketOffer>> GetSecondaryMarketplaceAsync(int page, int pageSize, CancellationToken ct)
+        public async Task<IEnumerable<SecondaryMarketOffer>> GetSecondaryMarketplaceAsync(int page, int pageSize, FilterOptions filter, CancellationToken ct)
         {
             using (var request = new HttpRequestMessage())
             {
-                request.RequestUri = _baseUrl.Append("/smp/investments");
+                request.RequestUri = _baseUrl.Append("/smp/investments").AppendFilterOptions(filter);
                 request.Method = new HttpMethod("GET");
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
                 request.Headers.Add("x-page", page.ToString());
