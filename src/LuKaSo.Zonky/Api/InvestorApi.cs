@@ -1,5 +1,6 @@
 ﻿using LuKaSo.Zonky.Api.Exceptions;
 using LuKaSo.Zonky.Api.Extesions;
+using LuKaSo.Zonky.Api.Models;
 using LuKaSo.Zonky.Api.Models.Investor;
 using LuKaSo.Zonky.Api.Models.Login;
 using System.Collections.Generic;
@@ -59,10 +60,11 @@ namespace LuKaSo.Zonky.Api
         /// <summary>
         /// Get user notifications
         /// </summary>
+        /// <param name="size">Number of messages</param>
         /// <param name="authorizationToken"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Notification>> GetNotificationsAsync(AuthorizationToken authorizationToken, CancellationToken ct)
+        public async Task<IEnumerable<Notification>> GetNotificationsAsync(int size, AuthorizationToken authorizationToken, CancellationToken ct)
         {
             CheckAuthorizationToken(authorizationToken);
 
@@ -72,6 +74,7 @@ namespace LuKaSo.Zonky.Api
                 request.Method = new HttpMethod("GET");
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
+                request.Headers.Add("x-size", size.ToString());
 
                 var response = await _httpClient
                     .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct)
@@ -102,19 +105,21 @@ namespace LuKaSo.Zonky.Api
         /// <summary>
         /// Get investor wallet transactions
         /// </summary>
+        /// <param name="filter">Filter options</param>
         /// <param name="authorizationToken"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<WalletTransaction>> GetWalletTransactionsAsync(AuthorizationToken authorizationToken, CancellationToken ct)
+        public async Task<IEnumerable<WalletTransaction>> GetWalletTransactionsAsync(FilterOptions filter, AuthorizationToken authorizationToken, CancellationToken ct)
         {
             CheckAuthorizationToken(authorizationToken);
 
             using (var request = new HttpRequestMessage())
             {
-                request.RequestUri = _baseUrl.Append("/users/me/wallet/transactions");
+                request.RequestUri = _baseUrl.Append("/users/me/wallet/transactions").AppendFilterOptions(filter);
                 request.Method = new HttpMethod("GET");
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
+                request.Headers.Add("x-size", "2147483647");
 
                 var response = await _httpClient
                     .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct)

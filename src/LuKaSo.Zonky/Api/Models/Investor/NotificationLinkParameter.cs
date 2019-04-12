@@ -9,9 +9,8 @@ namespace LuKaSo.Zonky.Api.Models.Investor
         /// <summary>
         /// Id of a related loan
         /// </summary>
-        [JsonProperty("loanId", Required = Required.Always)]
-        [Required]
-        public int LoanId { get; set; }
+        [JsonProperty("loanId", Required = Required.Default)]
+        public int? LoanId { get; set; }
 
         /// <summary>
         /// Borrower's nickname

@@ -3,6 +3,7 @@ using LuKaSo.Zonky.Api.Models.Login;
 using LuKaSo.Zonky.Tests.Api;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 
@@ -27,12 +28,16 @@ namespace LuKaSo.Zonky.Api.Tests
             var loan = _zonkyClient.GetLoanAsync(436639, CancellationToken.None).GetAwaiter().GetResult();
 
             Assert.AreEqual(436639, loan.Id);
+            Assert.IsTrue(loan.Covered);
         }
 
         [TestMethod]
         public void GetLoanInvestmentsOk()
         {
             var loanInvestments = _zonkyClient.GetLoanInvestmentsAsync(436639, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
+
+            Assert.AreNotEqual(0, loanInvestments.Count());
+            Assert.AreEqual(113, loanInvestments.Count());
         }
 
         [TestMethod]

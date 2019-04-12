@@ -111,24 +111,21 @@ namespace LuKaSo.Zonky.Api.Models.Investments
         /// <summary>
         /// Due date of the next instalment
         /// </summary>
-        [JsonProperty("nextPaymentDate", Required = Required.Always)]
-        [Required(AllowEmptyStrings = true)]
-        public DateTime NextPaymentDate { get; set; }
+        [JsonProperty("nextPaymentDate", Required = Required.Default)]
+        public DateTime? NextPaymentDate { get; set; }
 
         /// <summary>
         /// Payment status
         /// </summary>
-        [JsonProperty("paymentStatus", Required = Required.Always)]
-        [Required(AllowEmptyStrings = true)]
+        [JsonProperty("paymentStatus", Required = Required.Default)]
         [JsonConverter(typeof(StringEnumConverter))]
-        public InvestmentPaymentStatus PaymentStatus { get; set; }
+        public InvestmentPaymentStatus? PaymentStatus { get; set; }
 
         /// <summary>
         /// Number of days after a due date of the oldest unpaid instalment
         /// </summary>
-        [JsonProperty("legalDpd", Required = Required.Always)]
-        [Required]
-        public int LegalDpd { get; set; }
+        [JsonProperty("legalDpd", Required = Required.Default)]
+        public int? LegalDpd { get; set; }
 
         /// <summary>
         /// Total due amount
@@ -174,9 +171,8 @@ namespace LuKaSo.Zonky.Api.Models.Investments
         /// <summary>
         /// Total sum of remaining principal that has not been repaid yet
         /// </summary>
-        [JsonProperty("remainingPrincipal", Required = Required.Always)]
-        [Required]
-        public decimal RemainingPrincipal { get; set; }
+        [JsonProperty("remainingPrincipal", Required = Required.Default)]
+        public decimal? RemainingPrincipal { get; set; }
 
         /// <summary>
         /// Paid penalty
@@ -202,9 +198,8 @@ namespace LuKaSo.Zonky.Api.Models.Investments
         /// <summary>
         /// Current number of loan instalments
         /// </summary>
-        [JsonProperty("currentTerm", Required = Required.Always)]
-        [Required]
-        public int CurrentTerm { get; set; }
+        [JsonProperty("currentTerm", Required = Required.Default)]
+        public int? CurrentTerm { get; set; }
 
         /// <summary>
         /// True if an investment can be offered for purchase on the secondary marketplace

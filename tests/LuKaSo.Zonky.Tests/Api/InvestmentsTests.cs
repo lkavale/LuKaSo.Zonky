@@ -1,6 +1,5 @@
 ﻿using LuKaSo.Zonky.Api.Exceptions;
 using LuKaSo.Zonky.Api.Models.Login;
-using LuKaSo.Zonky.Tests;
 using LuKaSo.Zonky.Tests.Api;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -40,13 +39,27 @@ namespace LuKaSo.Zonky.Api.Tests
         }
 
         [TestMethod]
-        public void GetInvestmentEventssOk()
+        public void GetInvestmentEventsOk()
         {
             var loanId = 115665;
             var investmentEvents = _zonkyClient.GetInvestmentEventsAsync(loanId, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
 
             Assert.AreEqual(investmentEvents.Count(), investmentEvents.Where(e => e.LoanId == loanId).Count());
         }
+
+        /*
+        [TestMethod]
+        public void GetInvestmentEventsAllOk()
+        {
+            var investments = _zonkyClient.GetInvestmentsAsync(0, 10000, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
+
+            foreach (var investment in investments)
+            {
+                var investmentEvents = _zonkyClient.GetInvestmentEventsAsync(investment.LoanId, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
+                Assert.AreEqual(investmentEvents.Count(), investmentEvents.Where(e => e.LoanId == investment.LoanId).Count());
+            }
+        }
+        */
 
         [TestMethod]
         public void GetInvestmentEventsNotAuthorized()
