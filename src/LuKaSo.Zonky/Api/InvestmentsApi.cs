@@ -134,7 +134,6 @@ namespace LuKaSo.Zonky.Api
                     switch (response.StatusCode)
                     {
                         case HttpStatusCode.OK:
-                        case HttpStatusCode.Created:
                             return;
                         case HttpStatusCode.Unauthorized:
                             throw new NotAuthorizedException();
@@ -185,7 +184,6 @@ namespace LuKaSo.Zonky.Api
                     switch (response.StatusCode)
                     {
                         case HttpStatusCode.OK:
-                        case HttpStatusCode.Created:
                             return;
                         case HttpStatusCode.Unauthorized:
                             throw new NotAuthorizedException();
@@ -234,7 +232,7 @@ namespace LuKaSo.Zonky.Api
                     switch (response.StatusCode)
                     {
                         case HttpStatusCode.OK:
-                        case HttpStatusCode.Created:
+                        case HttpStatusCode.NoContent:
                             return;
                         case HttpStatusCode.Unauthorized:
                             throw new NotAuthorizedException();
@@ -285,7 +283,7 @@ namespace LuKaSo.Zonky.Api
                     switch (response.StatusCode)
                     {
                         case HttpStatusCode.OK:
-                        case HttpStatusCode.Created:
+                        case HttpStatusCode.NoContent:
                             return;
                         case HttpStatusCode.Unauthorized:
                             throw new NotAuthorizedException();
@@ -333,7 +331,7 @@ namespace LuKaSo.Zonky.Api
                     switch (response.StatusCode)
                     {
                         case HttpStatusCode.OK:
-                        case HttpStatusCode.Created:
+                        case HttpStatusCode.NoContent:
                             return;
                         case HttpStatusCode.Unauthorized:
                             throw new NotAuthorizedException();
