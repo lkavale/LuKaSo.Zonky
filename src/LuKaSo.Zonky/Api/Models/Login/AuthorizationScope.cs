@@ -3,13 +3,18 @@
     public enum AuthorizationScope
     {
         /// <summary>
-        /// Web application scope
+        /// Allow all actions with account
         /// </summary>
         SCOPE_APP_WEB,
 
         /// <summary>
-        /// File download scope
+        /// Allow download files ( exports, contracts)
         /// </summary>
-        SCOPE_FILE_DOWNLOAD
+        SCOPE_FILE_DOWNLOAD,
+
+        /// <summary>
+        ///  Allow to show only basic info about the user's account (/users/me/basic)
+        /// </summary>
+        SCOPE_APP_BASIC_INFO
     }
 }
