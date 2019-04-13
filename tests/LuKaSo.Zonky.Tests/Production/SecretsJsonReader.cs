@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-namespace LuKaSo.Zonky.Tests
+namespace LuKaSo.Zonky.Tests.Production
 {
     public class SecretsJsonReader
     {

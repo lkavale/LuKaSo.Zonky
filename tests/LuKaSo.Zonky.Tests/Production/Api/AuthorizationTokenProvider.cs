@@ -2,7 +2,7 @@
 using LuKaSo.Zonky.Api.Models.Login;
 using System.Threading;
 
-namespace LuKaSo.Zonky.Tests.Api
+namespace LuKaSo.Zonky.Tests.Production.Api
 {
     public class AuthorizationTokenProvider
     {

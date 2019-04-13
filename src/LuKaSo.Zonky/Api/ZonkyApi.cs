@@ -12,7 +12,7 @@ namespace LuKaSo.Zonky.Api
         /// <summary>
         /// Zonky API base address
         /// </summary>
-        private readonly Uri _baseUrl = new Uri("https://api.zonky.cz/");
+        private readonly Uri _baseUrl;
 
         /// <summary>
         /// OAuth preshared secret
@@ -30,12 +30,22 @@ namespace LuKaSo.Zonky.Api
         private Lazy<JsonSerializerSettings> _settings;
 
         /// <summary>
+        /// Zonky API constructor with default production address of service
+        /// </summary>
+        /// <param name="httpClient">HTTP client</param>
+        public ZonkyApi(HttpClient httpClient):this(new Uri("https://api.zonky.cz/"), httpClient)
+        {
+        }
+
+        /// <summary>
         /// Zonky API constructor
         /// </summary>
-        /// <param name="httpClient"></param>
-        public ZonkyApi(HttpClient httpClient)
+        /// <param name="baseUrl">Base URL of service</param>
+        /// <param name="httpClient">HTTP client</param>
+        public ZonkyApi(Uri baseUrl, HttpClient httpClient)
         {
             _httpClient = httpClient;
+            _baseUrl = baseUrl;
             _settings = new Lazy<JsonSerializerSettings>(() =>
             {
                 var settings = new JsonSerializerSettings();

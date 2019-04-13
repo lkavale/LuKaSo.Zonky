@@ -1,6 +1,6 @@
 ﻿using LuKaSo.Zonky.Api.Models.Login;
 
-namespace LuKaSo.Zonky.Tests
+namespace LuKaSo.Zonky.Tests.Production
 {
     public class Secrets
     {

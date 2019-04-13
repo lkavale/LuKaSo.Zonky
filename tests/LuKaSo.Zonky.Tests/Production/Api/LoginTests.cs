@@ -1,12 +1,12 @@
+using LuKaSo.Zonky.Api;
 using LuKaSo.Zonky.Api.Exceptions;
 using LuKaSo.Zonky.Api.Models.Login;
-using LuKaSo.Zonky.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Net.Http;
 using System.Threading;
 
-namespace LuKaSo.Zonky.Api.Tests
+namespace LuKaSo.Zonky.Tests.Production.Api
 {
     [TestClass]
     public class LoginTests

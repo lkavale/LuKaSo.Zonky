@@ -1,14 +1,14 @@
-﻿using LuKaSo.Zonky.Api.Exceptions;
+﻿using LuKaSo.Zonky.Api;
+using LuKaSo.Zonky.Api.Exceptions;
 using LuKaSo.Zonky.Api.Models;
 using LuKaSo.Zonky.Api.Models.Login;
-using LuKaSo.Zonky.Tests.Api;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
 
-namespace LuKaSo.Zonky.Api.Tests
+namespace LuKaSo.Zonky.Tests.Production.Api
 {
     [TestClass]
     public class InvestorTests

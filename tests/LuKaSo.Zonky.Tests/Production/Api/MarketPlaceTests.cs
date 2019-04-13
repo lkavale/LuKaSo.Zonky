@@ -1,10 +1,11 @@
-﻿using LuKaSo.Zonky.Api.Models;
+﻿using LuKaSo.Zonky.Api;
+using LuKaSo.Zonky.Api.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
 
-namespace LuKaSo.Zonky.Api.Tests
+namespace LuKaSo.Zonky.Tests.Production.Api
 {
     [TestClass]
     public class MarketplaceTests
@@ -38,7 +39,7 @@ namespace LuKaSo.Zonky.Api.Tests
 
             Assert.AreEqual(pageSize, loansAll.Count());
             Assert.AreNotEqual(pageSize, loans.Count());
-            Assert.AreNotEqual(loansAll.Where(l=>!l.Covered).Count(), loans.Count());
+            Assert.AreNotEqual(loansAll.Where(l => !l.Covered).Count(), loans.Count());
             Assert.AreEqual(0, loans.Where(l => l.Covered).Count());
         }
 
