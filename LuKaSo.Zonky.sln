@@ -11,7 +11,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuKaSo.Zonky", "src\LuKaSo.Zonky\LuKaSo.Zonky.csproj", "{C57E4A38-2CDB-42CA-896C-26994C2586E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuKaSo.Zonky.Tests", "tests\LuKaSo.Zonky.Tests\LuKaSo.Zonky.Tests.csproj", "{B332CB7B-ECF3-47B9-977A-875D314FF14C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuKaSo.Zonky.Tests", "tests\LuKaSo.Zonky.Tests\LuKaSo.Zonky.Tests.csproj", "{B332CB7B-ECF3-47B9-977A-875D314FF14C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuKaSo.Zonky.TestClient", "tests\LuKaSo.Zonky.TestClient\LuKaSo.Zonky.TestClient.csproj", "{D83C89C8-07E4-4E47-AC8D-BBCDC1E9925F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{37689A4B-1A7A-4C01-A9ED-5FE1CCCB5B75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuKaSo.Zonky.ExampleApp", "examples\LuKaSo.Zonky.ExampleApp\LuKaSo.Zonky.ExampleApp.csproj", "{A8D4DB0C-A110-4320-917D-24B87BCA7330}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +33,18 @@ Global
 		{B332CB7B-ECF3-47B9-977A-875D314FF14C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B332CB7B-ECF3-47B9-977A-875D314FF14C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B332CB7B-ECF3-47B9-977A-875D314FF14C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D83C89C8-07E4-4E47-AC8D-BBCDC1E9925F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D83C89C8-07E4-4E47-AC8D-BBCDC1E9925F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D83C89C8-07E4-4E47-AC8D-BBCDC1E9925F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D83C89C8-07E4-4E47-AC8D-BBCDC1E9925F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37689A4B-1A7A-4C01-A9ED-5FE1CCCB5B75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37689A4B-1A7A-4C01-A9ED-5FE1CCCB5B75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37689A4B-1A7A-4C01-A9ED-5FE1CCCB5B75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37689A4B-1A7A-4C01-A9ED-5FE1CCCB5B75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8D4DB0C-A110-4320-917D-24B87BCA7330}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8D4DB0C-A110-4320-917D-24B87BCA7330}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8D4DB0C-A110-4320-917D-24B87BCA7330}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8D4DB0C-A110-4320-917D-24B87BCA7330}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

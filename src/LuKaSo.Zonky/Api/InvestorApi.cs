@@ -163,6 +163,7 @@ namespace LuKaSo.Zonky.Api
                 request.Method = new HttpMethod("GET");
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
+                request.Headers.Add("x-size", "2147483647");
 
                 var response = await _httpClient
                     .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct)

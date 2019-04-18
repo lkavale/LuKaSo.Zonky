@@ -1,5 +1,6 @@
 ﻿using LuKaSo.Zonky.Api.Exceptions;
 using LuKaSo.Zonky.Api.Models.Login;
+using LuKaSo.Zonky.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Net.Http;
@@ -30,10 +31,15 @@ namespace LuKaSo.Zonky.Api
         private Lazy<JsonSerializerSettings> _settings;
 
         /// <summary>
+        /// Log
+        /// </summary>
+        private readonly ILog _log;
+
+        /// <summary>
         /// Zonky API constructor with default production address of service
         /// </summary>
         /// <param name="httpClient">HTTP client</param>
-        public ZonkyApi(HttpClient httpClient):this(new Uri("https://api.zonky.cz/"), httpClient)
+        public ZonkyApi(HttpClient httpClient) : this(new Uri("https://api.zonky.cz/"), httpClient)
         {
         }
 
@@ -51,6 +57,7 @@ namespace LuKaSo.Zonky.Api
                 var settings = new JsonSerializerSettings();
                 return settings;
             });
+            _log = LogProvider.For<ZonkyApi>();
         }
 
         /// <summary>
