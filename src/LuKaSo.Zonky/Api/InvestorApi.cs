@@ -43,6 +43,8 @@ namespace LuKaSo.Zonky.Api
                             return await ExtractDataAsync<Wallet>(response).ConfigureAwait(false);
                         case HttpStatusCode.Unauthorized:
                             throw new NotAuthorizedException();
+                        case HttpStatusCode.BadRequest:
+                            throw PrepareBadRequestException(response, new ServerErrorException(response));
                         default:
                             throw new ServerErrorException(response);
                     }
@@ -88,6 +90,8 @@ namespace LuKaSo.Zonky.Api
                             return await ExtractDataAsync<IEnumerable<Notification>>(response).ConfigureAwait(false);
                         case HttpStatusCode.Unauthorized:
                             throw new NotAuthorizedException();
+                        case HttpStatusCode.BadRequest:
+                            throw PrepareBadRequestException(response, new ServerErrorException(response));
                         default:
                             throw new ServerErrorException(response);
                     }
@@ -133,6 +137,8 @@ namespace LuKaSo.Zonky.Api
                             return await ExtractDataAsync<IEnumerable<WalletTransaction>>(response).ConfigureAwait(false);
                         case HttpStatusCode.Unauthorized:
                             throw new NotAuthorizedException();
+                        case HttpStatusCode.BadRequest:
+                            throw PrepareBadRequestException(response, new ServerErrorException(response));
                         default:
                             throw new ServerErrorException(response);
                     }
@@ -177,6 +183,8 @@ namespace LuKaSo.Zonky.Api
                             return await ExtractDataAsync<IEnumerable<BlockedAmount>>(response).ConfigureAwait(false);
                         case HttpStatusCode.Unauthorized:
                             throw new NotAuthorizedException();
+                        case HttpStatusCode.BadRequest:
+                            throw PrepareBadRequestException(response, new ServerErrorException(response));
                         default:
                             throw new ServerErrorException(response);
                     }

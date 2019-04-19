@@ -3,6 +3,7 @@ using LuKaSo.Zonky.Api.Models.Login;
 using LuKaSo.Zonky.Logging;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -98,6 +99,24 @@ namespace LuKaSo.Zonky.Api
             {
                 throw new NotAuthorizedException();
             }
+        }
+
+        /// <summary>
+        /// Prepare exception as bad request server response 
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        protected Exception PrepareBadRequestException(HttpResponseMessage response, Exception defaultException)
+        {
+            if (response != null && response.Headers != null && response.Headers.TryGetValues("WWW-Authenticate", out var authHeader))
+            {
+                if (authHeader.Any(s => s.Contains("Bearer error=\"invalid_token\"")))
+                {
+                    return new BadAccessTokenException();
+                }
+            }
+
+            return defaultException;
         }
 
         /// <summary>

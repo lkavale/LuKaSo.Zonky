@@ -3,13 +3,14 @@ using LuKaSo.Zonky.Api.Models.Investments;
 using LuKaSo.Zonky.Api.Models.Investor;
 using LuKaSo.Zonky.Api.Models.Loans;
 using LuKaSo.Zonky.Api.Models.Markets;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace LuKaSo.Zonky.Client
 {
-    public interface IZonkyClient
+    public interface IZonkyClient: IDisposable
     {
         /// <summary>
         /// Get primary marketplace loans

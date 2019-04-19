@@ -3,6 +3,7 @@ using LuKaSo.Zonky.Api.Exceptions;
 using LuKaSo.Zonky.Api.Models.Login;
 using LuKaSo.Zonky.Logging;
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -107,6 +108,11 @@ namespace LuKaSo.Zonky.Client
             catch (NotAuthorizedException ex)
             {
                 _log.Debug(ex, $"Client request failed due to invalid authorization for user {_user.Name}.");
+                await LoginAsync(ct).ConfigureAwait(false);
+            }
+            catch (BadAccessTokenException ex)
+            {
+                _log.Debug(ex, $"Client request failed due to invalid access token for user {_user.Name}.");
                 await RefreshTokenAsync(ct).ConfigureAwait(false);
             }
 
@@ -132,6 +138,11 @@ namespace LuKaSo.Zonky.Client
             catch (NotAuthorizedException ex)
             {
                 _log.Debug(ex, $"Client request failed due to invalid authorization for user {_user.Name}.");
+                await LoginAsync(ct).ConfigureAwait(false);
+            }
+            catch (BadAccessTokenException ex)
+            {
+                _log.Debug(ex, $"Client request failed due to invalid access token for user {_user.Name}.");
                 await RefreshTokenAsync(ct).ConfigureAwait(false);
             }
 

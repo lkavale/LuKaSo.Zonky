@@ -81,6 +81,8 @@ namespace LuKaSo.Zonky.Api
                             return await ExtractDataAsync<IEnumerable<LoanInvestment>>(response).ConfigureAwait(false);
                         case HttpStatusCode.Unauthorized:
                             throw new NotAuthorizedException();
+                        case HttpStatusCode.BadRequest:
+                            throw PrepareBadRequestException(response, new ServerErrorException(response));
                         default:
                             throw new ServerErrorException(response);
                     }

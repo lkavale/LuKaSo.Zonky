@@ -48,6 +48,8 @@ namespace LuKaSo.Zonky.Api
                             return await ExtractDataAsync<IEnumerable<Investment>>(response).ConfigureAwait(false);
                         case HttpStatusCode.Unauthorized:
                             throw new NotAuthorizedException();
+                        case HttpStatusCode.BadRequest:
+                            throw PrepareBadRequestException(response, new ServerErrorException(response));
                         default:
                             throw new ServerErrorException(response);
                     }
@@ -92,6 +94,8 @@ namespace LuKaSo.Zonky.Api
                             return await ExtractDataAsync<IEnumerable<InvestmentEvent>>(response).ConfigureAwait(false);
                         case HttpStatusCode.Unauthorized:
                             throw new NotAuthorizedException();
+                        case HttpStatusCode.BadRequest:
+                            throw PrepareBadRequestException(response, new ServerErrorException(response));
                         default:
                             throw new ServerErrorException(response);
                     }
@@ -138,7 +142,7 @@ namespace LuKaSo.Zonky.Api
                         case HttpStatusCode.Unauthorized:
                             throw new NotAuthorizedException();
                         case HttpStatusCode.BadRequest:
-                            throw new PrimaryMarketInvestmentException(investment, response);
+                            throw PrepareBadRequestException(response, new PrimaryMarketInvestmentException(investment, response));
                         case HttpStatusCode.Forbidden:
                             throw new CaptchaValidationException(response);
                         default:
@@ -188,7 +192,7 @@ namespace LuKaSo.Zonky.Api
                         case HttpStatusCode.Unauthorized:
                             throw new NotAuthorizedException();
                         case HttpStatusCode.BadRequest:
-                            throw new PrimaryMarketInvestmentException(investmentId, increaseInvestment, response);
+                            throw PrepareBadRequestException(response, new PrimaryMarketInvestmentException(investmentId, increaseInvestment, response));
                         default:
                             throw new ServerErrorException(response);
                     }
@@ -238,7 +242,7 @@ namespace LuKaSo.Zonky.Api
                             throw new NotAuthorizedException();
                         case HttpStatusCode.BadRequest:
                             var secondaryMarketBuyError = await ExtractDataAsync<SecondaryMarketBuyError>(response).ConfigureAwait(false);
-                            throw new BuySecondaryMarketInvestmentException(offerId, secondaryMarketInvestment, secondaryMarketBuyError);
+                            throw PrepareBadRequestException(response, new BuySecondaryMarketInvestmentException(offerId, secondaryMarketInvestment, secondaryMarketBuyError));
                         case HttpStatusCode.NotFound:
                             throw new NotFoundSecondaryMarketInvestmentException(offerId);
                         default:
@@ -289,7 +293,7 @@ namespace LuKaSo.Zonky.Api
                             throw new NotAuthorizedException();
                         case HttpStatusCode.BadRequest:
                             var secondaryMarketOfferSellError = await ExtractDataAsync<SecondaryMarketOfferSellError>(response).ConfigureAwait(false);
-                            throw new OfferInvestmentSecondaryMarketException(secondaryMarketOfferSell, secondaryMarketOfferSellError);
+                            throw PrepareBadRequestException(response, new OfferInvestmentSecondaryMarketException(secondaryMarketOfferSell, secondaryMarketOfferSellError));
                         default:
                             throw new ServerErrorException(response);
                     }
@@ -337,7 +341,7 @@ namespace LuKaSo.Zonky.Api
                             throw new NotAuthorizedException();
                         case HttpStatusCode.Gone:
                             var secondaryMarketOfferCancelError = await ExtractDataAsync<SecondaryMarketOfferCancelError>(response).ConfigureAwait(false);
-                            throw new CancelSecondartMarketOfferException(offerId, secondaryMarketOfferCancelError);
+                            throw PrepareBadRequestException(response, new CancelSecondartMarketOfferException(offerId, secondaryMarketOfferCancelError));
                         default:
                             throw new ServerErrorException(response);
                     }

@@ -74,16 +74,9 @@ namespace LuKaSo.Zonky.Client
 
             try
             {
-                if (_authorizationToken != null)
-                {
-                    _log.Debug($"Client requests refresh token for user {_user.Name}, refresh token {_authorizationToken.RefreshToken.ToString()}.");
-                    _authorizationToken = await ZonkyApi.GetTokenExchangeRefreshTokenAsync(_authorizationToken, ct).ConfigureAwait(false);
-                    _log.Debug($"Refresh token for user {_user.Name}, new access token is {_authorizationToken.AccessToken.ToString()}, refresh token {_authorizationToken.RefreshToken.ToString()}.");
-                }
-                else
-                {
-                    await LoginAsync(ct).ConfigureAwait(false);
-                }
+                _log.Debug($"Client requests refresh token for user {_user.Name}, refresh token {_authorizationToken.RefreshToken.ToString()}.");
+                _authorizationToken = await ZonkyApi.GetTokenExchangeRefreshTokenAsync(_authorizationToken, ct).ConfigureAwait(false);
+                _log.Debug($"Refresh token for user {_user.Name}, new access token is {_authorizationToken.AccessToken.ToString()}, refresh token {_authorizationToken.RefreshToken.ToString()}.");
             }
             catch (BadRefreshTokenException ex)
             {
