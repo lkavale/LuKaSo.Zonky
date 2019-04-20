@@ -19,7 +19,7 @@ namespace LuKaSo.Zonky.Api
         /// <param name="loanId">Loan Id</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<Loan> GetLoanAsync(int loanId, CancellationToken ct)
+        public async Task<Loan> GetLoanAsync(int loanId, CancellationToken ct = default(CancellationToken))
         {
             using (var request = new HttpRequestMessage())
             {
@@ -58,7 +58,7 @@ namespace LuKaSo.Zonky.Api
         /// <param name="authorizationToken"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<LoanInvestment>> GetLoanInvestmentsAsync(int loanId, AuthorizationToken authorizationToken, CancellationToken ct)
+        public async Task<IEnumerable<LoanInvestment>> GetLoanInvestmentsAsync(int loanId, AuthorizationToken authorizationToken, CancellationToken ct = default(CancellationToken))
         {
             CheckAuthorizationToken(authorizationToken);
 

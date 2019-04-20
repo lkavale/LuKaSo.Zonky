@@ -18,7 +18,7 @@ namespace LuKaSo.Zonky.Api
         /// <param name="user">User</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<AuthorizationToken> GetTokenExchangePasswordAsync(User user, CancellationToken ct)
+        public async Task<AuthorizationToken> GetTokenExchangePasswordAsync(User user, CancellationToken ct = default(CancellationToken))
         {
             var url = _baseUrl
                 .Append("oauth/token")
@@ -67,7 +67,7 @@ namespace LuKaSo.Zonky.Api
         /// <param name="authorizationToken"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<AuthorizationToken> GetTokenExchangeRefreshTokenAsync(AuthorizationToken authorizationToken, CancellationToken ct)
+        public async Task<AuthorizationToken> GetTokenExchangeRefreshTokenAsync(AuthorizationToken authorizationToken, CancellationToken ct = default(CancellationToken))
         {
             CheckAuthorizationToken(authorizationToken);
 
