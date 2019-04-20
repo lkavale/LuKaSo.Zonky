@@ -30,7 +30,7 @@ namespace LuKaSo.Zonky.ExampleApp
             var timer3 = new System.Timers.Timer(20000);
             timer3.Elapsed += (s, e) =>
             {
-                client.GetAllSecondaryMarketplaceAsync(null).GetAwaiter().GetResult();
+                client.GetAllSecondaryMarketplaceAsync().GetAwaiter().GetResult();
             };
             timer3.Start();
 

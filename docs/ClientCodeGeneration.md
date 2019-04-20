@@ -11,4 +11,5 @@ Official API blueprint is available on https://zonky.docs.apiary.io/.
 * Try to create code<br/>
 <code>autorest --input-file=swagger2api.json --csharp --namespace=Zonky.Api</code>
 
-Repair possible errors in swagger definition file and try it again or zou can use NSwagStudio for client code generation.
+Repair possible errors in swagger definition file and try it again or use NSwagStudio for client code generation.<p>
+But the API definition is not complete, some method is still missing and many properties is not covered.

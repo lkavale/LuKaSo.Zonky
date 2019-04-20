@@ -20,7 +20,7 @@ namespace LuKaSo.Zonky.Client
         /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Loan>> GetPrimaryMarketPlaceAsync(int page, int pageSize, FilterOptions filter, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<Loan>> GetPrimaryMarketPlaceAsync(int page, int pageSize, FilterOptions filter = null, CancellationToken ct = default(CancellationToken))
         {
             return await ZonkyApi.GetPrimaryMarketPlaceAsync(page, pageSize, filter, ct).ConfigureAwait(false);
         }
@@ -31,14 +31,14 @@ namespace LuKaSo.Zonky.Client
         /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Loan>> GetAllPrimaryMarketPlaceAsync(FilterOptions filter, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<Loan>> GetAllPrimaryMarketPlaceAsync(FilterOptions filter = null, CancellationToken ct = default(CancellationToken))
         {
             _log.Debug($"Get all primary market loans request.");
 
             var loans = new List<Loan>();
             IEnumerable<Loan> loansPage;
             var page = 0;
-
+            
             // Useful for very large data amount, avoiding timeouts and server errors
             while ((loansPage = await GetPrimaryMarketPlaceAsync(page, _maxPageSize, filter, ct).ConfigureAwait(false)).Any())
             {
@@ -95,7 +95,7 @@ namespace LuKaSo.Zonky.Client
         /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<SecondaryMarketOffer>> GetSecondaryMarketplaceAsync(int page, int pageSize, FilterOptions filter, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<SecondaryMarketOffer>> GetSecondaryMarketplaceAsync(int page, int pageSize, FilterOptions filter = null, CancellationToken ct = default(CancellationToken))
         {
             return await ZonkyApi.GetSecondaryMarketplaceAsync(page, pageSize, filter, ct).ConfigureAwait(false);
         }
@@ -106,7 +106,7 @@ namespace LuKaSo.Zonky.Client
         /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<SecondaryMarketOffer>> GetAllSecondaryMarketplaceAsync(FilterOptions filter, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<SecondaryMarketOffer>> GetAllSecondaryMarketplaceAsync(FilterOptions filter = null, CancellationToken ct = default(CancellationToken))
         {
             _log.Debug($"Get all secondary market offers request.");
 

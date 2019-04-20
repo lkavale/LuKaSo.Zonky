@@ -26,8 +26,6 @@ namespace LuKaSo.Zonky.Client
         /// <summary>
         /// Get all investor's investments
         /// </summary>
-        /// <param name="page">Page number, started from 0</param>
-        /// <param name="pageSize">Items per page</param>
         /// <param name="ct"></param>
         /// <returns></returns>
         public async Task<IEnumerable<Investment>> GetAllInvestmentsAsync(CancellationToken ct = default(CancellationToken))
