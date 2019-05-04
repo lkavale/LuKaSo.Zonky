@@ -31,11 +31,7 @@ namespace LuKaSo.Zonky.Api
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
 
-                var response = await _httpClient
-                    .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct)
-                    .ConfigureAwait(false);
-
-                try
+                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
                 {
                     switch (response.StatusCode)
                     {
@@ -47,13 +43,6 @@ namespace LuKaSo.Zonky.Api
                             throw PrepareBadRequestException(response, new ServerErrorException(response));
                         default:
                             throw new ServerErrorException(response);
-                    }
-                }
-                finally
-                {
-                    if (response != null)
-                    {
-                        response.Dispose();
                     }
                 }
             }
@@ -78,11 +67,7 @@ namespace LuKaSo.Zonky.Api
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
                 request.Headers.Add("x-size", size.ToString());
 
-                var response = await _httpClient
-                    .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct)
-                    .ConfigureAwait(false);
-
-                try
+                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
                 {
                     switch (response.StatusCode)
                     {
@@ -94,13 +79,6 @@ namespace LuKaSo.Zonky.Api
                             throw PrepareBadRequestException(response, new ServerErrorException(response));
                         default:
                             throw new ServerErrorException(response);
-                    }
-                }
-                finally
-                {
-                    if (response != null)
-                    {
-                        response.Dispose();
                     }
                 }
             }
@@ -125,11 +103,7 @@ namespace LuKaSo.Zonky.Api
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
                 request.Headers.Add("x-size", "2147483647");
 
-                var response = await _httpClient
-                    .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct)
-                    .ConfigureAwait(false);
-
-                try
+                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
                 {
                     switch (response.StatusCode)
                     {
@@ -141,13 +115,6 @@ namespace LuKaSo.Zonky.Api
                             throw PrepareBadRequestException(response, new ServerErrorException(response));
                         default:
                             throw new ServerErrorException(response);
-                    }
-                }
-                finally
-                {
-                    if (response != null)
-                    {
-                        response.Dispose();
                     }
                 }
             }
@@ -171,11 +138,7 @@ namespace LuKaSo.Zonky.Api
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
                 request.Headers.Add("x-size", "2147483647");
 
-                var response = await _httpClient
-                    .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct)
-                    .ConfigureAwait(false);
-
-                try
+                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
                 {
                     switch (response.StatusCode)
                     {
@@ -187,13 +150,6 @@ namespace LuKaSo.Zonky.Api
                             throw PrepareBadRequestException(response, new ServerErrorException(response));
                         default:
                             throw new ServerErrorException(response);
-                    }
-                }
-                finally
-                {
-                    if (response != null)
-                    {
-                        response.Dispose();
                     }
                 }
             }

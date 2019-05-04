@@ -27,26 +27,14 @@ namespace LuKaSo.Zonky.Api
                 request.Method = new HttpMethod("GET");
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
-                var response = await _httpClient
-                    .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct)
-                    .ConfigureAwait(false);
+                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+                {
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        return await ExtractDataAsync<Loan>(response).ConfigureAwait(false);
+                    }
 
-                try
-                {
-                    switch (response.StatusCode)
-                    {
-                        case HttpStatusCode.OK:
-                            return await ExtractDataAsync<Loan>(response).ConfigureAwait(false);
-                        default:
-                            throw new ServerErrorException(response);
-                    }
-                }
-                finally
-                {
-                    if (response != null)
-                    {
-                        response.Dispose();
-                    }
+                    throw new ServerErrorException(response);
                 }
             }
         }
@@ -69,11 +57,7 @@ namespace LuKaSo.Zonky.Api
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
-                var response = await _httpClient
-                    .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct)
-                    .ConfigureAwait(false);
-
-                try
+                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
                 {
                     switch (response.StatusCode)
                     {
@@ -85,13 +69,6 @@ namespace LuKaSo.Zonky.Api
                             throw PrepareBadRequestException(response, new ServerErrorException(response));
                         default:
                             throw new ServerErrorException(response);
-                    }
-                }
-                finally
-                {
-                    if (response != null)
-                    {
-                        response.Dispose();
                     }
                 }
             }

@@ -36,11 +36,7 @@ namespace LuKaSo.Zonky.Api
                 request.Headers.Add("x-page", page.ToString());
                 request.Headers.Add("x-size", pageSize.ToString());
 
-                var response = await _httpClient
-                    .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct)
-                    .ConfigureAwait(false);
-
-                try
+                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
                 {
                     switch (response.StatusCode)
                     {
@@ -52,13 +48,6 @@ namespace LuKaSo.Zonky.Api
                             throw PrepareBadRequestException(response, new ServerErrorException(response));
                         default:
                             throw new ServerErrorException(response);
-                    }
-                }
-                finally
-                {
-                    if (response != null)
-                    {
-                        response.Dispose();
                     }
                 }
             }
@@ -82,11 +71,7 @@ namespace LuKaSo.Zonky.Api
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
 
-                var response = await _httpClient
-                    .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct)
-                    .ConfigureAwait(false);
-
-                try
+                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
                 {
                     switch (response.StatusCode)
                     {
@@ -98,13 +83,6 @@ namespace LuKaSo.Zonky.Api
                             throw PrepareBadRequestException(response, new ServerErrorException(response));
                         default:
                             throw new ServerErrorException(response);
-                    }
-                }
-                finally
-                {
-                    if (response != null)
-                    {
-                        response.Dispose();
                     }
                 }
             }
@@ -129,11 +107,7 @@ namespace LuKaSo.Zonky.Api
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
 
-                var response = await _httpClient
-                    .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct)
-                    .ConfigureAwait(false);
-
-                try
+                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
                 {
                     switch (response.StatusCode)
                     {
@@ -147,13 +121,6 @@ namespace LuKaSo.Zonky.Api
                             throw new CaptchaValidationException(response);
                         default:
                             throw new ServerErrorException(response);
-                    }
-                }
-                finally
-                {
-                    if (response != null)
-                    {
-                        response.Dispose();
                     }
                 }
             }
@@ -179,11 +146,7 @@ namespace LuKaSo.Zonky.Api
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
 
-                var response = await _httpClient
-                    .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct)
-                    .ConfigureAwait(false);
-
-                try
+                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
                 {
                     switch (response.StatusCode)
                     {
@@ -195,13 +158,6 @@ namespace LuKaSo.Zonky.Api
                             throw PrepareBadRequestException(response, new PrimaryMarketInvestmentException(investmentId, increaseInvestment, response));
                         default:
                             throw new ServerErrorException(response);
-                    }
-                }
-                finally
-                {
-                    if (response != null)
-                    {
-                        response.Dispose();
                     }
                 }
             }
@@ -227,11 +183,7 @@ namespace LuKaSo.Zonky.Api
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
 
-                var response = await _httpClient
-                    .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct)
-                    .ConfigureAwait(false);
-
-                try
+                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
                 {
                     switch (response.StatusCode)
                     {
@@ -247,13 +199,6 @@ namespace LuKaSo.Zonky.Api
                             throw new NotFoundSecondaryMarketInvestmentException(offerId);
                         default:
                             throw new ServerErrorException(response);
-                    }
-                }
-                finally
-                {
-                    if (response != null)
-                    {
-                        response.Dispose();
                     }
                 }
             }
@@ -278,11 +223,7 @@ namespace LuKaSo.Zonky.Api
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
 
-                var response = await _httpClient
-                    .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct)
-                    .ConfigureAwait(false);
-
-                try
+                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
                 {
                     switch (response.StatusCode)
                     {
@@ -296,13 +237,6 @@ namespace LuKaSo.Zonky.Api
                             throw PrepareBadRequestException(response, new OfferInvestmentSecondaryMarketException(secondaryMarketOfferSell, secondaryMarketOfferSellError));
                         default:
                             throw new ServerErrorException(response);
-                    }
-                }
-                finally
-                {
-                    if (response != null)
-                    {
-                        response.Dispose();
                     }
                 }
             }
@@ -326,11 +260,7 @@ namespace LuKaSo.Zonky.Api
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
 
-                var response = await _httpClient
-                    .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct)
-                    .ConfigureAwait(false);
-
-                try
+                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
                 {
                     switch (response.StatusCode)
                     {
@@ -344,13 +274,6 @@ namespace LuKaSo.Zonky.Api
                             throw PrepareBadRequestException(response, new CancelSecondartMarketOfferException(offerId, secondaryMarketOfferCancelError));
                         default:
                             throw new ServerErrorException(response);
-                    }
-                }
-                finally
-                {
-                    if (response != null)
-                    {
-                        response.Dispose();
                     }
                 }
             }

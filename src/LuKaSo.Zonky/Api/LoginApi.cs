@@ -35,11 +35,7 @@ namespace LuKaSo.Zonky.Api
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
                 request.Headers.Authorization = new AuthenticationHeaderValue("Basic", _oAuth2Secret);
 
-                var response = await _httpClient
-                    .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct)
-                    .ConfigureAwait(false);
-
-                try
+                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
                 {
                     switch (response.StatusCode)
                     {
@@ -49,13 +45,6 @@ namespace LuKaSo.Zonky.Api
                             throw new BadLoginException(response, user);
                         default:
                             throw new ServerErrorException(response);
-                    }
-                }
-                finally
-                {
-                    if (response != null)
-                    {
-                        response.Dispose();
                     }
                 }
             }
@@ -85,11 +74,7 @@ namespace LuKaSo.Zonky.Api
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
                 request.Headers.Authorization = new AuthenticationHeaderValue("Basic", _oAuth2Secret);
 
-                var response = await _httpClient
-                    .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct)
-                    .ConfigureAwait(false);
-
-                try
+                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
                 {
                     switch (response.StatusCode)
                     {
@@ -99,13 +84,6 @@ namespace LuKaSo.Zonky.Api
                             throw new BadRefreshTokenException(response, authorizationToken);
                         default:
                             throw new ServerErrorException(response);
-                    }
-                }
-                finally
-                {
-                    if (response != null)
-                    {
-                        response.Dispose();
                     }
                 }
             }

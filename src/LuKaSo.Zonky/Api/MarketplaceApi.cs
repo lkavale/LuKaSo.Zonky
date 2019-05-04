@@ -32,27 +32,14 @@ namespace LuKaSo.Zonky.Api
                 request.Headers.Add("x-page", page.ToString());
                 request.Headers.Add("x-size", pageSize.ToString());
 
-                var response = await _httpClient
-                    .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct)
-                    .ConfigureAwait(false);
-
-                try
+                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
                 {
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
                         return await ExtractDataAsync<IEnumerable<Loan>>(response).ConfigureAwait(false);
                     }
-                    else
-                    {
-                        throw new ServerErrorException(response);
-                    }
-                }
-                finally
-                {
-                    if (response != null)
-                    {
-                        response.Dispose();
-                    }
+
+                    throw new ServerErrorException(response);
                 }
             }
         }
@@ -75,27 +62,14 @@ namespace LuKaSo.Zonky.Api
                 request.Headers.Add("x-page", page.ToString());
                 request.Headers.Add("x-size", pageSize.ToString());
 
-                var response = await _httpClient
-                    .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct)
-                    .ConfigureAwait(false);
-
-                try
+                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
                 {
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
                         return await ExtractDataAsync<IEnumerable<SecondaryMarketOffer>>(response).ConfigureAwait(false);
                     }
-                    else
-                    {
-                        throw new ServerErrorException(response);
-                    }
-                }
-                finally
-                {
-                    if (response != null)
-                    {
-                        response.Dispose();
-                    }
+
+                    throw new ServerErrorException(response);
                 }
             }
         }
