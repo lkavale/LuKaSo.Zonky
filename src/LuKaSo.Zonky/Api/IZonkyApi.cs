@@ -55,7 +55,7 @@ namespace LuKaSo.Zonky.Api
         /// <param name="loanId">Loan Id</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        Task<Loan> GetLoanAsync(int loanId, CancellationToken ct);
+        Task<Loan> GetLoanAsync(int loanId, CancellationToken ct = default(CancellationToken));
 
         /// <summary>
         /// Get list of investors and amounts engaged in the loan

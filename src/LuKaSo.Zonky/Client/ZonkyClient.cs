@@ -69,7 +69,7 @@ namespace LuKaSo.Zonky.Client
         /// <param name="enableTrading">Enable trading</param>
         public ZonkyClient(User user, bool enableTrading) : this()
         {
-            _user = user ?? throw new ArgumentNullException();
+            _user = user ?? throw new ArgumentNullException(nameof(user));
             _enableTrading = enableTrading;
 
             _log.Debug($"Zonky client with user {_user.Name} {(_enableTrading ? "and enabled trading" : " and disabled trading")}.");
