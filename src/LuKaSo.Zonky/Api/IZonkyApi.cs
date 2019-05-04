@@ -4,14 +4,13 @@ using LuKaSo.Zonky.Api.Models.Investor;
 using LuKaSo.Zonky.Api.Models.Loans;
 using LuKaSo.Zonky.Api.Models.Login;
 using LuKaSo.Zonky.Api.Models.Markets;
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace LuKaSo.Zonky.Api
 {
-    public interface IZonkyApi : IDisposable
+    public interface IZonkyApi
     {
         /// <summary>
         /// Get access token exchange with password

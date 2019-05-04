@@ -108,12 +108,9 @@ namespace LuKaSo.Zonky.Api
         /// <returns></returns>
         protected Exception PrepareBadRequestException(HttpResponseMessage response, Exception defaultException)
         {
-            if (response != null && response.Headers != null && response.Headers.TryGetValues("WWW-Authenticate", out var authHeader))
+            if (response != null && response.Headers != null && response.Headers.TryGetValues("WWW-Authenticate", out var authHeader) && authHeader.Any(s => s.Contains("Bearer error=\"invalid_token\"")))
             {
-                if (authHeader.Any(s => s.Contains("Bearer error=\"invalid_token\"")))
-                {
-                    return new BadAccessTokenException();
-                }
+                return new BadAccessTokenException();
             }
 
             return defaultException;
@@ -132,7 +129,7 @@ namespace LuKaSo.Zonky.Api
         /// Dispose
         /// </summary>
         /// <param name="disposing"></param>
-        private void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (disposing)
             {

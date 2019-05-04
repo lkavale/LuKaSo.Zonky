@@ -3,7 +3,6 @@ using LuKaSo.Zonky.Api.Exceptions;
 using LuKaSo.Zonky.Api.Models.Login;
 using LuKaSo.Zonky.Logging;
 using System;
-using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -171,7 +170,7 @@ namespace LuKaSo.Zonky.Client
         /// Dispose
         /// </summary>
         /// <param name="disposing"></param>
-        private void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (disposing)
             {

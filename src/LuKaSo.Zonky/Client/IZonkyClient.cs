@@ -3,14 +3,13 @@ using LuKaSo.Zonky.Api.Models.Investments;
 using LuKaSo.Zonky.Api.Models.Investor;
 using LuKaSo.Zonky.Api.Models.Loans;
 using LuKaSo.Zonky.Api.Models.Markets;
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace LuKaSo.Zonky.Client
 {
-    public interface IZonkyClient: IDisposable
+    public interface IZonkyClient
     {
         /// <summary>
         /// Get primary marketplace loans
@@ -149,7 +148,7 @@ namespace LuKaSo.Zonky.Client
         /// <param name="increaseInvestment">Primary market increase investment</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        Task IncreasePrimaryMarketInvestmentAsync(int investmentId, IncreasePrimaryMarketInvestment increaseInvestment,  CancellationToken ct);
+        Task IncreasePrimaryMarketInvestmentAsync(int investmentId, IncreasePrimaryMarketInvestment increaseInvestment, CancellationToken ct);
 
         /// <summary>
         /// Buy secondary market investment offer
