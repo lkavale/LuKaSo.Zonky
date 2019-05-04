@@ -79,7 +79,7 @@ namespace LuKaSo.Zonky.Client
         {
             CheckTradingPrerequisites();
 
-            await HandleAuthorizedRequestAsync<Task>(() => ZonkyApi.CreatePrimaryMarketInvestmentAsync(investment, _authorizationToken, ct), ct).ConfigureAwait(false);
+            await HandleAuthorizedRequestAsync(() => ZonkyApi.CreatePrimaryMarketInvestmentAsync(investment, _authorizationToken, ct), ct).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace LuKaSo.Zonky.Client
         {
             CheckTradingPrerequisites();
 
-            await HandleAuthorizedRequestAsync<Task>(() => ZonkyApi.IncreasePrimaryMarketInvestmentAsync(investmentId, increaseInvestment, _authorizationToken, ct), ct).ConfigureAwait(false);
+            await HandleAuthorizedRequestAsync(() => ZonkyApi.IncreasePrimaryMarketInvestmentAsync(investmentId, increaseInvestment, _authorizationToken, ct), ct).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace LuKaSo.Zonky.Client
         {
             CheckTradingPrerequisites();
 
-            await HandleAuthorizedRequestAsync<Task>(() => ZonkyApi.BuySecondaryMarketInvestmentAsync(offerId, secondaryMarketInvestment, _authorizationToken, ct), ct).ConfigureAwait(false);
+            await HandleAuthorizedRequestAsync(() => ZonkyApi.BuySecondaryMarketInvestmentAsync(offerId, secondaryMarketInvestment, _authorizationToken, ct), ct).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace LuKaSo.Zonky.Client
         {
             CheckTradingPrerequisites();
 
-            await HandleAuthorizedRequestAsync<Task>(() => ZonkyApi.OfferInvestmentOnSecondaryMarketAsync(secondaryMarketOfferSell, _authorizationToken, ct), ct).ConfigureAwait(false);
+            await HandleAuthorizedRequestAsync(() => ZonkyApi.OfferInvestmentOnSecondaryMarketAsync(secondaryMarketOfferSell, _authorizationToken, ct), ct).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace LuKaSo.Zonky.Client
         {
             CheckTradingPrerequisites();
 
-            await HandleAuthorizedRequestAsync<Task>(() => ZonkyApi.CancelOfferInvestmentOnSecondaryMarketAsync(offerId, _authorizationToken, ct), ct).ConfigureAwait(false);
+            await HandleAuthorizedRequestAsync(() => ZonkyApi.CancelOfferInvestmentOnSecondaryMarketAsync(offerId, _authorizationToken, ct), ct).ConfigureAwait(false);
         }
     }
 }

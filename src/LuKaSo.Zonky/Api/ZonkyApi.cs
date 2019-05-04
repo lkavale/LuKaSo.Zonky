@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LuKaSo.Zonky.Api
 {
-    public partial class ZonkyApi : IZonkyApi, IDisposable
+    public partial class ZonkyApi : IZonkyApi
     {
         /// <summary>
         /// Zonky API base address

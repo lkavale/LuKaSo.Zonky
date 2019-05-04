@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LuKaSo.Zonky.Client
 {
-    public partial class ZonkyClient : IZonkyClient, IDisposable
+    public partial class ZonkyClient : IZonkyClient
     {
         /// <summary>
         /// Max paging size, requests for huge item amount (eg. primary market, large investment portfolio > 1000 participations, etc.)
