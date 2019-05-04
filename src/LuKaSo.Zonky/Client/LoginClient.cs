@@ -1,5 +1,4 @@
-﻿using LuKaSo.Zonky.Api.Exceptions;
-using LuKaSo.Zonky.Client.Exceptions;
+﻿using LuKaSo.Zonky.Exceptions;
 using LuKaSo.Zonky.Logging;
 using System.Threading;
 using System.Threading.Tasks;

@@ -1,5 +1,5 @@
-﻿using LuKaSo.Zonky.Api.Models;
-using LuKaSo.Zonky.Api.Models.Investor;
+﻿using LuKaSo.Zonky.Models;
+using LuKaSo.Zonky.Models.Investor;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -35,9 +35,9 @@ namespace LuKaSo.Zonky.Client
         /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<WalletTransaction>> GetWalletTransactionsAsync(FilterOptions filter, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<WalletTransaction>> GetWalletTransactionsAsync(FilterOptions filter = null, CancellationToken ct = default(CancellationToken))
         {
-            return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetWalletTransactionsAsync(filter, _authorizationToken, ct), ct).ConfigureAwait(false);
+            return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetWalletTransactionsAsync(_authorizationToken, filter, ct), ct).ConfigureAwait(false);
         }
 
         /// <summary>

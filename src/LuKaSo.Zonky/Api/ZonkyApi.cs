@@ -1,5 +1,5 @@
-﻿using LuKaSo.Zonky.Api.Exceptions;
-using LuKaSo.Zonky.Api.Models.Login;
+﻿using LuKaSo.Zonky.Exceptions;
+using LuKaSo.Zonky.Models.Login;
 using LuKaSo.Zonky.Logging;
 using Newtonsoft.Json;
 using System;

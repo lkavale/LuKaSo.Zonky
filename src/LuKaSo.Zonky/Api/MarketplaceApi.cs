@@ -1,8 +1,8 @@
-﻿using LuKaSo.Zonky.Api.Exceptions;
-using LuKaSo.Zonky.Api.Extesions;
-using LuKaSo.Zonky.Api.Models;
-using LuKaSo.Zonky.Api.Models.Loans;
-using LuKaSo.Zonky.Api.Models.Markets;
+﻿using LuKaSo.Zonky.Exceptions;
+using LuKaSo.Zonky.Extesions;
+using LuKaSo.Zonky.Models;
+using LuKaSo.Zonky.Models.Loans;
+using LuKaSo.Zonky.Models.Markets;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -22,7 +22,7 @@ namespace LuKaSo.Zonky.Api
         /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Loan>> GetPrimaryMarketPlaceAsync(int page, int pageSize, FilterOptions filter, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<Loan>> GetPrimaryMarketPlaceAsync(int page, int pageSize, FilterOptions filter = null, CancellationToken ct = default(CancellationToken))
         {
             using (var request = new HttpRequestMessage())
             {
@@ -52,7 +52,7 @@ namespace LuKaSo.Zonky.Api
         /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<SecondaryMarketOffer>> GetSecondaryMarketplaceAsync(int page, int pageSize, FilterOptions filter, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<SecondaryMarketOffer>> GetSecondaryMarketplaceAsync(int page, int pageSize, FilterOptions filter = null, CancellationToken ct = default(CancellationToken))
         {
             using (var request = new HttpRequestMessage())
             {

@@ -1,7 +1,7 @@
-﻿using LuKaSo.Zonky.Api.Models;
-using LuKaSo.Zonky.Api.Models.Loans;
-using LuKaSo.Zonky.Api.Models.Markets;
-using LuKaSo.Zonky.Logging;
+﻿using LuKaSo.Zonky.Logging;
+using LuKaSo.Zonky.Models;
+using LuKaSo.Zonky.Models.Loans;
+using LuKaSo.Zonky.Models.Markets;
 using MoreLinq;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +38,7 @@ namespace LuKaSo.Zonky.Client
             var loans = new List<Loan>();
             IEnumerable<Loan> loansPage;
             var page = 0;
-            
+
             // Useful for very large data amount, avoiding timeouts and server errors
             while ((loansPage = await GetPrimaryMarketPlaceAsync(page, _maxPageSize, filter, ct).ConfigureAwait(false)).Any())
             {

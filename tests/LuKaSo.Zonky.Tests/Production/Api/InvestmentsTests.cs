@@ -1,6 +1,6 @@
 ﻿using LuKaSo.Zonky.Api;
-using LuKaSo.Zonky.Api.Exceptions;
-using LuKaSo.Zonky.Api.Models.Login;
+using LuKaSo.Zonky.Exceptions;
+using LuKaSo.Zonky.Models.Login;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
@@ -44,7 +44,7 @@ namespace LuKaSo.Zonky.Tests.Production.Api
             var loanId = 115665;
             var investmentEvents = _zonkyClient.GetInvestmentEventsAsync(loanId, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
 
-            Assert.AreEqual(investmentEvents.Count(), investmentEvents.Where(e => e.LoanId == loanId).Count());
+            Assert.AreEqual(investmentEvents.Count(), investmentEvents.Count(e => e.LoanId == loanId));
         }
 
         /*

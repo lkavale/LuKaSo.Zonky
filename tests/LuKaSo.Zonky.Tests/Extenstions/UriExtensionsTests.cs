@@ -1,4 +1,4 @@
-﻿using LuKaSo.Zonky.Api.Extesions;
+﻿using LuKaSo.Zonky.Extesions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;

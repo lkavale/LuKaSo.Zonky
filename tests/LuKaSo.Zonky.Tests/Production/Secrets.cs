@@ -1,4 +1,4 @@
-﻿using LuKaSo.Zonky.Api.Models.Login;
+﻿using LuKaSo.Zonky.Models.Login;
 
 namespace LuKaSo.Zonky.Tests.Production
 {

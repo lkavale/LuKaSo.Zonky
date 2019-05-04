@@ -1,4 +1,4 @@
-﻿using LuKaSo.Zonky.Api.Models.Loans;
+﻿using LuKaSo.Zonky.Models.Loans;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;

@@ -1,7 +1,7 @@
 ﻿using LuKaSo.Zonky.Api;
-using LuKaSo.Zonky.Api.Exceptions;
-using LuKaSo.Zonky.Api.Models.Login;
+using LuKaSo.Zonky.Exceptions;
 using LuKaSo.Zonky.Logging;
+using LuKaSo.Zonky.Models.Login;
 using System;
 using System.Net.Http;
 using System.Threading;

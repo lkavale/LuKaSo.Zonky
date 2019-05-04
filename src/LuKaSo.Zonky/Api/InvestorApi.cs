@@ -1,8 +1,8 @@
-﻿using LuKaSo.Zonky.Api.Exceptions;
-using LuKaSo.Zonky.Api.Extesions;
-using LuKaSo.Zonky.Api.Models;
-using LuKaSo.Zonky.Api.Models.Investor;
-using LuKaSo.Zonky.Api.Models.Login;
+﻿using LuKaSo.Zonky.Exceptions;
+using LuKaSo.Zonky.Extesions;
+using LuKaSo.Zonky.Models;
+using LuKaSo.Zonky.Models.Investor;
+using LuKaSo.Zonky.Models.Login;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -91,7 +91,7 @@ namespace LuKaSo.Zonky.Api
         /// <param name="authorizationToken"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<WalletTransaction>> GetWalletTransactionsAsync(FilterOptions filter, AuthorizationToken authorizationToken, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<WalletTransaction>> GetWalletTransactionsAsync(AuthorizationToken authorizationToken, FilterOptions filter = null, CancellationToken ct = default(CancellationToken))
         {
             CheckAuthorizationToken(authorizationToken);
 

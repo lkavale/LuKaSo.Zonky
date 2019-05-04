@@ -1,8 +1,8 @@
-﻿using LuKaSo.Zonky.Api.Models;
-using LuKaSo.Zonky.Api.Models.Investments;
-using LuKaSo.Zonky.Api.Models.Investor;
-using LuKaSo.Zonky.Api.Models.Loans;
-using LuKaSo.Zonky.Api.Models.Markets;
+﻿using LuKaSo.Zonky.Models;
+using LuKaSo.Zonky.Models.Investments;
+using LuKaSo.Zonky.Models.Investor;
+using LuKaSo.Zonky.Models.Loans;
+using LuKaSo.Zonky.Models.Markets;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -20,7 +20,7 @@ namespace LuKaSo.Zonky.Client
         /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        Task<IEnumerable<Loan>> GetPrimaryMarketPlaceAsync(int page, int pageSize, FilterOptions filter, CancellationToken ct = default(CancellationToken));
+        Task<IEnumerable<Loan>> GetPrimaryMarketPlaceAsync(int page, int pageSize, FilterOptions filter = null, CancellationToken ct = default(CancellationToken));
 
         /// <summary>
         /// Get all primary marketplace loans
@@ -28,7 +28,7 @@ namespace LuKaSo.Zonky.Client
         /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        Task<IEnumerable<Loan>> GetAllPrimaryMarketPlaceAsync(FilterOptions filter, CancellationToken ct = default(CancellationToken));
+        Task<IEnumerable<Loan>> GetAllPrimaryMarketPlaceAsync(FilterOptions filter = null, CancellationToken ct = default(CancellationToken));
 
         /// <summary>
         /// Get all uncovered primary marketplace loans
@@ -52,7 +52,7 @@ namespace LuKaSo.Zonky.Client
         /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        Task<IEnumerable<SecondaryMarketOffer>> GetSecondaryMarketplaceAsync(int page, int pageSize, FilterOptions filter, CancellationToken ct = default(CancellationToken));
+        Task<IEnumerable<SecondaryMarketOffer>> GetSecondaryMarketplaceAsync(int page, int pageSize, FilterOptions filter = null, CancellationToken ct = default(CancellationToken));
 
         /// <summary>
         /// Get all secondary marketplace loans
@@ -60,7 +60,7 @@ namespace LuKaSo.Zonky.Client
         /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        Task<IEnumerable<SecondaryMarketOffer>> GetAllSecondaryMarketplaceAsync(FilterOptions filter, CancellationToken ct = default(CancellationToken));
+        Task<IEnumerable<SecondaryMarketOffer>> GetAllSecondaryMarketplaceAsync(FilterOptions filter = null, CancellationToken ct = default(CancellationToken));
 
         /// <summary>
         /// Get loan
@@ -99,7 +99,7 @@ namespace LuKaSo.Zonky.Client
         /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        Task<IEnumerable<WalletTransaction>> GetWalletTransactionsAsync(FilterOptions filter, CancellationToken ct = default(CancellationToken));
+        Task<IEnumerable<WalletTransaction>> GetWalletTransactionsAsync(FilterOptions filter = null, CancellationToken ct = default(CancellationToken));
 
         /// <summary>
         /// Get investor blocked amount

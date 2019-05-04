@@ -1,5 +1,5 @@
-﻿using LuKaSo.Zonky.Api.Models.Investments;
-using LuKaSo.Zonky.Api.Models.Markets;
+﻿using LuKaSo.Zonky.Models.Investments;
+using LuKaSo.Zonky.Models.Markets;
 using LuKaSo.Zonky.Logging;
 using MoreLinq;
 using System.Collections.Generic;

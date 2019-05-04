@@ -1,5 +1,5 @@
 ﻿using LuKaSo.Zonky.Api;
-using LuKaSo.Zonky.Api.Models;
+using LuKaSo.Zonky.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System.Net.Http;
@@ -39,8 +39,8 @@ namespace LuKaSo.Zonky.Tests.Production.Api
 
             Assert.AreEqual(pageSize, loansAll.Count());
             Assert.AreNotEqual(pageSize, loans.Count());
-            Assert.AreNotEqual(loansAll.Where(l => !l.Covered).Count(), loans.Count());
-            Assert.AreEqual(0, loans.Where(l => l.Covered).Count());
+            Assert.AreNotEqual(loansAll.Count(l => !l.Covered), loans.Count());
+            Assert.AreEqual(0, loans.Count(l => l.Covered));
         }
 
         [TestMethod]

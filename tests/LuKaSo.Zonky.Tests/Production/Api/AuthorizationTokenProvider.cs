@@ -1,12 +1,12 @@
 ﻿using LuKaSo.Zonky.Api;
-using LuKaSo.Zonky.Api.Models.Login;
+using LuKaSo.Zonky.Models.Login;
 using System.Threading;
 
 namespace LuKaSo.Zonky.Tests.Production.Api
 {
     public class AuthorizationTokenProvider
     {
-        private ZonkyApi _zonkyApi;
+        private readonly ZonkyApi _zonkyApi;
         private readonly User _zonkyLogin;
 
         public AuthorizationTokenProvider(ZonkyApi zonkyApi)

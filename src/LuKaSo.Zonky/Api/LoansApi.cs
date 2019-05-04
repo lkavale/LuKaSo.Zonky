@@ -1,7 +1,7 @@
-﻿using LuKaSo.Zonky.Api.Exceptions;
-using LuKaSo.Zonky.Api.Extesions;
-using LuKaSo.Zonky.Api.Models.Loans;
-using LuKaSo.Zonky.Api.Models.Login;
+﻿using LuKaSo.Zonky.Exceptions;
+using LuKaSo.Zonky.Extesions;
+using LuKaSo.Zonky.Models.Loans;
+using LuKaSo.Zonky.Models.Login;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;

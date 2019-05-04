@@ -1,4 +1,4 @@
-﻿using LuKaSo.Zonky.Api.Models.Login;
+﻿using LuKaSo.Zonky.Models.Login;
 using Newtonsoft.Json;
 using System.IO;
 using System.Reflection;

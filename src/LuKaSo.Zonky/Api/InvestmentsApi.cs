@@ -1,8 +1,8 @@
-﻿using LuKaSo.Zonky.Api.Exceptions;
-using LuKaSo.Zonky.Api.Extesions;
-using LuKaSo.Zonky.Api.Models.Investments;
-using LuKaSo.Zonky.Api.Models.Login;
-using LuKaSo.Zonky.Api.Models.Markets;
+﻿using LuKaSo.Zonky.Exceptions;
+using LuKaSo.Zonky.Extesions;
+using LuKaSo.Zonky.Models.Investments;
+using LuKaSo.Zonky.Models.Login;
+using LuKaSo.Zonky.Models.Markets;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net;

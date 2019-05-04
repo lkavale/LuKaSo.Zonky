@@ -1,9 +1,9 @@
-﻿using LuKaSo.Zonky.Api.Models;
-using LuKaSo.Zonky.Api.Models.Investments;
-using LuKaSo.Zonky.Api.Models.Investor;
-using LuKaSo.Zonky.Api.Models.Loans;
-using LuKaSo.Zonky.Api.Models.Login;
-using LuKaSo.Zonky.Api.Models.Markets;
+﻿using LuKaSo.Zonky.Models;
+using LuKaSo.Zonky.Models.Investments;
+using LuKaSo.Zonky.Models.Investor;
+using LuKaSo.Zonky.Models.Loans;
+using LuKaSo.Zonky.Models.Login;
+using LuKaSo.Zonky.Models.Markets;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -24,10 +24,10 @@ namespace LuKaSo.Zonky.Api
         /// <summary>
         /// Get access token exchange with refresh token
         /// </summary>
-        /// <param name="token"></param>
+        /// <param name="authorizationToken"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        Task<AuthorizationToken> GetTokenExchangeRefreshTokenAsync(AuthorizationToken token, CancellationToken ct = default(CancellationToken));
+        Task<AuthorizationToken> GetTokenExchangeRefreshTokenAsync(AuthorizationToken authorizationToken, CancellationToken ct = default(CancellationToken));
 
         /// <summary>
         /// Get primary marketplace loans
@@ -37,7 +37,7 @@ namespace LuKaSo.Zonky.Api
         /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        Task<IEnumerable<Loan>> GetPrimaryMarketPlaceAsync(int page, int pageSize, FilterOptions filter, CancellationToken ct = default(CancellationToken));
+        Task<IEnumerable<Loan>> GetPrimaryMarketPlaceAsync(int page, int pageSize, FilterOptions filter = null, CancellationToken ct = default(CancellationToken));
 
         /// <summary>
         /// Get secondary marketplace loans
@@ -47,7 +47,7 @@ namespace LuKaSo.Zonky.Api
         /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        Task<IEnumerable<SecondaryMarketOffer>> GetSecondaryMarketplaceAsync(int page, int pageSize, FilterOptions filter, CancellationToken ct = default(CancellationToken));
+        Task<IEnumerable<SecondaryMarketOffer>> GetSecondaryMarketplaceAsync(int page, int pageSize, FilterOptions filter = null, CancellationToken ct = default(CancellationToken));
 
         /// <summary>
         /// Get loan
@@ -90,7 +90,7 @@ namespace LuKaSo.Zonky.Api
         /// <param name="authorizationToken"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        Task<IEnumerable<WalletTransaction>> GetWalletTransactionsAsync(FilterOptions filter, AuthorizationToken authorizationToken, CancellationToken ct = default(CancellationToken));
+        Task<IEnumerable<WalletTransaction>> GetWalletTransactionsAsync(AuthorizationToken authorizationToken, FilterOptions filter = null, CancellationToken ct = default(CancellationToken));
 
         /// <summary>
         /// Get investor blocked amount
