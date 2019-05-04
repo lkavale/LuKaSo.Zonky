@@ -122,11 +122,10 @@ namespace LuKaSo.Zonky.Client
         /// <summary>
         /// Handle authorized request without return value
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="action"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        protected async Task HandleAuthorizedRequestAsync<T>(Func<Task> action, CancellationToken ct = default(CancellationToken))
+        protected async Task HandleAuthorizedRequestAsync(Func<Task> action, CancellationToken ct = default(CancellationToken))
         {
             CheckAuthorizationPrerequisites();
 
