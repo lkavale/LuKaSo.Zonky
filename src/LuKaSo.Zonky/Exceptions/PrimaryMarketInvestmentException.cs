@@ -1,9 +1,11 @@
 ﻿using LuKaSo.Zonky.Models.Markets;
 using System;
 using System.Net.Http;
+using System.Runtime.Serialization;
 
 namespace LuKaSo.Zonky.Exceptions
 {
+    [Serializable]
     public class PrimaryMarketInvestmentException : Exception
     {
         /// <summary>
@@ -41,6 +43,9 @@ namespace LuKaSo.Zonky.Exceptions
         /// <param name="increaseInvestment"></param>
         /// <param name="message"></param>
         public PrimaryMarketInvestmentException(int investmentId, IncreasePrimaryMarketInvestment increaseInvestment, HttpResponseMessage message) : base($"Increase primary market participation id {investmentId} - {increaseInvestment.ToString()} failed \r\n Server return \r\n {message.ToString()}")
+        { }
+
+        protected PrimaryMarketInvestmentException(SerializationInfo info, StreamingContext context) : base(info, context)
         { }
     }
 }

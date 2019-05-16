@@ -10,6 +10,7 @@ it is still incomplete and contains some errors, undocumented methods and proper
 * Receive details of investor account (wallet, bank account, etc.)
 * Buying loan participations on primary and secodary market
 * Selling participations on secondary market
+* Loanbook
 ### Usage
 * Create ZonkyClient and pass account informations  
 ```var client = new ZonkyClient("user", "password", false); // last parameter enable trading```

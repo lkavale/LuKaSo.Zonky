@@ -62,8 +62,7 @@ namespace LuKaSo.Zonky.Models.Markets
 
         /// <summary>
         /// Rating of the loan
-        /// TODO:
-        /// Remove after Zonky rating update
+        /// Removed after Zonky rating update
         /// </summary>
         /*
         [JsonProperty("rating", Required = Required.Always)]

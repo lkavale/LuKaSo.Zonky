@@ -13,20 +13,20 @@ namespace LuKaSo.Zonky.Tests.Production.Api
     [TestClass]
     public class InvestorTests
     {
-        private ZonkyApi _zonkyClient;
+        private ZonkyApi _zonkyApi;
         private AuthorizationTokenProvider _tokenProvider;
 
         [TestInitialize]
         public void Init()
         {
-            _zonkyClient = new ZonkyApi(new HttpClient());
-            _tokenProvider = new AuthorizationTokenProvider(_zonkyClient);
+            _zonkyApi = new ZonkyApi(new HttpClient());
+            _tokenProvider = new AuthorizationTokenProvider(_zonkyApi);
         }
 
         [TestMethod]
         public void GetWalletAsyncOk()
         {
-            var wallet = _zonkyClient.GetWalletAsync(_tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
+            var wallet = _zonkyApi.GetWalletAsync(_tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
 
             Assert.IsNotNull(wallet.BankAccount);
             Assert.IsTrue(wallet.Balance > 0);
@@ -36,14 +36,15 @@ namespace LuKaSo.Zonky.Tests.Production.Api
         public void GetWalletAsyncNotAuthorized()
         {
             var token = new AuthorizationToken() { AccessToken = Guid.NewGuid() };
-            Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => _zonkyClient.GetWalletAsync(token, CancellationToken.None));
+
+            Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => _zonkyApi.GetWalletAsync(token, CancellationToken.None));
         }
 
         [TestMethod]
         public void GetNotificationsAsyncOk()
         {
             var size = 100;
-            var notifications = _zonkyClient.GetNotificationsAsync(size, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
+            var notifications = _zonkyApi.GetNotificationsAsync(size, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
 
             Assert.AreEqual(size, notifications.Count());
         }
@@ -52,13 +53,14 @@ namespace LuKaSo.Zonky.Tests.Production.Api
         public void GetNotificationsAsyncNotAuthorized()
         {
             var token = new AuthorizationToken() { AccessToken = Guid.NewGuid() };
-            Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => _zonkyClient.GetNotificationsAsync(5, token, CancellationToken.None));
+
+            Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => _zonkyApi.GetNotificationsAsync(5, token, CancellationToken.None));
         }
 
         [TestMethod]
         public void GetWalletTransactionsAsyncOk()
         {
-            var walletTransations = _zonkyClient.GetWalletTransactionsAsync(_tokenProvider.GetToken(), null, CancellationToken.None).GetAwaiter().GetResult();
+            var walletTransations = _zonkyApi.GetWalletTransactionsAsync(_tokenProvider.GetToken(), null, CancellationToken.None).GetAwaiter().GetResult();
 
             Assert.IsTrue(walletTransations.Count() > 1000);
         }
@@ -70,7 +72,7 @@ namespace LuKaSo.Zonky.Tests.Production.Api
             var filter = new FilterOptions();
             filter.Add("transaction.transactionDate__gte", $"{date.Year}-{date.Month}-{date.Day}");
 
-            var walletTransations = _zonkyClient.GetWalletTransactionsAsync(_tokenProvider.GetToken(), filter, CancellationToken.None).GetAwaiter().GetResult();
+            var walletTransations = _zonkyApi.GetWalletTransactionsAsync(_tokenProvider.GetToken(), filter, CancellationToken.None).GetAwaiter().GetResult();
 
             Assert.IsTrue(walletTransations.Count() > 50);
         }
@@ -79,20 +81,24 @@ namespace LuKaSo.Zonky.Tests.Production.Api
         public void GetWalletTransactionsAsyncNotAuthorized()
         {
             var token = new AuthorizationToken() { AccessToken = Guid.NewGuid() };
-            Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => _zonkyClient.GetWalletTransactionsAsync(token, null, CancellationToken.None));
+
+            Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => _zonkyApi.GetWalletTransactionsAsync(token, null, CancellationToken.None));
         }
 
         [TestMethod]
         public void GetBlockedAmountAsyncOk()
         {
-            var blockedAmounts = _zonkyClient.GetBlockedAmountAsync(_tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
+            var blockedAmounts = _zonkyApi.GetBlockedAmountAsync(_tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
+
+            Assert.IsNotNull(blockedAmounts);
         }
 
         [TestMethod]
         public void GetBlockedAmountAsyncNotAuthorized()
         {
             var token = new AuthorizationToken() { AccessToken = Guid.NewGuid() };
-            Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => _zonkyClient.GetBlockedAmountAsync(token, CancellationToken.None));
+
+            Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => _zonkyApi.GetBlockedAmountAsync(token, CancellationToken.None));
         }
     }
 }

@@ -173,9 +173,8 @@ namespace LuKaSo.Zonky.Models.Loans
         public decimal RevenueRate { get; set; }
 
         /// <summary>
-        /// TODO:
-        /// Calc at get, exclude from API
         /// Current investment rate
+        /// It also could be calculated
         /// </summary>
         [JsonProperty("investmentRate", Required = Required.Always)]
         public decimal InvestmentRate { get; set; }

@@ -8,19 +8,19 @@ namespace LuKaSo.Zonky.Tests.Mock.Api
     [TestClass]
     public class MarketplaceTests
     {
-        private ZonkyApi _zonkyClient;
+        private ZonkyApi _zonkyApi;
 
         [TestInitialize]
         public void Init()
         {
-            _zonkyClient = ZonkyApiFactory.Create();
+            _zonkyApi = ZonkyApiFactory.Create();
         }
 
         [TestMethod]
         public void GetPrimaryMarketplaceOk()
         {
             var pageSize = 10;
-            var loans = _zonkyClient.GetPrimaryMarketPlaceAsync(0, pageSize, null, CancellationToken.None).GetAwaiter().GetResult();
+            var loans = _zonkyApi.GetPrimaryMarketPlaceAsync(0, pageSize, null, CancellationToken.None).GetAwaiter().GetResult();
 
             Assert.AreEqual(1, loans.Count());
 
@@ -34,7 +34,10 @@ namespace LuKaSo.Zonky.Tests.Mock.Api
         public void GetSecondaryMarketplaceOk()
         {
             var pageSize = 10;
-            var loans = _zonkyClient.GetSecondaryMarketplaceAsync(0, pageSize, null, CancellationToken.None).GetAwaiter().GetResult();
+            var loans = _zonkyApi.GetSecondaryMarketplaceAsync(0, pageSize, null, CancellationToken.None).GetAwaiter().GetResult();
+
+            // Mock API returns no data
+            Assert.IsNull(loans);
         }
     }
 }

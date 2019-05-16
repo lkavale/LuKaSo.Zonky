@@ -14,6 +14,7 @@ namespace LuKaSo.Zonky.Tests.Production.Api
             _zonkyApi = zonkyApi;
             _zonkyLogin = new SecretsJsonReader().Read().LoginOk;
         }
+
         public AuthorizationToken GetToken()
         {
             return _zonkyApi.GetTokenExchangePasswordAsync(_zonkyLogin, CancellationToken.None).GetAwaiter().GetResult();

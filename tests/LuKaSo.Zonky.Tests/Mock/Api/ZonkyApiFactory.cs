@@ -4,7 +4,7 @@ using System.Net.Http;
 
 namespace LuKaSo.Zonky.Tests.Mock.Api
 {
-    public class ZonkyApiFactory
+    internal static class ZonkyApiFactory
     {
         public static ZonkyApi Create()
         {

@@ -4,6 +4,7 @@ using LuKaSo.Zonky.Models.Login;
 using LuKaSo.Zonky.Models.Markets;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Linq;
 using System.Threading;
 
 namespace LuKaSo.Zonky.Tests.Mock.Api
@@ -11,28 +12,32 @@ namespace LuKaSo.Zonky.Tests.Mock.Api
     [TestClass]
     public class InvestmentsTests
     {
-        private ZonkyApi _zonkyClient;
+        private ZonkyApi _zonkyApi;
         private AuthorizationTokenProvider _tokenProvider;
 
         [TestInitialize]
         public void Init()
         {
-            _zonkyClient = ZonkyApiFactory.Create();
-            _tokenProvider = new AuthorizationTokenProvider(_zonkyClient);
+            _zonkyApi = ZonkyApiFactory.Create();
+            _tokenProvider = new AuthorizationTokenProvider(_zonkyApi);
         }
 
         [TestMethod]
         public void GetInvestmentsOk()
         {
             var pageSize = 10;
-            var investments = _zonkyClient.GetInvestmentsAsync(0, pageSize, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
+            var investments = _zonkyApi.GetInvestmentsAsync(0, pageSize, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
+
+            // Mock API returns no data
+            Assert.IsNull(investments);
         }
 
         [TestMethod]
         public void GetInvestmentsNotAuthorized()
         {
             var token = new AuthorizationToken() { AccessToken = Guid.NewGuid() };
-            Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => _zonkyClient.GetInvestmentsAsync(0, 10, token, CancellationToken.None));
+
+            Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => _zonkyApi.GetInvestmentsAsync(0, 10, token, CancellationToken.None));
         }
 
         [TestMethod]
@@ -45,7 +50,7 @@ namespace LuKaSo.Zonky.Tests.Mock.Api
                 CaptchaResponse = "..."
             };
 
-            _zonkyClient.CreatePrimaryMarketInvestmentAsync(investmentRequest, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
+            _zonkyApi.CreatePrimaryMarketInvestmentAsync(investmentRequest, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
         }
 
         [TestMethod]
@@ -59,7 +64,7 @@ namespace LuKaSo.Zonky.Tests.Mock.Api
             };
 
             var token = new AuthorizationToken() { AccessToken = Guid.NewGuid() };
-            _zonkyClient.CreatePrimaryMarketInvestmentAsync(investmentRequest, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
+            _zonkyApi.CreatePrimaryMarketInvestmentAsync(investmentRequest, token, CancellationToken.None).GetAwaiter().GetResult();
         }
 
         [TestMethod]
@@ -70,7 +75,7 @@ namespace LuKaSo.Zonky.Tests.Mock.Api
                 Amount = 200
             };
 
-            _zonkyClient.IncreasePrimaryMarketInvestmentAsync(1, investmentRequest, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
+            _zonkyApi.IncreasePrimaryMarketInvestmentAsync(1, investmentRequest, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
         }
 
         [TestMethod]
@@ -82,7 +87,7 @@ namespace LuKaSo.Zonky.Tests.Mock.Api
             };
 
             var token = new AuthorizationToken() { AccessToken = Guid.NewGuid() };
-            _zonkyClient.IncreasePrimaryMarketInvestmentAsync(1, investmentRequest, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
+            _zonkyApi.IncreasePrimaryMarketInvestmentAsync(1, investmentRequest, token, CancellationToken.None).GetAwaiter().GetResult();
         }
 
         [TestMethod]
@@ -95,7 +100,7 @@ namespace LuKaSo.Zonky.Tests.Mock.Api
                 FeeAmount = 21.98M
             };
 
-            _zonkyClient.OfferInvestmentOnSecondaryMarketAsync(request, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
+            _zonkyApi.OfferInvestmentOnSecondaryMarketAsync(request, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
         }
 
         [TestMethod]
@@ -109,20 +114,19 @@ namespace LuKaSo.Zonky.Tests.Mock.Api
             };
 
             var token = new AuthorizationToken() { AccessToken = Guid.NewGuid() };
-            _zonkyClient.OfferInvestmentOnSecondaryMarketAsync(request, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
+            _zonkyApi.OfferInvestmentOnSecondaryMarketAsync(request, token, CancellationToken.None).GetAwaiter().GetResult();
         }
 
         [TestMethod]
         public void CancelOfferInvestmentOnSecondaryMarketOk()
         {
-            _zonkyClient.CancelOfferInvestmentOnSecondaryMarketAsync(123, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
+            _zonkyApi.CancelOfferInvestmentOnSecondaryMarketAsync(123, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
         }
 
         [TestMethod]
         public void CancelOfferInvestmentOnSecondaryMarketNotAuthorized()
         {
-            var token = new AuthorizationToken() { AccessToken = Guid.NewGuid() };
-            _zonkyClient.CancelOfferInvestmentOnSecondaryMarketAsync(123, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
+            _zonkyApi.CancelOfferInvestmentOnSecondaryMarketAsync(123, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
         }
 
         [TestMethod]
@@ -133,7 +137,7 @@ namespace LuKaSo.Zonky.Tests.Mock.Api
                 Amount = 21.98M
             };
 
-            _zonkyClient.BuySecondaryMarketInvestmentAsync(1, request, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
+            _zonkyApi.BuySecondaryMarketInvestmentAsync(1, request, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
         }
 
         [TestMethod]
@@ -145,7 +149,7 @@ namespace LuKaSo.Zonky.Tests.Mock.Api
             };
 
             var token = new AuthorizationToken() { AccessToken = Guid.NewGuid() };
-            _zonkyClient.BuySecondaryMarketInvestmentAsync(1, request, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
+            _zonkyApi.BuySecondaryMarketInvestmentAsync(1, request, token, CancellationToken.None).GetAwaiter().GetResult();
         }
     }
 }

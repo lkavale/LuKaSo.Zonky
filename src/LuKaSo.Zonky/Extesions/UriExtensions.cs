@@ -6,7 +6,7 @@ using System.Web;
 
 namespace LuKaSo.Zonky.Extesions
 {
-    public static class UriExtensions
+    internal static class UriExtensions
     {
         /// <summary>
         /// Append relative path to base address

@@ -14,6 +14,7 @@ namespace LuKaSo.Zonky.Tests.Mock.Api
             _zonkyApi = zonkyApi;
             _zonkyLogin = new User("test", "test");
         }
+
         public AuthorizationToken GetToken()
         {
             return _zonkyApi.GetTokenExchangePasswordAsync(_zonkyLogin, CancellationToken.None).GetAwaiter().GetResult();

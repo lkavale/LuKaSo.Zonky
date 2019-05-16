@@ -12,21 +12,21 @@ namespace LuKaSo.Zonky.Tests.Production.Api
     [TestClass]
     public class InvestmentsTests
     {
-        private ZonkyApi _zonkyClient;
+        private ZonkyApi _zonkyApi;
         private AuthorizationTokenProvider _tokenProvider;
 
         [TestInitialize]
         public void Init()
         {
-            _zonkyClient = new ZonkyApi(new HttpClient());
-            _tokenProvider = new AuthorizationTokenProvider(_zonkyClient);
+            _zonkyApi = new ZonkyApi(new HttpClient());
+            _tokenProvider = new AuthorizationTokenProvider(_zonkyApi);
         }
 
         [TestMethod]
         public void GetInvestmentsOk()
         {
             var pageSize = 10;
-            var investments = _zonkyClient.GetInvestmentsAsync(0, pageSize, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
+            var investments = _zonkyApi.GetInvestmentsAsync(0, pageSize, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
 
             Assert.AreEqual(pageSize, investments.Count());
         }
@@ -35,14 +35,15 @@ namespace LuKaSo.Zonky.Tests.Production.Api
         public void GetInvestmentsNotAuthorized()
         {
             var token = new AuthorizationToken() { AccessToken = Guid.NewGuid() };
-            Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => _zonkyClient.GetInvestmentsAsync(0, 10, token, CancellationToken.None));
+
+            Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => _zonkyApi.GetInvestmentsAsync(0, 10, token, CancellationToken.None));
         }
 
         [TestMethod]
         public void GetInvestmentEventsOk()
         {
             var loanId = 115665;
-            var investmentEvents = _zonkyClient.GetInvestmentEventsAsync(loanId, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
+            var investmentEvents = _zonkyApi.GetInvestmentEventsAsync(loanId, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
 
             Assert.AreEqual(investmentEvents.Count(), investmentEvents.Count(e => e.LoanId == loanId));
         }
@@ -65,7 +66,8 @@ namespace LuKaSo.Zonky.Tests.Production.Api
         public void GetInvestmentEventsNotAuthorized()
         {
             var token = new AuthorizationToken() { AccessToken = Guid.NewGuid() };
-            Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => _zonkyClient.GetInvestmentEventsAsync(115665, token, CancellationToken.None));
+
+            Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => _zonkyApi.GetInvestmentEventsAsync(115665, token, CancellationToken.None));
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using LuKaSo.Zonky.Models;
+using LuKaSo.Zonky.Models.Files;
 using LuKaSo.Zonky.Models.Investments;
 using LuKaSo.Zonky.Models.Investor;
 using LuKaSo.Zonky.Models.Loans;
@@ -175,5 +176,12 @@ namespace LuKaSo.Zonky.Client
         /// <param name="ct"></param>
         /// <returns></returns>
         Task CancelOfferInvestmentOnSecondaryMarketAsync(int offerId, CancellationToken ct = default(CancellationToken));
+
+        /// <summary>
+        /// Get loanbook data
+        /// </summary>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        Task<IEnumerable<LoanbookItem>> GetLoanbookAsync(CancellationToken ct = default(CancellationToken));
     }
 }

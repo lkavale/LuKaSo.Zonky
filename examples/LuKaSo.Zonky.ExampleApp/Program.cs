@@ -4,11 +4,11 @@ using System;
 
 namespace LuKaSo.Zonky.ExampleApp
 {
-    internal class Program
+    internal static class Program
     {
         private static void Main(string[] args)
         {
-            var log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
             var reader = new SecretsJsonReader();
             var client = new ZonkyClient(reader.Read(), false);

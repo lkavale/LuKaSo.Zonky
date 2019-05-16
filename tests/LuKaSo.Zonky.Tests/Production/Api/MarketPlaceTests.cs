@@ -10,19 +10,19 @@ namespace LuKaSo.Zonky.Tests.Production.Api
     [TestClass]
     public class MarketplaceTests
     {
-        private ZonkyApi _zonkyClient;
+        private ZonkyApi _zonkyApi;
 
         [TestInitialize]
         public void Init()
         {
-            _zonkyClient = new ZonkyApi(new HttpClient());
+            _zonkyApi = new ZonkyApi(new HttpClient());
         }
 
         [TestMethod]
         public void GetPrimaryMarketplaceOk()
         {
             var pageSize = 10;
-            var loans = _zonkyClient.GetPrimaryMarketPlaceAsync(0, pageSize, null, CancellationToken.None).GetAwaiter().GetResult();
+            var loans = _zonkyApi.GetPrimaryMarketPlaceAsync(0, pageSize, null, CancellationToken.None).GetAwaiter().GetResult();
 
             Assert.AreEqual(pageSize, loans.Count());
         }
@@ -34,8 +34,8 @@ namespace LuKaSo.Zonky.Tests.Production.Api
             var filter = new FilterOptions();
             filter.Add("nonReservedRemainingInvestment__gt", "0");
 
-            var loansAll = _zonkyClient.GetPrimaryMarketPlaceAsync(0, pageSize, null, CancellationToken.None).GetAwaiter().GetResult();
-            var loans = _zonkyClient.GetPrimaryMarketPlaceAsync(0, pageSize, filter, CancellationToken.None).GetAwaiter().GetResult();
+            var loansAll = _zonkyApi.GetPrimaryMarketPlaceAsync(0, pageSize, null, CancellationToken.None).GetAwaiter().GetResult();
+            var loans = _zonkyApi.GetPrimaryMarketPlaceAsync(0, pageSize, filter, CancellationToken.None).GetAwaiter().GetResult();
 
             Assert.AreEqual(pageSize, loansAll.Count());
             Assert.AreNotEqual(pageSize, loans.Count());
@@ -47,7 +47,9 @@ namespace LuKaSo.Zonky.Tests.Production.Api
         public void GetSecondaryMarketplaceOk()
         {
             var pageSize = 10;
-            var loans = _zonkyClient.GetSecondaryMarketplaceAsync(0, pageSize, null, CancellationToken.None).GetAwaiter().GetResult();
+            var loans = _zonkyApi.GetSecondaryMarketplaceAsync(0, pageSize, null, CancellationToken.None).GetAwaiter().GetResult();
+
+            Assert.IsNotNull(loans);
         }
     }
 }

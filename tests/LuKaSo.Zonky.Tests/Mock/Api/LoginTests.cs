@@ -10,14 +10,14 @@ namespace LuKaSo.Zonky.Tests.Mock.Api
     [TestClass]
     public class LoginTests
     {
-        private ZonkyApi _zonkyClient;
+        private ZonkyApi _zonkyApi;
         private User _zonkyLoginOk;
         private User _zonkyLoginWrong;
 
         [TestInitialize]
         public void Init()
         {
-            _zonkyClient = ZonkyApiFactory.Create();
+            _zonkyApi = ZonkyApiFactory.Create();
             _zonkyLoginOk = new User("test", "test");
             _zonkyLoginWrong = new User("tset", "tset");
         }
@@ -25,7 +25,7 @@ namespace LuKaSo.Zonky.Tests.Mock.Api
         [TestMethod]
         public void LoginOk()
         {
-            var token = _zonkyClient.GetTokenExchangePasswordAsync(_zonkyLoginOk, CancellationToken.None).GetAwaiter().GetResult();
+            var token = _zonkyApi.GetTokenExchangePasswordAsync(_zonkyLoginOk, CancellationToken.None).GetAwaiter().GetResult();
 
             Assert.AreEqual(new Guid("c5f6b996-47aa-4c59-8fc7-8a03fcf5da9d"), token.AccessToken);
             Assert.AreEqual(AuthorizationTokenType.bearer, token.TokenType);
@@ -37,14 +37,14 @@ namespace LuKaSo.Zonky.Tests.Mock.Api
         [TestMethod]
         public void LoginBad()
         {
-            Assert.ThrowsExceptionAsync<BadLoginException>(() => _zonkyClient.GetTokenExchangePasswordAsync(_zonkyLoginWrong, CancellationToken.None));
+            Assert.ThrowsExceptionAsync<BadLoginException>(() => _zonkyApi.GetTokenExchangePasswordAsync(_zonkyLoginWrong, CancellationToken.None));
         }
 
         [TestMethod]
         public void RefreshTokenOk()
         {
-            var tokenLogin = _zonkyClient.GetTokenExchangePasswordAsync(_zonkyLoginOk, CancellationToken.None).GetAwaiter().GetResult();
-            var tokenRefreshed = _zonkyClient.GetTokenExchangeRefreshTokenAsync(tokenLogin, CancellationToken.None).GetAwaiter().GetResult();
+            var tokenLogin = _zonkyApi.GetTokenExchangePasswordAsync(_zonkyLoginOk, CancellationToken.None).GetAwaiter().GetResult();
+            var tokenRefreshed = _zonkyApi.GetTokenExchangeRefreshTokenAsync(tokenLogin, CancellationToken.None).GetAwaiter().GetResult();
 
             Assert.AreEqual(new Guid("c5f6b996-47aa-4c59-8fc7-8a03fcf5da9d"), tokenRefreshed.AccessToken);
             Assert.AreEqual(AuthorizationTokenType.bearer, tokenRefreshed.TokenType);
@@ -57,13 +57,14 @@ namespace LuKaSo.Zonky.Tests.Mock.Api
         public void RefreshTokenBad()
         {
             AuthorizationToken token = new AuthorizationToken() { RefreshToken = Guid.NewGuid() };
-            Assert.ThrowsExceptionAsync<BadRefreshTokenException>(() => _zonkyClient.GetTokenExchangeRefreshTokenAsync(token, CancellationToken.None));
+
+            Assert.ThrowsExceptionAsync<BadRefreshTokenException>(() => _zonkyApi.GetTokenExchangeRefreshTokenAsync(token, CancellationToken.None));
         }
 
         [TestMethod]
         public void RefreshTokenMissing()
         {
-            Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => _zonkyClient.GetTokenExchangeRefreshTokenAsync(null, CancellationToken.None));
+            Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => _zonkyApi.GetTokenExchangeRefreshTokenAsync(null, CancellationToken.None));
         }
     }
 }

@@ -8,7 +8,7 @@ namespace LuKaSo.Zonky.Converters
     /// JSON converter parsing formated numbers to decimal
     /// For example string 7 256,75 to decimal 7256.75
     /// </summary>
-    public class FormatedCurrencyConverter : JsonConverter
+    internal class FormatedCurrencyConverter : JsonConverter
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
