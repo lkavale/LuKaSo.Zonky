@@ -24,6 +24,7 @@ namespace LuKaSo.Zonky.Tests.Mock.Api
         [TestMethod]
         public void GetLoanOk()
         {
+#warning In the result in insuranceHistory field is bad insurance history item value
             var loan = _zonkyApi.GetLoanAsync(436639, CancellationToken.None).GetAwaiter().GetResult();
 
             Assert.AreEqual(1, loan.Id);

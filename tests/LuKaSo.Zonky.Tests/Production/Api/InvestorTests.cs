@@ -44,7 +44,7 @@ namespace LuKaSo.Zonky.Tests.Production.Api
         public void GetNotificationsAsyncOk()
         {
             var size = 100;
-            var notifications = _zonkyApi.GetNotificationsAsync(size, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
+            var notifications = _zonkyApi.GetNotificationsAsync(0, size, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
 
             Assert.AreEqual(size, notifications.Count());
         }
@@ -54,7 +54,7 @@ namespace LuKaSo.Zonky.Tests.Production.Api
         {
             var token = new AuthorizationToken() { AccessToken = Guid.NewGuid() };
 
-            Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => _zonkyApi.GetNotificationsAsync(5, token, CancellationToken.None));
+            Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => _zonkyApi.GetNotificationsAsync(0, 5, token, CancellationToken.None));
         }
 
         [TestMethod]

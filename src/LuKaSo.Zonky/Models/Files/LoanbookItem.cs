@@ -8,99 +8,105 @@ namespace LuKaSo.Zonky.Models.Files
     public class LoanbookItem
     {
         [SpreadsheetHorizontalCoordinate("A")]
-        public string Id { get; set; }
+        public DateTime ReportDate { get; set; }
 
         [SpreadsheetHorizontalCoordinate("B")]
-        public string Region { get; set; }
+        public string Id { get; set; }
 
         [SpreadsheetHorizontalCoordinate("C")]
-        public string MainIncomeType { get; set; }
+        public string Region { get; set; }
 
         [SpreadsheetHorizontalCoordinate("D")]
-        public string LoanPurpose { get; set; }
+        public string MainIncomeType { get; set; }
 
         [SpreadsheetHorizontalCoordinate("E")]
-        public double InterestRate { get; set; }
+        public bool HasOtherIncome { get; set; }
 
         [SpreadsheetHorizontalCoordinate("F")]
-        public decimal Amount { get; set; }
+        public string LoanPurpose { get; set; }
 
         [SpreadsheetHorizontalCoordinate("G")]
-        public DateTime LoanIssuedDate { get; set; }
+        public double InterestRate { get; set; }
 
         [SpreadsheetHorizontalCoordinate("H")]
-        public int LoanOrder { get; set; }
+        public decimal Amount { get; set; }
 
         [SpreadsheetHorizontalCoordinate("I")]
-        public bool Insured { get; set; }
+        public DateTime LoanIssuedDate { get; set; }
 
         [SpreadsheetHorizontalCoordinate("J")]
-        public string LoanStatus { get; set; }
+        public int LoanOrder { get; set; }
 
         [SpreadsheetHorizontalCoordinate("K")]
-        public decimal? RepaidEarly { get; set; }
+        public bool Insured { get; set; }
 
         [SpreadsheetHorizontalCoordinate("L")]
-        public int? PostponedRepayments { get; set; }
+        public string LoanStatus { get; set; }
 
         [SpreadsheetHorizontalCoordinate("M")]
-        public int CurrentDelay { get; set; }
+        public decimal? RepaidEarly { get; set; }
 
         [SpreadsheetHorizontalCoordinate("N")]
-        public decimal CurrentAmountDelayed { get; set; }
+        public int? PostponedRepayments { get; set; }
 
         [SpreadsheetHorizontalCoordinate("O")]
-        public DateTime? LastDelinquencyDate { get; set; }
+        public int CurrentDelay { get; set; }
 
         [SpreadsheetHorizontalCoordinate("P")]
-        public int? MaximumDelay { get; set; }
+        public decimal CurrentAmountDelayed { get; set; }
 
         [SpreadsheetHorizontalCoordinate("Q")]
-        public int DelayedRepayments { get; set; }
+        public DateTime? LastDeliquencyDate { get; set; }
 
         [SpreadsheetHorizontalCoordinate("R")]
-        public decimal? MaximumDelayedAmount { get; set; }
+        public int? MaximumDelay { get; set; }
 
         [SpreadsheetHorizontalCoordinate("S")]
-        public bool Overpaid { get; set; }
+        public int DelayedRepayments { get; set; }
 
         [SpreadsheetHorizontalCoordinate("T")]
-        public int OriginalRepaymentCount { get; set; }
+        public decimal? MaximumDelayedAmount { get; set; }
 
         [SpreadsheetHorizontalCoordinate("U")]
-        public int CurrentRepaymentCount { get; set; }
+        public bool Overpaid { get; set; }
 
         [SpreadsheetHorizontalCoordinate("V")]
-        public int RemainingRepaymentCount { get; set; }
+        public int OriginalRepaymentCount { get; set; }
 
         [SpreadsheetHorizontalCoordinate("W")]
-        public double LostPercentage { get; set; }
+        public int CurrentRepaymentCount { get; set; }
 
         [SpreadsheetHorizontalCoordinate("X")]
-        public DateTime? LastRepayment { get; set; }
+        public int RemainingRepaymentCount { get; set; }
 
         [SpreadsheetHorizontalCoordinate("Y")]
-        public decimal RepaidPrincipal { get; set; }
+        public double LostPercentage { get; set; }
 
         [SpreadsheetHorizontalCoordinate("Z")]
-        public decimal RepaidInterest { get; set; }
+        public DateTime? LastRepayment { get; set; }
 
         [SpreadsheetHorizontalCoordinate("AA")]
-        public decimal RepaidPenalty { get; set; }
+        public decimal RepaidPrincipal { get; set; }
 
         [SpreadsheetHorizontalCoordinate("AB")]
-        public decimal RemainingPrincipal { get; set; }
+        public decimal RepaidInterest { get; set; }
 
         [SpreadsheetHorizontalCoordinate("AC")]
-        public decimal RemainingInterest { get; set; }
+        public decimal RepaidPenalty { get; set; }
 
         [SpreadsheetHorizontalCoordinate("AD")]
-        public bool? LoanerIsInvestor { get; set; }
+        public decimal RemainingPrincipal { get; set; }
 
         [SpreadsheetHorizontalCoordinate("AE")]
-        public bool HasStory { get; set; }
+        public decimal RemainingInterest { get; set; }
 
         [SpreadsheetHorizontalCoordinate("AF")]
+        public bool? LoanerIsInvestor { get; set; }
+
+        [SpreadsheetHorizontalCoordinate("AG")]
+        public bool HasStory { get; set; }
+
+        [SpreadsheetHorizontalCoordinate("AH")]
         public int Investorcount { get; set; }
     }
 }

@@ -41,7 +41,7 @@ namespace LuKaSo.Zonky.Tests.Mock.Api
         [TestMethod]
         public void GetNotificationsAsyncOk()
         {
-            var notifications = _zonkyApi.GetNotificationsAsync(10, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
+            var notifications = _zonkyApi.GetNotificationsAsync(0, 10, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
 
             Assert.AreEqual(2, notifications.Count());
         }
@@ -51,7 +51,7 @@ namespace LuKaSo.Zonky.Tests.Mock.Api
         {
             var token = new AuthorizationToken() { AccessToken = Guid.NewGuid() };
 
-            Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => _zonkyApi.GetNotificationsAsync(5, token, CancellationToken.None));
+            Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => _zonkyApi.GetNotificationsAsync(0, 5, token, CancellationToken.None));
         }
 
         [TestMethod]

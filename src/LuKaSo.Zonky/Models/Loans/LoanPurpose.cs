@@ -3,48 +3,48 @@
     public enum LoanPurpose
     {
         /// <summary>
-        /// Car
+        /// Auto moto
         /// </summary>
-        Car = 1,
-
+        AUTO_MOTO = 1,
+       
         /// <summary>
         /// Education
         /// </summary>
-        Education = 2,
-
+        EDUCATION = 2,
+        
         /// <summary>
         /// Traveling
         /// </summary>
-        Traveling = 3,
+        TRAVEL = 3,
 
         /// <summary>
         /// Electronics
         /// </summary>
-        Electronics = 4,
-
+        ELECTRONICS = 4,
+        
         /// <summary>
         /// Health
         /// </summary>
-        Health = 5,
-
+        HEALTH = 5,
+        
         /// <summary>
         /// Refinancing
         /// </summary>
-        Refinancing = 6,
+        REFINANCING = 6,
 
         /// <summary>
-        /// Home
+        /// Household
         /// </summary>
-        Home = 7,
+        HOUSEHOLD = 7,
 
         /// <summary>
-        /// Business
+        /// Own business project
         /// </summary>
-        Business = 8,
+        OWN_PROJECT = 8,
 
         /// <summary>
         /// Other
         /// </summary>
-        Other = 9
+        OTHER = 9
     }
 }

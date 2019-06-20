@@ -23,7 +23,8 @@ namespace LuKaSo.Zonky.Tests.Production.Api
         public void GetLoanbookUrlOkGetLoanbookFileAddressOk()
         {
             var file = _zonkyApi.GetLoanbookFileAddressAsync().GetAwaiter().GetResult();
-            var regex = new Regex("https://zonky.cz/page-assets/documents/loanbook[0-1][0-9]_20[1-2][0-9].xlsx");
+            // Loanbook document address before zonky changes https://zonky.cz/page-assets/documents/loanbook[0-1][0-9]_20[1-2][0-9].xlsx
+            var regex = new Regex("https://zonky.cz/page-assets/images/risk/loanbook/archiv_pujcek_[0-3][0-9]_[0-1][0-9]_20[1-2][0-9].xlsx");
 
             Assert.IsTrue(regex.IsMatch(file.ToString()));
         }

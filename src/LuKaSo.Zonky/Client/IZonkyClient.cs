@@ -89,10 +89,18 @@ namespace LuKaSo.Zonky.Client
         /// <summary>
         /// Get user notifications
         /// </summary>
-        /// <param name="size">Number of messages</param>
+        /// <param name="page">Page</param>
+        /// <param name="pageSize">Number of messages</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        Task<IEnumerable<Notification>> GetNotificationsAsync(int size, CancellationToken ct = default(CancellationToken));
+        Task<IEnumerable<Notification>> GetNotificationsAsync(int page, int pageSize, CancellationToken ct = default(CancellationToken));
+
+        /// <summary>
+        /// Get all user notifications
+        /// </summary>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        Task<IEnumerable<Notification>> GetAllNotificationsAsync(CancellationToken ct = default(CancellationToken));
 
         /// <summary>
         /// Get investor wallet transactions

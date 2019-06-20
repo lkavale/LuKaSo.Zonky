@@ -148,6 +148,12 @@
         /// <summary>
         ///  The instalment was paid
         /// </summary>
-        INSTALMENT_PAID
+        INSTALMENT_PAID,
+
+#warning Not listed in Zonky API
+        INVESTORS_INSTALMENTS_POSTPONED,
+
+#warning Not listed in Zonky API
+        INVESTORS_INSURANCE_CANCELLATION_ON_DPD
     }
 }

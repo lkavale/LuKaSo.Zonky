@@ -51,11 +51,12 @@ namespace LuKaSo.Zonky.Api
         /// <summary>
         /// Get user notifications
         /// </summary>
-        /// <param name="size">Number of messages</param>
+        /// <param name="page">Page</param>
+        /// <param name="pageSize">Number of messages</param>
         /// <param name="authorizationToken"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Notification>> GetNotificationsAsync(int size, AuthorizationToken authorizationToken, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<Notification>> GetNotificationsAsync(int page, int pageSize, AuthorizationToken authorizationToken, CancellationToken ct = default(CancellationToken))
         {
             CheckAuthorizationToken(authorizationToken);
 
@@ -65,7 +66,8 @@ namespace LuKaSo.Zonky.Api
                 request.Method = new HttpMethod("GET");
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
-                request.Headers.Add("x-size", size.ToString());
+                request.Headers.Add("x-page", page.ToString());
+                request.Headers.Add("x-size", pageSize.ToString());
 
                 using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
                 {

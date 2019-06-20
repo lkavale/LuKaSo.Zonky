@@ -78,9 +78,9 @@ namespace LuKaSo.Zonky.Models.Loans
         /// <summary>
         /// The code of the region
         /// </summary>
-        [JsonProperty("region", Required = Required.Always)]
+        [JsonProperty("region", Required = Required.Default)]
         [Required(AllowEmptyStrings = true)]
-        public Region Region { get; set; }
+        public Region? Region { get; set; }
 
         /// <summary>
         /// Interest rate for investors
@@ -168,9 +168,9 @@ namespace LuKaSo.Zonky.Models.Loans
         /// <summary>
         /// Revenue rate for investors (loan interest rate - investment fee)
         /// </summary>
-        [JsonProperty("revenueRate", Required = Required.Always)]
+        [JsonProperty("revenueRate", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
         [Required]
-        public decimal RevenueRate { get; set; }
+        public decimal? RevenueRate { get; set; }
 
         /// <summary>
         /// Current investment rate

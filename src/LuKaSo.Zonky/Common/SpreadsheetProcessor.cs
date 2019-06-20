@@ -136,6 +136,8 @@ namespace LuKaSo.Zonky.Common
                     return int.Parse(value);
                 case TypeCode.Int64:
                     return long.Parse(value);
+                case TypeCode.Double:
+                    return double.Parse(value);
                 default:
                     throw new NotSupportedException($"Not supported coversion from string value to {type.ToString()}.");
             }
