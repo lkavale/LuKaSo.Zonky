@@ -19,10 +19,10 @@ namespace LuKaSo.Zonky.Tests.Mock.Api
         [TestMethod]
         public void GetPrimaryMarketplaceOk()
         {
-            var pageSize = 10;
-
 #warning In the result in insuranceHistory field is bad insurance history item value, test temporarily disabled
             /*
+            var pageSize = 10;
+
             var loans = _zonkyApi.GetPrimaryMarketPlaceAsync(0, pageSize, null, CancellationToken.None).GetAwaiter().GetResult();
 
             Assert.AreEqual(1, loans.Count());

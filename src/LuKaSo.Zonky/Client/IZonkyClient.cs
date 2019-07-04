@@ -4,6 +4,7 @@ using LuKaSo.Zonky.Models.Investments;
 using LuKaSo.Zonky.Models.Investor;
 using LuKaSo.Zonky.Models.Loans;
 using LuKaSo.Zonky.Models.Markets;
+using LuKaSo.Zonky.Models.Overview;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -191,5 +192,12 @@ namespace LuKaSo.Zonky.Client
         /// <param name="ct"></param>
         /// <returns></returns>
         Task<IEnumerable<LoanbookItem>> GetLoanbookAsync(CancellationToken ct = default(CancellationToken));
+
+        /// <summary>
+        /// Get investor overview
+        /// </summary>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        Task<InvestorOverview> GetInvestorOverviewAsync(CancellationToken ct = default(CancellationToken));
     }
 }

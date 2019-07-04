@@ -1,6 +1,7 @@
 ﻿using LuKaSo.Zonky.Logging;
 using LuKaSo.Zonky.Models;
 using LuKaSo.Zonky.Models.Investor;
+using LuKaSo.Zonky.Models.Overview;
 using MoreLinq;
 using System.Collections.Generic;
 using System.Linq;
@@ -87,6 +88,16 @@ namespace LuKaSo.Zonky.Client
         public async Task<IEnumerable<BlockedAmount>> GetBlockedAmountAsync(CancellationToken ct = default(CancellationToken))
         {
             return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetBlockedAmountAsync(_authorizationToken, ct), ct).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Get investor overview
+        /// </summary>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        public async Task<InvestorOverview> GetInvestorOverviewAsync(CancellationToken ct = default(CancellationToken))
+        {
+            return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetInvestorOverviewAsync(_authorizationToken, ct), ct).ConfigureAwait(false);
         }
     }
 }

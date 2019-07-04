@@ -70,9 +70,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <None Include="packages.config" />
-    <None Include="secrets.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="secrets.json" />
     <None Include="secretsTemplate.json" />
   </ItemGroup>
   <ItemGroup>

@@ -100,5 +100,22 @@ namespace LuKaSo.Zonky.Tests.Production.Api
 
             Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => _zonkyApi.GetBlockedAmountAsync(token, CancellationToken.None));
         }
+
+        [TestMethod]
+        public void GetInvestorOverviewAsyncOk()
+        {
+            var investorOverview = _zonkyApi.GetInvestorOverviewAsync(_tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
+
+            Assert.IsNotNull(investorOverview);
+            Assert.IsTrue(investorOverview.OverallOverview.TotalInvestment > 0);
+        }
+
+        [TestMethod]
+        public void GetInvestorOverviewAsyncNotAuthorized()
+        {
+            var token = new AuthorizationToken() { AccessToken = Guid.NewGuid() };
+
+            Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => _zonkyApi.GetInvestorOverviewAsync(token, CancellationToken.None));
+        }
     }
 }
