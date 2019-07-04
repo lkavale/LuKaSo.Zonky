@@ -17,9 +17,9 @@ namespace LuKaSo.Zonky.Common
         /// <returns></returns>
         public IEnumerable<T> ProcessWorkbook(XSSFWorkbook workbook)
         {
-            int yIndexMin = 0, yIndexMax = 0;
+            int yIndexMin = 0;
 
-            var sheet = GetSheet(workbook);
+            var sheet = workbook.GetSheet("data");
             var verticalCoordinateAttribute = (SpreadsheetVerticalCoordinateAttribute)typeof(T)
                 .GetCustomAttributes(typeof(SpreadsheetVerticalCoordinateAttribute), false)
                 .FirstOrDefault();
@@ -28,9 +28,8 @@ namespace LuKaSo.Zonky.Common
             {
                 yIndexMin = verticalCoordinateAttribute.ValueIndex;
             }
-            yIndexMax = sheet.LastRowNum;
 
-            for (var y = yIndexMin; y <= yIndexMax; y++)
+            for (var y = yIndexMin; y <= sheet.LastRowNum; y++)
             {
                 var row = sheet.GetRow(y);
                 var item = new T();
