@@ -6,27 +6,27 @@
     public class CurrentOverview
     {
         /// <summary>
-        ///  Inverest left (interest to pay + dued)
+        ///  Active investment inverest left (interest to pay + dued)
         /// </summary>
         public decimal InterestLeft { get; set; }
 
         /// <summary>
-        /// Interest dued
+        /// Active investment interest dued
         /// </summary>
         public decimal InterestLeftDue { get; set; }
 
         /// <summary>
-        /// Interest to pay
+        /// Active investment interest to pay
         /// </summary>
         public decimal InterestLeftToPay { get; set; }
 
         /// <summary>
-        /// Interest paid
+        /// Active investment interest paid
         /// </summary>
         public decimal InterestPaid { get; set; }
 
         /// <summary>
-        /// Interest total (interest paid + left)
+        /// Active investment interest total (interest paid + left)
         /// </summary>
         public decimal InterestPlanned { get; set; }
 
@@ -36,32 +36,32 @@
         public decimal InvestmentCount { get; set; }
 
         /// <summary>
-        /// Penalty paid
+        /// Active investment penalty paid
         /// </summary>
         public decimal PenaltyPaid { get; set; }
 
         /// <summary>
-        /// Principal left (principal to pay + dued)
+        /// Active investment principal left (principal to pay + dued)
         /// </summary>
         public decimal PrincipalLeft { get; set; }
 
         /// <summary>
-        /// Principal dued
+        /// Active investment principal dued
         /// </summary>
         public decimal PrincipalLeftDue { get; set; }
 
         /// <summary>
-        /// Principal to pay
+        /// Active investment principal to pay
         /// </summary>
         public decimal PrincipalLeftToPay { get; set; }
 
         /// <summary>
-        /// Principal paid
+        /// Active investment principal paid
         /// </summary>
         public decimal PrincipalPaid { get; set; }
 
         /// <summary>
-        /// Total investment amount
+        /// Active investment amount
         /// </summary>
         public decimal TotalInvestment { get; set; }
     }

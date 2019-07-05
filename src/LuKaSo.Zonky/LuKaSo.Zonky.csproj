@@ -32,7 +32,6 @@
 
   <ItemGroup>
     <Folder Include="Attributes\" />
-    <Folder Include="Models\Overview\" />
   </ItemGroup>
 
 </Project>

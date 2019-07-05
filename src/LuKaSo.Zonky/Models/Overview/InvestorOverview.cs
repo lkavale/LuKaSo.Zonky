@@ -1,20 +1,17 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using System.Collections.ObjectModel;
 
 namespace LuKaSo.Zonky.Models.Overview
 {
+    /// <summary>
+    /// Investor overview
+    /// </summary>
     public class InvestorOverview
     {
         /// <summary>
         /// Overview generated
         /// </summary>
         public DateTime Timestamp { get; set; }
-
-        /// <summary>
-        /// Is investor superinvestor
-        /// </summary>
-        public bool IsSuperInvestor { get; set; }
 
         /// <summary>
         /// Current profitability
@@ -32,24 +29,40 @@ namespace LuKaSo.Zonky.Models.Overview
         public double Profitability { get; set; }
 
         /// <summary>
-        /// Current overview
+        /// Current investor overview
         /// </summary>
         public CurrentOverview CurrentOverview { get; set; }
 
+        /// <summary>
+        /// Overall investor overview
+        /// </summary>
         public OverallOverview OverallOverview { get; set; }
 
-        [JsonIgnore]
-        public object SuperInvestorOverview { get; set; }
+        /// <summary>
+        /// Super-investor overview
+        /// </summary>
+        public SuperInvestorOverview SuperInvestorOverview { get; set; }
 
-        [JsonIgnore]
-        public object OverallPortfolio { get; set; }
+        /// <summary>
+        /// Cashflow
+        /// </summary>
+        public Collection<CashflowMonthly> CashFlow { get; set; }
 
-        [JsonIgnore]
-        public List<object> CashFlow { get; set; }
+        /// <summary>
+        /// Expected payments
+        /// </summary>
+        public Collection<ExpectedPaymentsDaily> ExpectedPayments { get; set; }
 
-        [JsonIgnore]
-        public List<object> ExpectedPayments { get; set; }
+        /// <summary>
+        /// Overall portfolio
+        /// </summary>
+        //[Obsolete("Possible obsolote, API return all fields zero")]
+        //public object OverallPortfolio { get; set; }
 
-        public List<RiskPortfolio> RiskPortfolio { get; set; }
+        /// <summary>
+        /// Old zonky rating grouped portfolio overview
+        /// </summary>
+        //[Obsolete("Old zonky rating grouped portfolio overview")]
+        //public Collection<object> RiskPortfolio { get; set; }
     }
 }
