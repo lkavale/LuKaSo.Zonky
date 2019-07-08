@@ -54,15 +54,14 @@ namespace LuKaSo.Zonky.Models.Overview
         public Collection<ExpectedPaymentsDaily> ExpectedPayments { get; set; }
 
         /// <summary>
+        /// Zonky rating grouped portfolio overview
+        /// </summary>
+        public Collection<RiskPortfolio> RiskPortfolio { get; set; }
+
+        /// <summary>
         /// Overall portfolio
         /// </summary>
         //[Obsolete("Possible obsolote, API return all fields zero")]
         //public object OverallPortfolio { get; set; }
-
-        /// <summary>
-        /// Old zonky rating grouped portfolio overview
-        /// </summary>
-        //[Obsolete("Old zonky rating grouped portfolio overview")]
-        //public Collection<object> RiskPortfolio { get; set; }
     }
 }

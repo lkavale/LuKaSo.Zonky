@@ -64,12 +64,10 @@ namespace LuKaSo.Zonky.Models.Markets
         /// Rating of the loan
         /// Removed after Zonky rating update
         /// </summary>
-        /*
         [JsonProperty("rating", Required = Required.Always)]
         [Required(AllowEmptyStrings = true)]
         [JsonConverter(typeof(StringEnumConverter))]
         public LoanRating Rating { get; set; }
-        */
 
         /// <summary>
         /// Interest rate for investors

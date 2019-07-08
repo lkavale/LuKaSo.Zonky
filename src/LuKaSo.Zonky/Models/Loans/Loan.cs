@@ -70,10 +70,10 @@ namespace LuKaSo.Zonky.Models.Loans
         /// Rating is a risk category for the loan determined after scoring
         /// Removed after Zonky changed rating to loan rate
         /// </summary>
-        /*[JsonProperty("rating", Required = Required.Always)]
+        [JsonProperty("rating", Required = Required.Always)]
         [Required(AllowEmptyStrings = true)]
         [JsonConverter(typeof(StringEnumConverter))]
-        public LoanRating Rating { get; set; }*/
+        public LoanRating Rating { get; set; }
 
         /// <summary>
         /// The code of the region
