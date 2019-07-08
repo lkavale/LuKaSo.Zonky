@@ -72,12 +72,50 @@ namespace LuKaSo.Zonky.Client
         /// <summary>
         /// Get investor wallet transactions
         /// </summary>
+        /// <param name="page">Page</param>
+        /// <param name="pageSize">Number of messages</param>
         /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<WalletTransaction>> GetWalletTransactionsAsync(FilterOptions filter = null, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<WalletTransaction>> GetWalletTransactionsAsync(int page, int pageSize, FilterOptions filter = null, CancellationToken ct = default(CancellationToken))
         {
-            return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetWalletTransactionsAsync(_authorizationToken, filter, ct), ct).ConfigureAwait(false);
+            return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetWalletTransactionsAsync(page, pageSize, _authorizationToken, filter, ct), ct).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Get all investor wallet transactions
+        /// </summary>
+        /// <param name="filter">Filter options</param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<WalletTransaction>> GetAllWalletTransactionsAsync(FilterOptions filter = null, CancellationToken ct = default(CancellationToken))
+        {
+            _log.Debug($"Get all investor's wallet transactions request.");
+
+            var walletTransactions = new List<WalletTransaction>();
+            IEnumerable<WalletTransaction> walletTransactionsPage;
+            var page = 0;
+
+            // Useful for very large portfolio, avoiding timeouts and server errors
+            while ((walletTransactionsPage = await GetWalletTransactionsAsync(page, _maxLargePageSize, filter, ct).ConfigureAwait(false)).Any())
+            {
+                _log.Debug($"Get all investor's notifications page {page}, contains {walletTransactionsPage.Count()} notifications.");
+
+                ct.ThrowIfCancellationRequested();
+                walletTransactions.AddRange(walletTransactionsPage);
+                page++;
+
+                // If his page is not full, skip check of next page
+                if (walletTransactionsPage.Count() < _maxLargePageSize)
+                {
+                    break;
+                }
+            }
+
+            // Distinct result for situation when new item is added when querying data 
+            walletTransactions = walletTransactions.DistinctBy(n => n.Id).ToList();
+            _log.Debug($"Get all investor's wallet transactions {walletTransactions.Count} fill {page} pages.");
+            return walletTransactions;
         }
 
         /// <summary>

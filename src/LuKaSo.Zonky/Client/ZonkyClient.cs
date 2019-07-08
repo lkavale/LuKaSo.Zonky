@@ -12,10 +12,16 @@ namespace LuKaSo.Zonky.Client
     public partial class ZonkyClient : IZonkyClient
     {
         /// <summary>
-        /// Max paging size, requests for huge item amount (eg. primary market, large investment portfolio > 1000 participations, etc.)
+        /// Max paging size, requests for lower item amounts (lower thousands of items, eg. primary market, large investment portfolio > 1000 participations, etc.)
         /// failing on timeouts very often, so it is better to split the request to many 
         /// </summary>
         private const int _maxPageSize = 500;
+
+        /// <summary>
+        /// Max paging size, requests for huge item amounts (thousands of items, eg. wallet transactions, etc.)
+        /// failing on timeouts very often, so it is better to split the request to many 
+        /// </summary>
+        private const int _maxLargePageSize = 10000;
 
         /// <summary>
         /// User

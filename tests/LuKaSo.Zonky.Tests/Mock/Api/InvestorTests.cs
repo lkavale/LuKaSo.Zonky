@@ -57,7 +57,7 @@ namespace LuKaSo.Zonky.Tests.Mock.Api
         [TestMethod]
         public void GetWalletTransactionsAsyncOk()
         {
-            var walletTransations = _zonkyApi.GetWalletTransactionsAsync(_tokenProvider.GetToken(), null, CancellationToken.None).GetAwaiter().GetResult();
+            var walletTransations = _zonkyApi.GetWalletTransactionsAsync(0, 10, _tokenProvider.GetToken(), null, CancellationToken.None).GetAwaiter().GetResult();
 
             Assert.AreEqual(1, walletTransations.Count());
             Assert.AreEqual("Zonky01", walletTransations.First().NickName);
@@ -68,7 +68,7 @@ namespace LuKaSo.Zonky.Tests.Mock.Api
         {
             var token = new AuthorizationToken() { AccessToken = Guid.NewGuid() };
 
-            Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => _zonkyApi.GetWalletTransactionsAsync(token, null, CancellationToken.None));
+            Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => _zonkyApi.GetWalletTransactionsAsync(0, 1, token, null, CancellationToken.None));
         }
 
         [TestMethod]

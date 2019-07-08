@@ -60,9 +60,9 @@ namespace LuKaSo.Zonky.Tests.Production.Api
         [TestMethod]
         public void GetWalletTransactionsAsyncOk()
         {
-            var walletTransations = _zonkyApi.GetWalletTransactionsAsync(_tokenProvider.GetToken(), null, CancellationToken.None).GetAwaiter().GetResult();
+            var walletTransations = _zonkyApi.GetWalletTransactionsAsync(0, 1000, _tokenProvider.GetToken(), null, CancellationToken.None).GetAwaiter().GetResult();
 
-            Assert.IsTrue(walletTransations.Count() > 1000);
+            Assert.IsTrue(walletTransations.Count() == 1000);
         }
 
         [TestMethod]
@@ -72,7 +72,7 @@ namespace LuKaSo.Zonky.Tests.Production.Api
             var filter = new FilterOptions();
             filter.Add("transaction.transactionDate__gte", $"{date.Year}-{date.Month}-{date.Day}");
 
-            var walletTransations = _zonkyApi.GetWalletTransactionsAsync(_tokenProvider.GetToken(), filter, CancellationToken.None).GetAwaiter().GetResult();
+            var walletTransations = _zonkyApi.GetWalletTransactionsAsync(0, 1000, _tokenProvider.GetToken(), filter, CancellationToken.None).GetAwaiter().GetResult();
 
             Assert.IsTrue(walletTransations.Count() > 50);
         }
@@ -82,7 +82,7 @@ namespace LuKaSo.Zonky.Tests.Production.Api
         {
             var token = new AuthorizationToken() { AccessToken = Guid.NewGuid() };
 
-            Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => _zonkyApi.GetWalletTransactionsAsync(token, null, CancellationToken.None));
+            Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => _zonkyApi.GetWalletTransactionsAsync(0, 1000, token, null, CancellationToken.None));
         }
 
         [TestMethod]

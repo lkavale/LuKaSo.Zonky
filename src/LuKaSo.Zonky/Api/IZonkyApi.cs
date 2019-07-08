@@ -88,13 +88,15 @@ namespace LuKaSo.Zonky.Api
         Task<IEnumerable<Notification>> GetNotificationsAsync(int page, int pageSize, AuthorizationToken authorizationToken, CancellationToken ct = default(CancellationToken));
 
         /// <summary>
-        /// Get investor wallet transactions
+        /// Get investor's wallet transactions
         /// </summary>
+        /// <param name="page">Page</param>
+        /// <param name="pageSize">Number of messages</param>
         /// <param name="filter">Filter options</param>
         /// <param name="authorizationToken"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        Task<IEnumerable<WalletTransaction>> GetWalletTransactionsAsync(AuthorizationToken authorizationToken, FilterOptions filter = null, CancellationToken ct = default(CancellationToken));
+        Task<IEnumerable<WalletTransaction>> GetWalletTransactionsAsync(int page, int pageSize, AuthorizationToken authorizationToken, FilterOptions filter = null, CancellationToken ct = default(CancellationToken));
 
         /// <summary>
         /// Get investor blocked amount

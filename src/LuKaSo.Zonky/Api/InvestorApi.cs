@@ -90,11 +90,13 @@ namespace LuKaSo.Zonky.Api
         /// <summary>
         /// Get investor wallet transactions
         /// </summary>
+        /// <param name="page">Page</param>
+        /// <param name="pageSize">Number of messages</param>
         /// <param name="filter">Filter options</param>
         /// <param name="authorizationToken"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<WalletTransaction>> GetWalletTransactionsAsync(AuthorizationToken authorizationToken, FilterOptions filter = null, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<WalletTransaction>> GetWalletTransactionsAsync(int page, int pageSize, AuthorizationToken authorizationToken, FilterOptions filter = null, CancellationToken ct = default(CancellationToken))
         {
             CheckAuthorizationToken(authorizationToken);
 
@@ -104,7 +106,8 @@ namespace LuKaSo.Zonky.Api
                 request.Method = new HttpMethod("GET");
                 request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
-                request.Headers.Add("x-size", "2147483647");
+                request.Headers.Add("x-page", page.ToString());
+                request.Headers.Add("x-size", pageSize.ToString());
 
                 using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
                 {

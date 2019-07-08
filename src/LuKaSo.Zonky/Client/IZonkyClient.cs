@@ -106,10 +106,20 @@ namespace LuKaSo.Zonky.Client
         /// <summary>
         /// Get investor wallet transactions
         /// </summary>
+        /// <param name="page">Page</param>
+        /// <param name="pageSize">Number of messages</param>
         /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        Task<IEnumerable<WalletTransaction>> GetWalletTransactionsAsync(FilterOptions filter = null, CancellationToken ct = default(CancellationToken));
+        Task<IEnumerable<WalletTransaction>> GetWalletTransactionsAsync(int page, int pageSize, FilterOptions filter = null, CancellationToken ct = default(CancellationToken));
+
+        /// <summary>
+        /// Get all investor wallet transactions
+        /// </summary>
+        /// <param name="filter">Filter options</param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        Task<IEnumerable<WalletTransaction>> GetAllWalletTransactionsAsync(FilterOptions filter = null, CancellationToken ct = default(CancellationToken));
 
         /// <summary>
         /// Get investor blocked amount
