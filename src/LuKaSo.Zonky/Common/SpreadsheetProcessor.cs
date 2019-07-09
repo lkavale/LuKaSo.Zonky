@@ -19,7 +19,7 @@ namespace LuKaSo.Zonky.Common
         {
             int yIndexMin = 0;
 
-            var sheet = workbook.GetSheet("data");
+            var sheet = GetSheet(workbook);
             var verticalCoordinateAttribute = (SpreadsheetVerticalCoordinateAttribute)typeof(T)
                 .GetCustomAttributes(typeof(SpreadsheetVerticalCoordinateAttribute), false)
                 .FirstOrDefault();
