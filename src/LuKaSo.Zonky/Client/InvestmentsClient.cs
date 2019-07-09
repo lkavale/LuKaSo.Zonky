@@ -1,6 +1,6 @@
-﻿using LuKaSo.Zonky.Models.Investments;
+﻿using LuKaSo.Zonky.Logging;
+using LuKaSo.Zonky.Models.Investments;
 using LuKaSo.Zonky.Models.Markets;
-using LuKaSo.Zonky.Logging;
 using MoreLinq;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,30 +32,13 @@ namespace LuKaSo.Zonky.Client
         {
             _log.Debug($"Get all investor's participations request.");
 
-            var participations = new List<Investment>();
-            IEnumerable<Investment> participationsPage;
-            var page = 0;
+            // Get data
+            var data = await GetDataSplitRequestAsync<Investment>(_maxPageSize, (page, pageSize) => GetInvestmentsAsync(page, pageSize, ct), ct).ConfigureAwait(false);
 
-            // Useful for very large portfolio, avoiding timeouts and server errors
-            while ((participationsPage = await GetInvestmentsAsync(page, _maxPageSize, ct).ConfigureAwait(false)).Any())
-            {
-                _log.Debug($"Get all investor's participations page {page}, contains {participationsPage.Count()} participations.");
-
-                ct.ThrowIfCancellationRequested();
-                participations.AddRange(participationsPage);
-                page++;
-
-                // If his page is not full, skip check of next page
-                if (participationsPage.Count() < _maxPageSize)
-                {
-                    break;
-                }
-            }
-
-            // Distinct result for situation when new item is added when querying data 
-            participations = participations.DistinctBy(l => l.Id).ToList();
-            _log.Debug($"Get all investor's participations {participations.Count} fill {page} pages.");
-            return participations;
+            // Distinct result for situation when new item is added during querying data 
+            data = data.DistinctBy(l => l.Id).ToList();
+            _log.Debug($"Get all investor's participations, total {data.Count} items.");
+            return data;
         }
 
         /// <summary>

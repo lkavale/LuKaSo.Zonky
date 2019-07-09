@@ -43,30 +43,13 @@ namespace LuKaSo.Zonky.Client
         {
             _log.Debug($"Get all investor's notifications request.");
 
-            var notifications = new List<Notification>();
-            IEnumerable<Notification> notificationsPage;
-            var page = 0;
+            // Get data
+            var data = await GetDataSplitRequestAsync<Notification>(_maxPageSize, (page, pageSize) => GetNotificationsAsync(page, pageSize, ct), ct).ConfigureAwait(false);
 
-            // Useful for very large portfolio, avoiding timeouts and server errors
-            while ((notificationsPage = await GetNotificationsAsync(page, _maxPageSize, ct).ConfigureAwait(false)).Any())
-            {
-                _log.Debug($"Get all investor's notifications page {page}, contains {notificationsPage.Count()} notifications.");
-
-                ct.ThrowIfCancellationRequested();
-                notifications.AddRange(notificationsPage);
-                page++;
-
-                // If his page is not full, skip check of next page
-                if (notificationsPage.Count() < _maxPageSize)
-                {
-                    break;
-                }
-            }
-
-            // Distinct result for situation when new item is added when querying data 
-            notifications = notifications.DistinctBy(n => n.Id).ToList();
-            _log.Debug($"Get all investor's notifications {notifications.Count} fill {page} pages.");
-            return notifications;
+            // Distinct result for situation when new item is added during querying data 
+            data = data.DistinctBy(n => n.Id).ToList();
+            _log.Debug($"Get all investor's notifications, total {data.Count} items.");
+            return data;
         }
 
         /// <summary>
@@ -92,30 +75,13 @@ namespace LuKaSo.Zonky.Client
         {
             _log.Debug($"Get all investor's wallet transactions request.");
 
-            var walletTransactions = new List<WalletTransaction>();
-            IEnumerable<WalletTransaction> walletTransactionsPage;
-            var page = 0;
+            // Get data
+            var data = await GetDataSplitRequestAsync<WalletTransaction>(_maxLargePageSize, (page, pageSize) => GetWalletTransactionsAsync(page, pageSize, filter, ct), ct).ConfigureAwait(false);
 
-            // Useful for very large portfolio, avoiding timeouts and server errors
-            while ((walletTransactionsPage = await GetWalletTransactionsAsync(page, _maxLargePageSize, filter, ct).ConfigureAwait(false)).Any())
-            {
-                _log.Debug($"Get all investor's notifications page {page}, contains {walletTransactionsPage.Count()} notifications.");
-
-                ct.ThrowIfCancellationRequested();
-                walletTransactions.AddRange(walletTransactionsPage);
-                page++;
-
-                // If his page is not full, skip check of next page
-                if (walletTransactionsPage.Count() < _maxLargePageSize)
-                {
-                    break;
-                }
-            }
-
-            // Distinct result for situation when new item is added when querying data 
-            walletTransactions = walletTransactions.DistinctBy(n => n.Id).ToList();
-            _log.Debug($"Get all investor's wallet transactions {walletTransactions.Count} fill {page} pages.");
-            return walletTransactions;
+            // Distinct result for situation when new item is added during querying data 
+            data = data.DistinctBy(n => n.Id).ToList();
+            _log.Debug($"Get all investor's wallet transactions, total {data.Count} items.");
+            return data;
         }
 
         /// <summary>

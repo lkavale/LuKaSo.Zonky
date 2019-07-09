@@ -35,30 +35,13 @@ namespace LuKaSo.Zonky.Client
         {
             _log.Debug($"Get all primary market loans request.");
 
-            var loans = new List<Loan>();
-            IEnumerable<Loan> loansPage;
-            var page = 0;
+            // Get data
+            var data = await GetDataSplitRequestAsync<Loan>(_maxPageSize, (page, pageSize) => GetPrimaryMarketPlaceAsync(page, pageSize, filter, ct), ct).ConfigureAwait(false);
 
-            // Useful for very large data amount, avoiding timeouts and server errors
-            while ((loansPage = await GetPrimaryMarketPlaceAsync(page, _maxPageSize, filter, ct).ConfigureAwait(false)).Any())
-            {
-                _log.Debug($"Get all primary market loans page {page}, contains {loansPage.Count()} loans.");
-
-                ct.ThrowIfCancellationRequested();
-                loans.AddRange(loansPage);
-                page++;
-
-                // If his page is not full, skip check of next page
-                if (loansPage.Count() < _maxPageSize)
-                {
-                    break;
-                }
-            }
-
-            // Distinct result for situation when new item is added when querying data 
-            loans = loans.DistinctBy(l => l.Id).ToList();
-            _log.Debug($"Get all primary market loans {loans.Count} fill {page} pages.");
-            return loans;
+            // Distinct result for situation when new item is added during querying data 
+            data = data.DistinctBy(l => l.Id).ToList();
+            _log.Debug($"Get all primary market loans, total {data.Count} items.");
+            return data;
         }
 
         /// <summary>
@@ -110,30 +93,13 @@ namespace LuKaSo.Zonky.Client
         {
             _log.Debug($"Get all secondary market offers request.");
 
-            var offers = new List<SecondaryMarketOffer>();
-            IEnumerable<SecondaryMarketOffer> offersPage;
-            var page = 0;
+            // Get data
+            var data = await GetDataSplitRequestAsync<SecondaryMarketOffer>(_maxPageSize, (page, pageSize) => GetSecondaryMarketplaceAsync(page, pageSize, filter, ct), ct).ConfigureAwait(false);
 
-            // Useful for very large data amount, avoiding timeouts and server errors
-            while ((offersPage = await GetSecondaryMarketplaceAsync(page, _maxPageSize, filter, ct).ConfigureAwait(false)).Any())
-            {
-                _log.Debug($"Get all secondary market offers page {page}, contains {offersPage.Count()} offers.");
-
-                ct.ThrowIfCancellationRequested();
-                offers.AddRange(offersPage);
-                page++;
-
-                // If his page is not full, skip check of next page
-                if (offersPage.Count() < _maxPageSize)
-                {
-                    break;
-                }
-            }
-
-            // Distinct result for situation when new item is added when querying data 
-            offers = offers.DistinctBy(l => l.Id).ToList();
-            _log.Debug($"Get all secondary market offers {offers.Count} fill {page} pages.");
-            return offers;
+            // Distinct result for situation when new item is added during querying data 
+            data = data.DistinctBy(l => l.Id).ToList();
+            _log.Debug($"Get all secondary market offers, total {data.Count} items.");
+            return data;
         }
     }
 }

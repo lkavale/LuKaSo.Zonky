@@ -3,6 +3,8 @@ using LuKaSo.Zonky.Exceptions;
 using LuKaSo.Zonky.Logging;
 using LuKaSo.Zonky.Models.Login;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -152,6 +154,39 @@ namespace LuKaSo.Zonky.Client
 
             _log.Debug($"Client retrying request after refresh authorization token for user {_user.Name}.");
             await action().ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Split request for huge amount of data into many smaller requests 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="amount"></param>
+        /// <param name="getAction"></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        protected async Task<List<T>> GetDataSplitRequestAsync<T>(int amount, Func<int, int, Task<IEnumerable<T>>> getAction, CancellationToken ct = default(CancellationToken))
+        {
+            var data = new List<T>();
+            IEnumerable<T> dataPage;
+            var page = 0;
+
+            // Useful for very large portfolio, avoiding timeouts and server errors
+            while ((dataPage = await getAction(page, amount).ConfigureAwait(false)).Any())
+            {
+                _log.Debug($"Get data page {page}, containing {dataPage.Count()} items.");
+
+                ct.ThrowIfCancellationRequested();
+                data.AddRange(dataPage);
+                page++;
+
+                // If his page is not full, skip check of next page
+                if (dataPage.Count() < amount)
+                {
+                    break;
+                }
+            }
+
+            return data;
         }
 
         /// <summary>
