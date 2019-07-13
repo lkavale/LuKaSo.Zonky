@@ -154,6 +154,12 @@
         INVESTORS_INSTALMENTS_POSTPONED,
 
 #warning Not listed in Zonky API
-        INVESTORS_INSURANCE_CANCELLATION_ON_DPD
+        INVESTORS_INSURANCE_CANCELLATION_ON_DPD,
+
+        /// <summary>
+        /// Payment reverted
+        /// </summary>
+#warning Not listed in Zonky API
+        PAYMENT_REVERT_CANCEL_INVESTOR
     }
 }

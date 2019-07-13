@@ -5,97 +5,97 @@
         /// <summary>
         /// Deposit
         /// </summary>
-        DEPOSIT = 0,
+        DEPOSIT,
 
         /// <summary>
         /// Withdraw
         /// </summary>
-        WITHDRAW = 1,
+        WITHDRAW,
 
         /// <summary>
         /// Investment
         /// </summary>
-        INVESTMENT = 2,
+        INVESTMENT,
 
         /// <summary>
         /// Investment return
         /// </summary>
-        INVESTMENT_RETURN = 3,
+        INVESTMENT_RETURN,
 
         /// <summary>
         /// Secondary market buy
         /// </summary>
-        SMP_BUY = 4,
+        SMP_BUY,
 
         /// <summary>
         /// Secondary market sell
         /// </summary>
-        SMP_SELL = 5,
+        SMP_SELL,
 
         /// <summary>
         /// Secondary market transfer
         /// </summary>
-        SMP_PRICE_TRANSFER = 6,
+        SMP_PRICE_TRANSFER,
 
         /// <summary>
         /// Secondary market sale fee
         /// </summary>
-        SMP_SALE_FEE = 7,
+        SMP_SALE_FEE,
 
         /// <summary>
         /// Credit
         /// </summary>
-        CREDIT = 8,
+        CREDIT,
 
         /// <summary>
         /// Payment
         /// </summary>
-        PAYMENT = 9,
+        PAYMENT,
 
         /// <summary>
         /// Resend
         /// </summary>
-        RESEND = 10,
+        RESEND,
 
         /// <summary>
         /// Return
         /// </summary>
-        RETURN = 11,
+        RETURN,
 
         /// <summary>
         /// Credit fee
         /// </summary>
-        CREDIT_FEE = 12,
+        CREDIT_FEE,
 
         /// <summary>
         /// Credit fee return
         /// </summary>
-        CREDIT_FEE_RETURN = 13,
+        CREDIT_FEE_RETURN,
 
         /// <summary>
         /// Investment fee
         /// </summary>
-        INVESTMENT_FEE = 14,
+        INVESTMENT_FEE,
 
         /// <summary>
         /// Investment fee return
         /// </summary>
-        INVESTMENT_FEE_RETURN = 15,
+        INVESTMENT_FEE_RETURN,
 
         /// <summary>
         /// Collection fee
         /// </summary>
-        COLLECTION_FEE = 16,
+        COLLECTION_FEE,
 
         /// <summary>
         /// Interest
         /// </summary>
-        INTEREST = 17,
+        INTEREST,
 
         /// <summary>
         /// Ignore
         /// </summary>
-        IGNORE = 18,
+        IGNORE,
 
         /// <summary>
         /// Unspecified incomming transaction
@@ -105,6 +105,11 @@
         /// <summary>
         /// Unspecified outcomming transaction
         /// </summary>
-        UNSPECIFIED_OUT = 20,
+        UNSPECIFIED_OUT,
+
+        /// <summary>
+        /// Transaction reverted
+        /// </summary>
+        PAYMENT_REVERT
     }
 }
