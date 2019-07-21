@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -103,8 +104,7 @@ namespace LuKaSo.Zonky.Api
             {
                 request.RequestUri = _baseUrl.Append("/marketplace/investment");
                 request.Method = new HttpMethod("POST");
-                request.Content = new StringContent(JsonConvert.SerializeObject(investment, _settings.Value));
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                request.Content = new StringContent(JsonConvert.SerializeObject(investment, _settings.Value), Encoding.UTF8, "application/json");
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
 
                 using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
@@ -142,8 +142,7 @@ namespace LuKaSo.Zonky.Api
             {
                 request.RequestUri = _baseUrl.Append($"/marketplace/investment/{investmentId}");
                 request.Method = new HttpMethod("PATCH");
-                request.Content = new StringContent(JsonConvert.SerializeObject(increaseInvestment, _settings.Value));
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                request.Content = new StringContent(JsonConvert.SerializeObject(increaseInvestment, _settings.Value), Encoding.UTF8, "application/json");
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
 
                 using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
@@ -179,8 +178,7 @@ namespace LuKaSo.Zonky.Api
             {
                 request.RequestUri = _baseUrl.Append($"/smp/investments/{offerId}/shares");
                 request.Method = new HttpMethod("POST");
-                request.Content = new StringContent(JsonConvert.SerializeObject(secondaryMarketInvestment, _settings.Value));
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                request.Content = new StringContent(JsonConvert.SerializeObject(secondaryMarketInvestment, _settings.Value), Encoding.UTF8, "application/json");
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
 
                 using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
@@ -219,8 +217,7 @@ namespace LuKaSo.Zonky.Api
             {
                 request.RequestUri = _baseUrl.Append($"/users/me/traded-investments");
                 request.Method = new HttpMethod("POST");
-                request.Content = new StringContent(JsonConvert.SerializeObject(secondaryMarketOfferSell, _settings.Value));
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
+                request.Content = new StringContent(JsonConvert.SerializeObject(secondaryMarketOfferSell, _settings.Value), Encoding.UTF8, "application/json");
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
 
                 using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))

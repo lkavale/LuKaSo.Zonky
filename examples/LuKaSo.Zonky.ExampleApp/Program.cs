@@ -11,7 +11,7 @@ namespace LuKaSo.Zonky.ExampleApp
             LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
             var reader = new SecretsJsonReader();
-            var client = new ZonkyClient(reader.Read(), false);
+            var client = new ZonkyClient(reader.Read(), true);
 
             var timer1 = new System.Timers.Timer(30000);
             timer1.Elapsed += (s, e) =>
