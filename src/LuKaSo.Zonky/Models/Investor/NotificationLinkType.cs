@@ -160,6 +160,9 @@
         /// Payment reverted
         /// </summary>
 #warning Not listed in Zonky API
-        PAYMENT_REVERT_CANCEL_INVESTOR
+        PAYMENT_REVERT_CANCEL_INVESTOR,
+
+#warning Not listed in Zonky API
+        PAYMENT_REVERT_RETURN_INVESTOR
     }
 }

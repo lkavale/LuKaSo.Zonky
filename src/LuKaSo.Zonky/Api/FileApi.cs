@@ -60,7 +60,7 @@ namespace LuKaSo.Zonky.Api
                         {
                             var link = document.DocumentNode
                                 .SelectNodes(".//a[@data-action='url']")
-                                .Single(a => a.GetAttributeValue("href", "").Contains("zonky.cz/page-assets/documents/"));
+                                .Single(a => a.GetAttributeValue("href", "").Contains("zonky.cz/page-assets/images/risk/loanbook/"));
 
                             var loanbookLink = link.GetAttributeValue("href", "")
                                 .Replace("clkn/https", "https:/");

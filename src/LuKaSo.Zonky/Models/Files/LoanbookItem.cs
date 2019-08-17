@@ -80,7 +80,7 @@ namespace LuKaSo.Zonky.Models.Files
         public int RemainingRepaymentCount { get; set; }
 
         [SpreadsheetHorizontalCoordinate("Y")]
-        public double LostPercentage { get; set; }
+        public double? LostPercentage { get; set; }
 
         [SpreadsheetHorizontalCoordinate("Z")]
         public DateTime? LastRepayment { get; set; }

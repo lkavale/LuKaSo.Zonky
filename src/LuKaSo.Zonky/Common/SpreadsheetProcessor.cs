@@ -44,7 +44,16 @@ namespace LuKaSo.Zonky.Common
                         .Single();
 
                     var cell = row.GetCell(horizontalCoord.ValueIndex);
-                    property.SetValue(item, Convert(cell, property.PropertyType));
+
+                    try
+                    {
+                        var data = Convert(cell, property.PropertyType);
+                        property.SetValue(item, data);
+                    }
+                    catch (FormatException ex)
+                    {
+                        throw new FormatException($"Cell {horizontalCoord.Value} on line {y} cannot be converted", ex);
+                    }
                 }
 
                 yield return item;

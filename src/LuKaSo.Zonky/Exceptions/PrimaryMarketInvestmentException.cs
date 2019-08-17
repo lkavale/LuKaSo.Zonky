@@ -23,7 +23,7 @@ namespace LuKaSo.Zonky.Exceptions
         /// </summary>
         /// <param name="investment"></param>
         /// <param name="message"></param>
-        public PrimaryMarketInvestmentException(PrimaryMarketInvestment investment, HttpResponseMessage message) : base($"Buy primary market participation {investment.ToString()} failed \r\nServer return \r\n {message.ToString()}")
+        public PrimaryMarketInvestmentException(PrimaryMarketInvestment investment, HttpResponseMessage message) : base($"Buy primary market participation {investment.ToString()} failed \r\nServer return \r\n {message.ToString()} \r\n with content {message.Content.ReadAsStringAsync().GetAwaiter().GetResult()}")
         { }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace LuKaSo.Zonky.Exceptions
         /// <param name="investmentId"></param>
         /// <param name="increaseInvestment"></param>
         /// <param name="message"></param>
-        public PrimaryMarketInvestmentException(int investmentId, IncreasePrimaryMarketInvestment increaseInvestment, HttpResponseMessage message) : base($"Increase primary market participation id {investmentId} - {increaseInvestment.ToString()} failed \r\n Server return \r\n {message.ToString()}")
+        public PrimaryMarketInvestmentException(int investmentId, IncreasePrimaryMarketInvestment increaseInvestment, HttpResponseMessage message) : base($"Increase primary market participation id {investmentId} - {increaseInvestment.ToString()} failed \r\n Server return \r\n {message.ToString()} \r\n with content { message.Content.ReadAsStringAsync().GetAwaiter().GetResult()}")
         { }
 
         protected PrimaryMarketInvestmentException(SerializationInfo info, StreamingContext context) : base(info, context)

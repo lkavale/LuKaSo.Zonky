@@ -8,7 +8,7 @@ namespace LuKaSo.Zonky.Exceptions
     [Serializable]
     public class BadRefreshTokenException : Exception
     {
-        public BadRefreshTokenException(HttpResponseMessage message, AuthorizationToken token) : base($"Bad refresh token {token.RefreshToken.ToString()}. \r\n Server return \r\n {message.ToString()}")
+        public BadRefreshTokenException(HttpResponseMessage message, AuthorizationToken token) : base($"Bad refresh token {token.RefreshToken.ToString()}. \r\n Server return \r\n {message.ToString()} \r\n with content {message.Content.ReadAsStringAsync().GetAwaiter().GetResult()}")
         { }
 
         protected BadRefreshTokenException(SerializationInfo info, StreamingContext context) : base(info, context)

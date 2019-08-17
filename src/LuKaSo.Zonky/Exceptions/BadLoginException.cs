@@ -8,7 +8,7 @@ namespace LuKaSo.Zonky.Exceptions
     [Serializable]
     public class BadLoginException : Exception
     {
-        public BadLoginException(HttpResponseMessage message, User user) : base($"Bad login information for user {user.Name}. \r\n Server return \r\n {message.ToString()}")
+        public BadLoginException(HttpResponseMessage message, User user) : base($"Bad login information for user {user.Name}. \r\n Server return \r\n {message.ToString()} \r\n with content {message.Content.ReadAsStringAsync().GetAwaiter().GetResult()}")
         { }
 
         public BadLoginException(User user) : base($"Bad login information for user {user.Name}.")

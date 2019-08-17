@@ -14,7 +14,7 @@
     <RepositoryType>GitHub</RepositoryType>
     <PackageTags>Zonky API client</PackageTags>
     <Copyright>LuKaSo 2019</Copyright>
-    <Version>1.1.5</Version>
+    <Version>1.1.6</Version>
     <SonarQubeTestProject>False</SonarQubeTestProject>
   </PropertyGroup>
 
