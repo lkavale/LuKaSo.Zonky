@@ -59,14 +59,12 @@ namespace LuKaSo.Zonky.Api
 
                 using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
                 {
+                    CheckAuthorizedResponce(response);
+
                     switch (response.StatusCode)
                     {
                         case HttpStatusCode.OK:
                             return await ExtractDataAsync<IEnumerable<LoanInvestment>>(response).ConfigureAwait(false);
-                        case HttpStatusCode.Unauthorized:
-                            throw new NotAuthorizedException();
-                        case HttpStatusCode.BadRequest:
-                            throw PrepareBadRequestException(response, new ServerErrorException(response));
                         default:
                             throw new ServerErrorException(response);
                     }

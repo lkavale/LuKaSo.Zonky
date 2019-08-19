@@ -34,14 +34,12 @@ namespace LuKaSo.Zonky.Api
 
                 using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
                 {
+                    CheckAuthorizedResponce(response);
+
                     switch (response.StatusCode)
                     {
                         case HttpStatusCode.OK:
                             return await ExtractDataAsync<Wallet>(response).ConfigureAwait(false);
-                        case HttpStatusCode.Unauthorized:
-                            throw new NotAuthorizedException();
-                        case HttpStatusCode.BadRequest:
-                            throw PrepareBadRequestException(response, new ServerErrorException(response));
                         default:
                             throw new ServerErrorException(response);
                     }
@@ -72,14 +70,12 @@ namespace LuKaSo.Zonky.Api
 
                 using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
                 {
+                    CheckAuthorizedResponce(response);
+
                     switch (response.StatusCode)
                     {
                         case HttpStatusCode.OK:
                             return await ExtractDataAsync<IEnumerable<Notification>>(response).ConfigureAwait(false);
-                        case HttpStatusCode.Unauthorized:
-                            throw new NotAuthorizedException();
-                        case HttpStatusCode.BadRequest:
-                            throw PrepareBadRequestException(response, new ServerErrorException(response));
                         default:
                             throw new ServerErrorException(response);
                     }
@@ -111,14 +107,12 @@ namespace LuKaSo.Zonky.Api
 
                 using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
                 {
+                    CheckAuthorizedResponce(response);
+
                     switch (response.StatusCode)
                     {
                         case HttpStatusCode.OK:
                             return await ExtractDataAsync<IEnumerable<WalletTransaction>>(response).ConfigureAwait(false);
-                        case HttpStatusCode.Unauthorized:
-                            throw new NotAuthorizedException();
-                        case HttpStatusCode.BadRequest:
-                            throw PrepareBadRequestException(response, new ServerErrorException(response));
                         default:
                             throw new ServerErrorException(response);
                     }
@@ -146,14 +140,12 @@ namespace LuKaSo.Zonky.Api
 
                 using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
                 {
+                    CheckAuthorizedResponce(response);
+
                     switch (response.StatusCode)
                     {
                         case HttpStatusCode.OK:
                             return await ExtractDataAsync<IEnumerable<BlockedAmount>>(response).ConfigureAwait(false);
-                        case HttpStatusCode.Unauthorized:
-                            throw new NotAuthorizedException();
-                        case HttpStatusCode.BadRequest:
-                            throw PrepareBadRequestException(response, new ServerErrorException(response));
                         default:
                             throw new ServerErrorException(response);
                     }
@@ -180,12 +172,12 @@ namespace LuKaSo.Zonky.Api
 
                 using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
                 {
+                    CheckAuthorizedResponce(response);
+
                     switch (response.StatusCode)
                     {
                         case HttpStatusCode.OK:
                             return await ExtractDataAsync<InvestorOverview>(response).ConfigureAwait(false);
-                        case HttpStatusCode.Unauthorized:
-                            throw new NotAuthorizedException();
                         default:
                             throw new ServerErrorException(response);
                     }

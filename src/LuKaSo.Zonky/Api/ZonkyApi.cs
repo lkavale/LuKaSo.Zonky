@@ -1,9 +1,10 @@
 ﻿using LuKaSo.Zonky.Exceptions;
-using LuKaSo.Zonky.Models.Login;
 using LuKaSo.Zonky.Logging;
+using LuKaSo.Zonky.Models.Login;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -102,18 +103,18 @@ namespace LuKaSo.Zonky.Api
         }
 
         /// <summary>
-        /// Prepare exception as bad request server response 
+        /// Check responce for authorization errors
         /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
-        protected Exception PrepareBadRequestException(HttpResponseMessage response, Exception defaultException)
+        /// <param name="response"></param>
+        protected void CheckAuthorizedResponce(HttpResponseMessage response)
         {
-            if (response != null && response.Headers != null && response.Headers.TryGetValues("WWW-Authenticate", out var authHeader) && authHeader.Any(s => s.Contains("Bearer error=\"invalid_token\"")))
+            if (response != null && response.Headers != null &&
+                (response.StatusCode == HttpStatusCode.Unauthorized ||
+                (response.Headers.TryGetValues("WWW-Authenticate", out var authHeader) &&
+                authHeader.Any(s => s.Contains("Bearer error=\"invalid_token\"")))))
             {
-                return new BadAccessTokenException();
+                throw new BadAccessTokenException();
             }
-
-            return defaultException;
         }
 
         /// <summary>
