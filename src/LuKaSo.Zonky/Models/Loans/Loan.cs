@@ -3,11 +3,21 @@ using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace LuKaSo.Zonky.Models.Loans
 {
     public class Loan
     {
+        /// <summary>
+        /// Stringify loan
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return $"Loan id {Id} - {Name} ({Rating.ToString()} {(InterestRate / 100).ToString("P")}) amount {Amount.ToString("C", CultureInfo.CreateSpecificCulture("cs-CZ"))} {TermInMonths} months";
+        }
+
         /// <summary>
         /// Id
         /// </summary>

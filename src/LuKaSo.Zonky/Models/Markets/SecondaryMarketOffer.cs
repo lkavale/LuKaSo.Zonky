@@ -3,11 +3,21 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace LuKaSo.Zonky.Models.Markets
 {
     public class SecondaryMarketOffer
     {
+        /// <summary>
+        /// Stringify secondary market offer
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return $"Secondary market offer id {Id} of loan id {LoanId} - {LoanName} ({Rating.ToString()} {(InterestRate/100).ToString("P")}) with remaining principle {RemainingPrincipal.ToString("C", CultureInfo.CreateSpecificCulture("cs-CZ"))} {RemainingInstalmentCount}/{OriginalInstalmentCount} months";
+        }
+
         /// <summary>
         /// ID of an investment offer
         /// </summary>

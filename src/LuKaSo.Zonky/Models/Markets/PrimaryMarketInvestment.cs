@@ -1,10 +1,20 @@
 ﻿using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace LuKaSo.Zonky.Models.Markets
 {
     public class PrimaryMarketInvestment
     {
+        /// <summary>
+        /// Stringify object
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return $"Primary market buy participation of loan id {LoanId} with amount {Amount.ToString("C", CultureInfo.CreateSpecificCulture("cs-CZ"))}, captcha responce {CaptchaResponse}";
+        }
+
         /// <summary>
         /// Loan id
         /// </summary>
@@ -24,14 +34,5 @@ namespace LuKaSo.Zonky.Models.Markets
         /// </summary>
         [JsonProperty("captcha_response", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
         public string CaptchaResponse { get; set; }
-
-        /// <summary>
-        /// Stringify object
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            return $"Primary market buy participation of loan id {LoanId} with amount {Amount}, captcha responce {CaptchaResponse}";
-        }
     }
 }

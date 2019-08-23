@@ -4,11 +4,21 @@ using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace LuKaSo.Zonky.Models.Investments
 {
     public class Investment
     {
+        /// <summary>
+        /// Stringify loan
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return $"Loan investment id {Id} of loan {LoanId} - {LoanName} ({Rating.ToString()} {(InterestRate / 100).ToString("P")}) with remaining principal {(RemainingPrincipal??0).ToString("C", CultureInfo.CreateSpecificCulture("cs-CZ"))} ({RemainingMonths}/{LoanTermInMonth}) months";
+        }
+
         /// <summary>
         /// Id of an investment
         /// </summary>
