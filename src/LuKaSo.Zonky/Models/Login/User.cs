@@ -5,6 +5,13 @@
         /// <summary>
         /// User
         /// </summary>
+        public User()
+        {
+        }
+
+        /// <summary>
+        /// User
+        /// </summary>
         /// <param name="name"></param>
         /// <param name="password"></param>
         public User(string name, string password)
