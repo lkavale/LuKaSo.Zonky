@@ -80,7 +80,7 @@ namespace LuKaSo.Zonky.Client
             _user = user ?? throw new ArgumentNullException(nameof(user));
             _enableTrading = enableTrading;
 
-            _log.Debug($"Zonky client with user {_user.Name} {(_enableTrading ? "and enabled trading" : " and disabled trading")}.");
+            _log.Debug($"Zonky client with user {_user.Name} {(string.IsNullOrEmpty(_user.Password) ? "without password" : "with password")} {(_enableTrading ? "and enabled trading" : " and disabled trading")}.");
         }
 
         /// <summary>
