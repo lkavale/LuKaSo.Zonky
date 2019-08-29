@@ -5,7 +5,7 @@ using System.Linq;
 namespace LuKaSo.Zonky.Tests.Production.Client
 {
     [TestClass]
-    public class MarketPlaceTests
+    public class MarketplaceAuthorizedTests
     {
         private ZonkyClient _zonkyClient;
 

@@ -43,6 +43,17 @@ namespace LuKaSo.Zonky.Api
         Task<IEnumerable<Loan>> GetPrimaryMarketPlaceAsync(int page, int pageSize, FilterOptions filter = null, CancellationToken ct = default(CancellationToken));
 
         /// <summary>
+        /// Get primary marketplace loans
+        /// </summary>
+        /// <param name="page">Page number, started from 0</param>
+        /// <param name="pageSize">Items per page</param>
+        /// <param name="authorizationToken">Authorization token</param>
+        /// <param name="filter">Filter options</param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        Task<IEnumerable<Loan>> GetPrimaryMarketPlaceAsync(int page, int pageSize, AuthorizationToken authorizationToken, FilterOptions filter = null, CancellationToken ct = default(CancellationToken));
+
+        /// <summary>
         /// Get secondary marketplace loans
         /// </summary>
         /// <param name="page">Page number, started from 0</param>
@@ -51,6 +62,17 @@ namespace LuKaSo.Zonky.Api
         /// <param name="ct"></param>
         /// <returns></returns>
         Task<IEnumerable<SecondaryMarketOffer>> GetSecondaryMarketplaceAsync(int page, int pageSize, FilterOptions filter = null, CancellationToken ct = default(CancellationToken));
+
+        /// <summary>
+        /// Get secondary marketplace loans
+        /// </summary>
+        /// <param name="page">Page number, started from 0</param>
+        /// <param name="pageSize">Items per page</param>
+        /// <param name="authorizationToken">Authorization token</param>
+        /// <param name="filter">Filter options</param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        Task<IEnumerable<SecondaryMarketOffer>> GetSecondaryMarketplaceAsync(int page, int pageSize, AuthorizationToken authorizationToken, FilterOptions filter = null, CancellationToken ct = default(CancellationToken));
 
         /// <summary>
         /// Get loan

@@ -31,6 +31,12 @@ namespace LuKaSo.Zonky.Client
         private readonly User _user;
 
         /// <summary>
+        /// Make marketplace requests authorized
+        /// Unauthorized marketplace requests are possible, but with requests quota
+        /// </summary>
+        private readonly bool _marketplaceRequestsAuthorized;
+
+        /// <summary>
         /// Enable trading
         /// </summary>
         private readonly bool _enableTrading = false;
@@ -75,10 +81,21 @@ namespace LuKaSo.Zonky.Client
         /// </summary>
         /// <param name="user">User</param>
         /// <param name="enableTrading">Enable trading</param>
-        public ZonkyClient(User user, bool enableTrading) : this()
+        public ZonkyClient(User user, bool enableTrading) : this(user, enableTrading, false)
+        {
+        }
+
+        /// <summary>
+        /// Zonky client
+        /// </summary>
+        /// <param name="user">User</param>
+        /// <param name="enableTrading">Enable trading</param>
+        /// <param name="marketplaceRequestsAuthorized">Marketplace requests authorized</param>
+        public ZonkyClient(User user, bool enableTrading, bool marketplaceRequestsAuthorized) : this()
         {
             _user = user ?? throw new ArgumentNullException(nameof(user));
             _enableTrading = enableTrading;
+            _marketplaceRequestsAuthorized = marketplaceRequestsAuthorized;
 
             _log.Debug($"Zonky client with user {_user.Name} {(string.IsNullOrEmpty(_user.Password) ? "without password" : "with password")} {(_enableTrading ? "and enabled trading" : " and disabled trading")}.");
         }
@@ -89,12 +106,19 @@ namespace LuKaSo.Zonky.Client
         /// <param name="userName">User name</param>
         /// <param name="password">Password</param>
         /// <param name="enableTrading">Enable trading</param>
-        public ZonkyClient(string userName, string password, bool enableTrading) : this()
+        public ZonkyClient(string userName, string password, bool enableTrading) : this(new User(userName, password), enableTrading)
         {
-            _user = new User(userName, password);
-            _enableTrading = enableTrading;
+        }
 
-            _log.Debug($"Zonky client with user {_user.Name} {(_enableTrading ? "and enabled trading" : " and disabled trading")}.");
+        /// <summary>
+        /// Zonky client
+        /// </summary>
+        /// <param name="userName">User name</param>
+        /// <param name="password">Password</param>
+        /// <param name="enableTrading">Enable trading</param>
+        /// <param name="marketplaceRequestsAuthorized">Marketplace requests authorized</param>
+        public ZonkyClient(string userName, string password, bool enableTrading, bool marketplaceRequestsAuthorized) : this(new User(userName, password), enableTrading, marketplaceRequestsAuthorized)
+        {
         }
 
         /// <summary>

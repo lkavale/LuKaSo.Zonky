@@ -8,7 +8,7 @@ using System.Threading;
 namespace LuKaSo.Zonky.Tests.Production.Api
 {
     [TestClass]
-    public class MarketplaceTests
+    public class MarketplaceUnauthorizedTests
     {
         private ZonkyApi _zonkyApi;
 
@@ -53,3 +53,4 @@ namespace LuKaSo.Zonky.Tests.Production.Api
         }
     }
 }
+

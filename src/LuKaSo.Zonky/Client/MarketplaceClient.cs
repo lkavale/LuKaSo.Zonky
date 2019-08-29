@@ -22,6 +22,11 @@ namespace LuKaSo.Zonky.Client
         /// <returns></returns>
         public async Task<IEnumerable<Loan>> GetPrimaryMarketPlaceAsync(int page, int pageSize, FilterOptions filter = null, CancellationToken ct = default(CancellationToken))
         {
+            if (_marketplaceRequestsAuthorized)
+            {
+                return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetPrimaryMarketPlaceAsync(page, pageSize, _authorizationToken, filter, ct), ct).ConfigureAwait(false);
+            }
+
             return await ZonkyApi.GetPrimaryMarketPlaceAsync(page, pageSize, filter, ct).ConfigureAwait(false);
         }
 
@@ -80,6 +85,11 @@ namespace LuKaSo.Zonky.Client
         /// <returns></returns>
         public async Task<IEnumerable<SecondaryMarketOffer>> GetSecondaryMarketplaceAsync(int page, int pageSize, FilterOptions filter = null, CancellationToken ct = default(CancellationToken))
         {
+            if (_marketplaceRequestsAuthorized)
+            {
+                return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetSecondaryMarketplaceAsync(page, pageSize, _authorizationToken, filter, ct), ct).ConfigureAwait(false);
+            }
+            
             return await ZonkyApi.GetSecondaryMarketplaceAsync(page, pageSize, filter, ct).ConfigureAwait(false);
         }
 
