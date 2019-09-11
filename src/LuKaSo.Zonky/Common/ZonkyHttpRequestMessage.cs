@@ -30,13 +30,25 @@ namespace LuKaSo.Zonky.Common
         }
 
         /// <summary>
-        /// Add authorization to request
+        /// Add bearer authorization to request
         /// </summary>
         /// <param name="authorizationToken">Authorization token</param>
         /// <returns></returns>
-        public ZonkyHttpRequestMessage AddRequestAuthorization(AuthorizationToken authorizationToken)
+        public ZonkyHttpRequestMessage AddRequestBearerAuthorization(AuthorizationToken authorizationToken)
         {
             Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
+
+            return this;
+        }
+
+        /// <summary>
+        /// Add basic authorization to request
+        /// </summary>
+        /// <param name="secret">Secret</param>
+        /// <returns></returns>
+        public ZonkyHttpRequestMessage AddRequestBasicAuthorization(string secret)
+        {
+            Headers.Authorization = new AuthenticationHeaderValue("Basic", secret);
 
             return this;
         }

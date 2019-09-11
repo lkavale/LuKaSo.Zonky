@@ -45,7 +45,7 @@ namespace LuKaSo.Zonky.Api
         {
             CheckAuthorizationToken(authorizationToken);
 
-            using (var request = PreparePrimaryMarketplaceRequest(page, pageSize, filter).AddRequestAuthorization(authorizationToken))
+            using (var request = PreparePrimaryMarketplaceRequest(page, pageSize, filter).AddRequestBearerAuthorization(authorizationToken))
             using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
             {
                 CheckAuthorizedResponce(response);
@@ -83,7 +83,7 @@ namespace LuKaSo.Zonky.Api
         {
             CheckAuthorizationToken(authorizationToken);
 
-            using (var request = PrepareSecondaryMarketplaceRequest(page, pageSize, filter).AddRequestAuthorization(authorizationToken))
+            using (var request = PrepareSecondaryMarketplaceRequest(page, pageSize, filter).AddRequestBearerAuthorization(authorizationToken))
             using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
             {
                 CheckAuthorizedResponce(response);
