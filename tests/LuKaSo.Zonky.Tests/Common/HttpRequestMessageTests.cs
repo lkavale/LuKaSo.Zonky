@@ -1,11 +1,12 @@
 ﻿using LuKaSo.Zonky.Common;
+using LuKaSo.Zonky.Extesions;
 using LuKaSo.Zonky.Models;
 using LuKaSo.Zonky.Models.Login;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using LuKaSo.Zonky.Extesions;
 
 namespace LuKaSo.Zonky.Tests.Common
 {
@@ -60,6 +61,20 @@ namespace LuKaSo.Zonky.Tests.Common
             _request.AddRequestFilter(filter);
 
             Assert.AreEqual(_address.AppendFilterOptions(filter), _request.RequestUri);
+        }
+
+        [TestMethod]
+        public void AddRequestParameters()
+        {
+            var parameters = new Dictionary<string, string>()
+            {
+                { "x", "10" },
+                { "y", "20" }
+            };
+
+            _request.AddRequestParameters(parameters);
+
+            Assert.AreEqual(_address.AttachQueryParameters(parameters), _request.RequestUri);
         }
     }
 }
