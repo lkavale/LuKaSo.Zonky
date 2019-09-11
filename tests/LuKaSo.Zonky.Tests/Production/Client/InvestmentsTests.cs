@@ -2,10 +2,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 
-namespace LuKaSo.Zonky.Tests.Production.Long
+namespace LuKaSo.Zonky.Tests.Production.Client
 {
     [TestClass]
-    public class BusinessCodeTests
+    public class InvestmentsTests
     {
         private ZonkyClient _zonkyClient;
 
@@ -16,14 +16,16 @@ namespace LuKaSo.Zonky.Tests.Production.Long
             _zonkyClient = new ZonkyClient(zonkyLogin, false);
         }
 
-        //[TestMethod]
+        [TestMethod]
+        [TestCategory("Full")]
         public void AllInvestorEvents()
         {
-            var dic = _zonkyClient.GetAllInvestmentsAsync()
+            var investmentsEvents = _zonkyClient.GetAllInvestmentsAsync()
                 .GetAwaiter()
                 .GetResult()
-                .Select(i => new { Id = i.Id, Events = _zonkyClient.GetInvestmentEventsAsync(i.Id).GetAwaiter().GetResult() })
-                .ToDictionary(i => i.Id, i => i.Events);
+                .Select(i => _zonkyClient.GetInvestmentEventsAsync(i.LoanId).GetAwaiter().GetResult());
+
+            Assert.IsTrue(investmentsEvents.Any(i => i.Any()));
         }
     }
 }

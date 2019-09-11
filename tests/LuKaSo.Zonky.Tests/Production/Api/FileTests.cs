@@ -32,6 +32,7 @@ namespace LuKaSo.Zonky.Tests.Production.Api
         }
 
         [TestMethod]
+        [TestCategory("Full")]
         public void GetLoanbookOk()
         {
             var file = _zonkyApi.GetLoanbookFileAddressAsync().GetAwaiter().GetResult();

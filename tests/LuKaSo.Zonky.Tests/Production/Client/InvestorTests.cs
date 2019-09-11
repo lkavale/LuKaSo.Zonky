@@ -20,6 +20,7 @@ namespace LuKaSo.Zonky.Tests.Production.Client
         }
 
         [TestMethod]
+        [TestCategory("Full")]
         public void GetAllNotificationsAsyncOk()
         {
             var notifications = _zonkyClient.GetAllNotificationsAsync().GetAwaiter().GetResult();
@@ -40,6 +41,7 @@ namespace LuKaSo.Zonky.Tests.Production.Client
         }
 
         [TestMethod]
+        [TestCategory("Full")]
         public void GetAllWalletTransactionsAsynOk()
         {
             var walletTransactions = _zonkyClient.GetAllWalletTransactionsAsync().GetAwaiter().GetResult();

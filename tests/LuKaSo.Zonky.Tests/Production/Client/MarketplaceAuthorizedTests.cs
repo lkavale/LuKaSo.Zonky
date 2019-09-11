@@ -16,6 +16,7 @@ namespace LuKaSo.Zonky.Tests.Production.Client
         }
 
         [TestMethod]
+        [TestCategory("Full")]
         public void GetEntirePrimaryMarketplaceOk()
         {
             var loans = _zonkyClient.GetAllPrimaryMarketPlaceAsync().GetAwaiter().GetResult();

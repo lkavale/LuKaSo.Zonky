@@ -47,7 +47,7 @@ namespace LuKaSo.Zonky.Tests.Common
         {
             var token = new AuthorizationToken() { AccessToken = Guid.NewGuid() };
 
-            _request.AddRequestAuthorization(token);
+            _request.AddRequestBearerAuthorization(token);
 
             Assert.AreEqual($"Bearer {token.AccessToken.ToString()}", _request.Headers.GetValues("Authorization").First());
         }
