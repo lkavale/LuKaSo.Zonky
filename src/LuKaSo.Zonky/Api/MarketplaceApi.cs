@@ -45,7 +45,7 @@ namespace LuKaSo.Zonky.Api
         {
             CheckAuthorizationToken(authorizationToken);
 
-            using (var request = PreparePrimaryMarketplaceRequest(page, pageSize, filter).AddRequestBearerAuthorization(authorizationToken))
+            using (var request = PreparePrimaryMarketplaceRequest(page, pageSize, filter).AddBearerAuthorization(authorizationToken))
             using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
             {
                 CheckAuthorizedResponce(response);
@@ -83,7 +83,7 @@ namespace LuKaSo.Zonky.Api
         {
             CheckAuthorizationToken(authorizationToken);
 
-            using (var request = PrepareSecondaryMarketplaceRequest(page, pageSize, filter).AddRequestBearerAuthorization(authorizationToken))
+            using (var request = PrepareSecondaryMarketplaceRequest(page, pageSize, filter).AddBearerAuthorization(authorizationToken))
             using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
             {
                 CheckAuthorizedResponce(response);
@@ -100,7 +100,7 @@ namespace LuKaSo.Zonky.Api
         /// <returns></returns>
         private ZonkyHttpRequestMessage PrepareSecondaryMarketplaceRequest(int page, int pageSize, FilterOptions filter = null)
         {
-            return PrepareMarketplaceRequest("/smp/investments", page, pageSize, filter);
+            return PreparePagingFilterRequest("/smp/investments", page, pageSize, filter);
         }
 
         /// <summary>
@@ -112,22 +112,7 @@ namespace LuKaSo.Zonky.Api
         /// <returns></returns>
         private ZonkyHttpRequestMessage PreparePrimaryMarketplaceRequest(int page, int pageSize, FilterOptions filter = null)
         {
-            return PrepareMarketplaceRequest("/loans/marketplace", page, pageSize, filter);
-        }
-
-        /// <summary>
-        /// Prepare marketplace request
-        /// </summary>
-        /// <param name="address"></param>
-        /// <param name="page"></param>
-        /// <param name="pageSize"></param>
-        /// <param name="filter"></param>
-        /// <returns></returns>
-        private ZonkyHttpRequestMessage PrepareMarketplaceRequest(string address, int page, int pageSize, FilterOptions filter = null)
-        {
-            return new ZonkyHttpRequestMessage(new HttpMethod("GET"), _baseUrl.Append(address))
-                .AddRequestFilter(filter)
-                .AddRequestPaging(page, pageSize);
+            return PreparePagingFilterRequest("/loans/marketplace", page, pageSize, filter);
         }
 
         /// <summary>

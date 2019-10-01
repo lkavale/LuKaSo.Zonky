@@ -23,7 +23,7 @@ namespace LuKaSo.Zonky.Api
         /// <param name="processor"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<LoanbookItem>> GetLoanbookAsync(Uri loanbookFileUrl, SpreadsheetProcessor<LoanbookItem>  processor, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<LoanbookItem>> GetLoanbookAsync(Uri loanbookFileUrl, SpreadsheetProcessor<LoanbookItem>  processor, CancellationToken ct = default)
         {
             using (var loanbookFile = await _httpClient.GetStreamAsync(loanbookFileUrl).ConfigureAwait(false))
             using (var memoryStream = new MemoryStream())
@@ -41,12 +41,12 @@ namespace LuKaSo.Zonky.Api
         /// </summary>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<Uri> GetLoanbookFileAddressAsync(CancellationToken ct = default(CancellationToken))
+        public async Task<Uri> GetLoanbookFileAddressAsync(CancellationToken ct = default)
         {
             using (var request = new HttpRequestMessage())
             {
                 request.RequestUri = new Uri("https://zonky.cz/risk/");
-                request.Method = new HttpMethod("GET");
+                request.Method = HttpMethod.Get;
 
                 using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
                 using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))

@@ -1,14 +1,10 @@
 ﻿using LuKaSo.Zonky.Exceptions;
-using LuKaSo.Zonky.Extesions;
 using LuKaSo.Zonky.Models.Investments;
 using LuKaSo.Zonky.Models.Login;
 using LuKaSo.Zonky.Models.Markets;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,30 +20,21 @@ namespace LuKaSo.Zonky.Api
         /// <param name="authorizationToken"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Investment>> GetInvestmentsAsync(int page, int pageSize, AuthorizationToken authorizationToken, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<Investment>> GetInvestmentsAsync(int page, int pageSize, AuthorizationToken authorizationToken, CancellationToken ct = default)
         {
             CheckAuthorizationToken(authorizationToken);
 
-            using (var request = new HttpRequestMessage())
+            using (var request = PrepareAuthorizedRequest("/users/me/investments", authorizationToken, page, pageSize))
+            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
             {
-                request.RequestUri = _baseUrl.Append("/users/me/investments");
-                request.Method = new HttpMethod("GET");
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
-                request.Headers.Add("x-page", page.ToString());
-                request.Headers.Add("x-size", pageSize.ToString());
+                CheckAuthorizedResponce(response);
 
-                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+                switch (response.StatusCode)
                 {
-                    CheckAuthorizedResponce(response);
-
-                    switch (response.StatusCode)
-                    {
-                        case HttpStatusCode.OK:
-                            return await ExtractDataAsync<IEnumerable<Investment>>(response).ConfigureAwait(false);
-                        default:
-                            throw new ServerErrorException(response);
-                    }
+                    case HttpStatusCode.OK:
+                        return await ExtractDataAsync<IEnumerable<Investment>>(response).ConfigureAwait(false);
+                    default:
+                        throw new ServerErrorException(response);
                 }
             }
         }
@@ -59,28 +46,21 @@ namespace LuKaSo.Zonky.Api
         /// <param name="authorizationToken"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<InvestmentEvent>> GetInvestmentEventsAsync(int loanId, AuthorizationToken authorizationToken, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<InvestmentEvent>> GetInvestmentEventsAsync(int loanId, AuthorizationToken authorizationToken, CancellationToken ct = default)
         {
             CheckAuthorizationToken(authorizationToken);
 
-            using (var request = new HttpRequestMessage())
+            using (var request = PrepareAuthorizedRequest($"/collections/loans/{loanId}/investor-events", authorizationToken))
+            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
             {
-                request.RequestUri = _baseUrl.Append($"/collections/loans/{loanId}/investor-events");
-                request.Method = new HttpMethod("GET");
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
+                CheckAuthorizedResponce(response);
 
-                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+                switch (response.StatusCode)
                 {
-                    CheckAuthorizedResponce(response);
-
-                    switch (response.StatusCode)
-                    {
-                        case HttpStatusCode.OK:
-                            return await ExtractDataAsync<IEnumerable<InvestmentEvent>>(response).ConfigureAwait(false);
-                        default:
-                            throw new ServerErrorException(response);
-                    }
+                    case HttpStatusCode.OK:
+                        return await ExtractDataAsync<IEnumerable<InvestmentEvent>>(response).ConfigureAwait(false);
+                    default:
+                        throw new ServerErrorException(response);
                 }
             }
         }
@@ -92,32 +72,25 @@ namespace LuKaSo.Zonky.Api
         /// <param name="authorizationToken"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task CreatePrimaryMarketInvestmentAsync(PrimaryMarketInvestment investment, AuthorizationToken authorizationToken, CancellationToken ct = default(CancellationToken))
+        public async Task CreatePrimaryMarketInvestmentAsync(PrimaryMarketInvestment investment, AuthorizationToken authorizationToken, CancellationToken ct = default)
         {
             CheckAuthorizationToken(authorizationToken);
 
-            using (var request = new HttpRequestMessage())
+            using (var request = PrepareAuthorizedRequest("/marketplace/investment", HttpMethod.Post, authorizationToken).AddJsonContent(investment, Settings))
+            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
             {
-                request.RequestUri = _baseUrl.Append("/marketplace/investment");
-                request.Method = new HttpMethod("POST");
-                request.Content = new StringContent(JsonConvert.SerializeObject(investment, _settings.Value), Encoding.UTF8, "application/json");
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
+                CheckAuthorizedResponce(response);
 
-                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+                switch (response.StatusCode)
                 {
-                    CheckAuthorizedResponce(response);
-
-                    switch (response.StatusCode)
-                    {
-                        case HttpStatusCode.OK:
-                            return;
-                        case HttpStatusCode.BadRequest:
-                            throw new PrimaryMarketInvestmentException(investment, response);
-                        case HttpStatusCode.Forbidden:
-                            throw new CaptchaValidationException(response);
-                        default:
-                            throw new ServerErrorException(response);
-                    }
+                    case HttpStatusCode.OK:
+                        return;
+                    case HttpStatusCode.BadRequest:
+                        throw new PrimaryMarketInvestmentException(investment, response);
+                    case HttpStatusCode.Forbidden:
+                        throw new CaptchaValidationException(response);
+                    default:
+                        throw new ServerErrorException(response);
                 }
             }
         }
@@ -130,30 +103,23 @@ namespace LuKaSo.Zonky.Api
         /// <param name="authorizationToken"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task IncreasePrimaryMarketInvestmentAsync(int investmentId, IncreasePrimaryMarketInvestment increaseInvestment, AuthorizationToken authorizationToken, CancellationToken ct = default(CancellationToken))
+        public async Task IncreasePrimaryMarketInvestmentAsync(int investmentId, IncreasePrimaryMarketInvestment increaseInvestment, AuthorizationToken authorizationToken, CancellationToken ct = default)
         {
             CheckAuthorizationToken(authorizationToken);
 
-            using (var request = new HttpRequestMessage())
+            using (var request = PrepareAuthorizedRequest($"/marketplace/investment/{investmentId}", new HttpMethod("PATCH"), authorizationToken).AddJsonContent(increaseInvestment, Settings))
+            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
             {
-                request.RequestUri = _baseUrl.Append($"/marketplace/investment/{investmentId}");
-                request.Method = new HttpMethod("PATCH");
-                request.Content = new StringContent(JsonConvert.SerializeObject(increaseInvestment, _settings.Value), Encoding.UTF8, "application/json");
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
+                CheckAuthorizedResponce(response);
 
-                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+                switch (response.StatusCode)
                 {
-                    CheckAuthorizedResponce(response);
-
-                    switch (response.StatusCode)
-                    {
-                        case HttpStatusCode.OK:
-                            return;
-                        case HttpStatusCode.BadRequest:
-                            throw new PrimaryMarketInvestmentException(investmentId, increaseInvestment, response);
-                        default:
-                            throw new ServerErrorException(response);
-                    }
+                    case HttpStatusCode.OK:
+                        return;
+                    case HttpStatusCode.BadRequest:
+                        throw new PrimaryMarketInvestmentException(investmentId, increaseInvestment, response);
+                    default:
+                        throw new ServerErrorException(response);
                 }
             }
         }
@@ -166,34 +132,27 @@ namespace LuKaSo.Zonky.Api
         /// <param name="authorizationToken"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task BuySecondaryMarketInvestmentAsync(int offerId, SecondaryMarketInvestment secondaryMarketInvestment, AuthorizationToken authorizationToken, CancellationToken ct = default(CancellationToken))
+        public async Task BuySecondaryMarketInvestmentAsync(int offerId, SecondaryMarketInvestment secondaryMarketInvestment, AuthorizationToken authorizationToken, CancellationToken ct = default)
         {
             CheckAuthorizationToken(authorizationToken);
 
-            using (var request = new HttpRequestMessage())
+            using (var request = PrepareAuthorizedRequest($"/smp/investments/{offerId}/shares", HttpMethod.Post, authorizationToken).AddJsonContent(secondaryMarketInvestment, Settings))
+            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
             {
-                request.RequestUri = _baseUrl.Append($"/smp/investments/{offerId}/shares");
-                request.Method = new HttpMethod("POST");
-                request.Content = new StringContent(JsonConvert.SerializeObject(secondaryMarketInvestment, _settings.Value), Encoding.UTF8, "application/json");
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
+                CheckAuthorizedResponce(response);
 
-                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+                switch (response.StatusCode)
                 {
-                    CheckAuthorizedResponce(response);
-
-                    switch (response.StatusCode)
-                    {
-                        case HttpStatusCode.OK:
-                        case HttpStatusCode.NoContent:
-                            return;
-                        case HttpStatusCode.BadRequest:
-                            var secondaryMarketBuyError = await ExtractDataAsync<SecondaryMarketBuyError>(response).ConfigureAwait(false);
-                            throw new BuySecondaryMarketInvestmentException(offerId, secondaryMarketInvestment, secondaryMarketBuyError);
-                        case HttpStatusCode.NotFound:
-                            throw new NotFoundSecondaryMarketInvestmentException(offerId);
-                        default:
-                            throw new ServerErrorException(response);
-                    }
+                    case HttpStatusCode.OK:
+                    case HttpStatusCode.NoContent:
+                        return;
+                    case HttpStatusCode.BadRequest:
+                        var secondaryMarketBuyError = await ExtractDataAsync<SecondaryMarketBuyError>(response).ConfigureAwait(false);
+                        throw new BuySecondaryMarketInvestmentException(offerId, secondaryMarketInvestment, secondaryMarketBuyError);
+                    case HttpStatusCode.NotFound:
+                        throw new NotFoundSecondaryMarketInvestmentException(offerId);
+                    default:
+                        throw new ServerErrorException(response);
                 }
             }
         }
@@ -205,32 +164,25 @@ namespace LuKaSo.Zonky.Api
         /// <param name="authorizationToken"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task OfferInvestmentOnSecondaryMarketAsync(SecondaryMarketOfferSell secondaryMarketOfferSell, AuthorizationToken authorizationToken, CancellationToken ct = default(CancellationToken))
+        public async Task OfferInvestmentOnSecondaryMarketAsync(SecondaryMarketOfferSell secondaryMarketOfferSell, AuthorizationToken authorizationToken, CancellationToken ct = default)
         {
             CheckAuthorizationToken(authorizationToken);
 
-            using (var request = new HttpRequestMessage())
+            using (var request = PrepareAuthorizedRequest($"/users/me/traded-investments", HttpMethod.Post, authorizationToken).AddJsonContent(secondaryMarketOfferSell, Settings))
+            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
             {
-                request.RequestUri = _baseUrl.Append($"/users/me/traded-investments");
-                request.Method = new HttpMethod("POST");
-                request.Content = new StringContent(JsonConvert.SerializeObject(secondaryMarketOfferSell, _settings.Value), Encoding.UTF8, "application/json");
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
+                CheckAuthorizedResponce(response);
 
-                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+                switch (response.StatusCode)
                 {
-                    CheckAuthorizedResponce(response);
-
-                    switch (response.StatusCode)
-                    {
-                        case HttpStatusCode.OK:
-                        case HttpStatusCode.NoContent:
-                            return;
-                        case HttpStatusCode.BadRequest:
-                            var secondaryMarketOfferSellError = await ExtractDataAsync<SecondaryMarketOfferSellError>(response).ConfigureAwait(false);
-                            throw new OfferInvestmentSecondaryMarketException(secondaryMarketOfferSell, secondaryMarketOfferSellError);
-                        default:
-                            throw new ServerErrorException(response);
-                    }
+                    case HttpStatusCode.OK:
+                    case HttpStatusCode.NoContent:
+                        return;
+                    case HttpStatusCode.BadRequest:
+                        var secondaryMarketOfferSellError = await ExtractDataAsync<SecondaryMarketOfferSellError>(response).ConfigureAwait(false);
+                        throw new OfferInvestmentSecondaryMarketException(secondaryMarketOfferSell, secondaryMarketOfferSellError);
+                    default:
+                        throw new ServerErrorException(response);
                 }
             }
         }
@@ -242,30 +194,23 @@ namespace LuKaSo.Zonky.Api
         /// <param name="authorizationToken"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task CancelOfferInvestmentOnSecondaryMarketAsync(int offerId, AuthorizationToken authorizationToken, CancellationToken ct = default(CancellationToken))
+        public async Task CancelOfferInvestmentOnSecondaryMarketAsync(int offerId, AuthorizationToken authorizationToken, CancellationToken ct = default)
         {
             CheckAuthorizationToken(authorizationToken);
 
-            using (var request = new HttpRequestMessage())
+            using (var request = PrepareAuthorizedRequest($"/users/me/traded-investments/{offerId}", HttpMethod.Delete, authorizationToken))
+            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
             {
-                request.RequestUri = _baseUrl.Append($"/users/me/traded-investments/{offerId}");
-                request.Method = new HttpMethod("DELETE");
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
-
-                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+                switch (response.StatusCode)
                 {
-                    switch (response.StatusCode)
-                    {
-                        case HttpStatusCode.OK:
-                        case HttpStatusCode.NoContent:
-                            return;
-                        case HttpStatusCode.Gone:
-                            var secondaryMarketOfferCancelError = await ExtractDataAsync<SecondaryMarketOfferCancelError>(response).ConfigureAwait(false);
-                            throw new CancelSecondartMarketOfferException(offerId, secondaryMarketOfferCancelError);
-                        default:
-                            throw new ServerErrorException(response);
-                    }
+                    case HttpStatusCode.OK:
+                    case HttpStatusCode.NoContent:
+                        return;
+                    case HttpStatusCode.Gone:
+                        var secondaryMarketOfferCancelError = await ExtractDataAsync<SecondaryMarketOfferCancelError>(response).ConfigureAwait(false);
+                        throw new CancelSecondartMarketOfferException(offerId, secondaryMarketOfferCancelError);
+                    default:
+                        throw new ServerErrorException(response);
                 }
             }
         }

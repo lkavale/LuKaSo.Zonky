@@ -267,7 +267,7 @@ namespace LuKaSo.Zonky.Client
         /// <param name="getAction"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        protected async Task<List<T>> GetDataSplitRequestAsync<T>(int amount, Func<int, int, Task<IEnumerable<T>>> getAction, CancellationToken ct = default(CancellationToken))
+        protected async Task<List<T>> GetDataSplitRequestAsync<T>(int amount, Func<int, int, Task<IEnumerable<T>>> getAction, CancellationToken ct = default)
         {
             var data = new List<T>();
             IEnumerable<T> dataPage;

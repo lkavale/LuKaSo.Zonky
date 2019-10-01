@@ -94,7 +94,7 @@ namespace LuKaSo.Zonky.Api
             };
 
             return PrepareLoginRequest(user)
-                .AddRequestParameters(parameters);
+                .AddQueryParameters(parameters);
         }
 
         /// <summary>
@@ -121,9 +121,9 @@ namespace LuKaSo.Zonky.Api
         /// <returns></returns>
         private ZonkyHttpRequestMessage PrepareAuthorizationRequest(IReadOnlyDictionary<string, string> parameters)
         {
-            return new ZonkyHttpRequestMessage(new HttpMethod("POST"), _baseUrl.Append("oauth/token"))
-                .AddRequestBasicAuthorization(_oAuth2Secret)
-                .AddRequestParameters(parameters);
+            return new ZonkyHttpRequestMessage(HttpMethod.Post, _baseUrl.Append("oauth/token"))
+                .AddBasicAuthorization(_oAuth2Secret)
+                .AddQueryParameters(parameters);
         }
 
         /// <summary>

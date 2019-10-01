@@ -10,7 +10,7 @@ namespace LuKaSo.Zonky.Exceptions
 
         public MultiFactorAuthenticationRequiredException(Guid mfaToken)
         {
-            MfaToken = MfaToken;
+            MfaToken = mfaToken;
         }
 
         protected MultiFactorAuthenticationRequiredException(SerializationInfo info, StreamingContext context) : base(info, context)

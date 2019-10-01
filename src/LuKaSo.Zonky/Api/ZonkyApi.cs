@@ -1,5 +1,7 @@
-﻿using LuKaSo.Zonky.Exceptions;
-using LuKaSo.Zonky.Logging;
+﻿using LuKaSo.Zonky.Common;
+using LuKaSo.Zonky.Exceptions;
+using LuKaSo.Zonky.Extesions;
+using LuKaSo.Zonky.Models;
 using LuKaSo.Zonky.Models.Login;
 using Newtonsoft.Json;
 using System;
@@ -31,11 +33,13 @@ namespace LuKaSo.Zonky.Api
         /// JSON serializer settings
         /// </summary>
         private Lazy<JsonSerializerSettings> _settings;
-
-        /// <summary>
-        /// Log
-        /// </summary>
-        private readonly ILog _log;
+        private JsonSerializerSettings Settings
+        {
+            get
+            {
+                return _settings.Value;
+            }
+        }
 
         /// <summary>
         /// Zonky API constructor with default production address of service
@@ -59,7 +63,6 @@ namespace LuKaSo.Zonky.Api
                 var settings = new JsonSerializerSettings();
                 return settings;
             });
-            _log = LogProvider.For<ZonkyApi>();
         }
 
         /// <summary>
@@ -68,6 +71,61 @@ namespace LuKaSo.Zonky.Api
         ~ZonkyApi()
         {
             Dispose(false);
+        }
+
+        /// <summary>
+        /// Prepare paging and filter request
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        private ZonkyHttpRequestMessage PreparePagingFilterRequest(string address, int page, int pageSize, FilterOptions filter = null)
+        {
+            return new ZonkyHttpRequestMessage(HttpMethod.Get, _baseUrl.Append(address))
+                .AddFilterOptions(filter)
+                .AddPaging(page, pageSize);
+        }
+
+        /// <summary>
+        /// Prepare authorized paging and filter request
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="authorizationToken"></param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        private ZonkyHttpRequestMessage PrepareAuthorizedRequest(string address, AuthorizationToken authorizationToken, int page, int pageSize, FilterOptions filter = null)
+        {
+            return PrepareAuthorizedRequest(address, authorizationToken)
+                .AddFilterOptions(filter)
+                .AddPaging(page, pageSize);
+        }
+
+        /// <summary>
+        /// Prepare authorized request
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="authorizationToken"></param>
+        /// <returns></returns>
+        private ZonkyHttpRequestMessage PrepareAuthorizedRequest(string address, AuthorizationToken authorizationToken)
+        {
+            return PrepareAuthorizedRequest(address, HttpMethod.Get, authorizationToken)
+                .AddBearerAuthorization(authorizationToken);
+        }
+
+        /// <summary>
+        /// Prepare authorized request
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="authorizationToken"></param>
+        /// <returns></returns>
+        private ZonkyHttpRequestMessage PrepareAuthorizedRequest(string address, HttpMethod method, AuthorizationToken authorizationToken)
+        {
+            return new ZonkyHttpRequestMessage(method, _baseUrl.Append(address))
+                .AddBearerAuthorization(authorizationToken);
         }
 
         /// <summary>
@@ -82,7 +140,7 @@ namespace LuKaSo.Zonky.Api
 
             try
             {
-                return JsonConvert.DeserializeObject<T>(responseData, _settings.Value);
+                return JsonConvert.DeserializeObject<T>(responseData, Settings);
             }
             catch (JsonException ex)
             {

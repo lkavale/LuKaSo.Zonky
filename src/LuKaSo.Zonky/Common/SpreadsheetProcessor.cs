@@ -17,6 +17,11 @@ namespace LuKaSo.Zonky.Common
         /// <returns></returns>
         public IEnumerable<T> ProcessWorkbook(XSSFWorkbook workbook)
         {
+            if (workbook == null)
+            {
+                throw new ArgumentNullException(nameof(workbook));
+            }
+
             int yIndexMin = 0;
 
             var sheet = GetSheet(workbook);

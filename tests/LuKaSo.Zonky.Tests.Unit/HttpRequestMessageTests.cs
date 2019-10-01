@@ -3,6 +3,7 @@ using LuKaSo.Zonky.Extesions;
 using LuKaSo.Zonky.Models;
 using LuKaSo.Zonky.Models.Login;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,40 +32,60 @@ namespace LuKaSo.Zonky.Tests.Unit
         }
 
         [TestMethod]
-        public void AddRequestPaging()
+        public void AddSize()
+        {
+            var size = 100;
+
+            _request.AddSize(size);
+
+            Assert.AreEqual(size, int.Parse(_request.Headers.GetValues("x-size").First()));
+        }
+
+        [TestMethod]
+        public void AddPaging()
         {
             var page = 10;
             var pageSize = 100;
 
-            _request.AddRequestPaging(page, pageSize);
+            _request.AddPaging(page, pageSize);
 
             Assert.AreEqual(page, int.Parse(_request.Headers.GetValues("x-page").First()));
             Assert.AreEqual(pageSize, int.Parse(_request.Headers.GetValues("x-size").First()));
         }
 
         [TestMethod]
-        public void AddRequestAuthorization()
+        public void AddBearerAuthorization()
         {
             var token = new AuthorizationToken() { AccessToken = Guid.NewGuid() };
 
-            _request.AddRequestBearerAuthorization(token);
+            _request.AddBearerAuthorization(token);
 
             Assert.AreEqual($"Bearer {token.AccessToken.ToString()}", _request.Headers.GetValues("Authorization").First());
         }
 
         [TestMethod]
-        public void AddRequestFilter()
+        public void AddBasicAuthorization()
+        {
+            var token = Guid.NewGuid().ToString();
+
+            _request.AddBasicAuthorization(token);
+
+            Assert.AreEqual($"Basic {token}", _request.Headers.GetValues("Authorization").First());
+        }
+
+        [TestMethod]
+        public void AddFilterOptions()
         {
             var filter = new FilterOptions();
             filter.Add("x", "10");
 
-            _request.AddRequestFilter(filter);
+            _request.AddFilterOptions(filter);
 
             Assert.AreEqual(_address.AppendFilterOptions(filter), _request.RequestUri);
         }
 
         [TestMethod]
-        public void AddRequestParameters()
+        public void AddQueryParameters()
         {
             var parameters = new Dictionary<string, string>()
             {
@@ -72,13 +93,13 @@ namespace LuKaSo.Zonky.Tests.Unit
                 { "y", "20" }
             };
 
-            _request.AddRequestParameters(parameters);
+            _request.AddQueryParameters(parameters);
 
             Assert.AreEqual(_address.AttachQueryParameters(parameters), _request.RequestUri);
         }
 
         [TestMethod]
-        public void AddRequestParametersMultipletimes()
+        public void AddParametersMultipletimes()
         {
             var parameters1 = new Dictionary<string, string>()
             {
@@ -91,8 +112,8 @@ namespace LuKaSo.Zonky.Tests.Unit
                 { "z", "30" }
             };
 
-            _request.AddRequestParameters(parameters1);
-            _request.AddRequestParameters(parameters2);
+            _request.AddQueryParameters(parameters1);
+            _request.AddQueryParameters(parameters2);
 
             var allParameters = parameters1.Concat(parameters2).ToDictionary(x => x.Key, x => x.Value);
 
@@ -100,7 +121,7 @@ namespace LuKaSo.Zonky.Tests.Unit
         }
 
         [TestMethod]
-        public void AddRequestParametersRewrite()
+        public void AddParametersRewrite()
         {
             var parameters1 = new Dictionary<string, string>()
             {
@@ -112,10 +133,21 @@ namespace LuKaSo.Zonky.Tests.Unit
                 { "x", "30" }
             };
 
-            _request.AddRequestParameters(parameters1);
-            _request.AddRequestParameters(parameters2);
+            _request.AddQueryParameters(parameters1);
+            _request.AddQueryParameters(parameters2);
 
             Assert.AreEqual(_address.AttachQueryParameters(parameters2), _request.RequestUri);
+        }
+
+        [TestMethod]
+        public void AddJsonContent()
+        {
+            var @object = new { p1 = 10, p2 = "Test" };
+            var settings = new JsonSerializerSettings();
+
+            _request.AddJsonContent(@object, settings);
+
+            Assert.AreEqual(JsonConvert.SerializeObject(@object, settings), _request.Content.ReadAsStringAsync().GetAwaiter().GetResult());
         }
     }
 }

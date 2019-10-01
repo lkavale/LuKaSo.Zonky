@@ -21,28 +21,21 @@ namespace LuKaSo.Zonky.Api
         /// <param name="authorizationToken"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<Wallet> GetWalletAsync(AuthorizationToken authorizationToken, CancellationToken ct = default(CancellationToken))
+        public async Task<Wallet> GetWalletAsync(AuthorizationToken authorizationToken, CancellationToken ct = default)
         {
             CheckAuthorizationToken(authorizationToken);
 
-            using (var request = new HttpRequestMessage())
+            using (var request = PrepareAuthorizedRequest("/users/me/wallet", authorizationToken))
+            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
             {
-                request.RequestUri = _baseUrl.Append("/users/me/wallet");
-                request.Method = new HttpMethod("GET");
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
+                CheckAuthorizedResponce(response);
 
-                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+                switch (response.StatusCode)
                 {
-                    CheckAuthorizedResponce(response);
-
-                    switch (response.StatusCode)
-                    {
-                        case HttpStatusCode.OK:
-                            return await ExtractDataAsync<Wallet>(response).ConfigureAwait(false);
-                        default:
-                            throw new ServerErrorException(response);
-                    }
+                    case HttpStatusCode.OK:
+                        return await ExtractDataAsync<Wallet>(response).ConfigureAwait(false);
+                    default:
+                        throw new ServerErrorException(response);
                 }
             }
         }
@@ -55,30 +48,21 @@ namespace LuKaSo.Zonky.Api
         /// <param name="authorizationToken"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Notification>> GetNotificationsAsync(int page, int pageSize, AuthorizationToken authorizationToken, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<Notification>> GetNotificationsAsync(int page, int pageSize, AuthorizationToken authorizationToken, CancellationToken ct = default)
         {
             CheckAuthorizationToken(authorizationToken);
 
-            using (var request = new HttpRequestMessage())
+            using (var request = PrepareAuthorizedRequest("/users/me/notifications", authorizationToken, page, pageSize))
+            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
             {
-                request.RequestUri = _baseUrl.Append("/users/me/notifications");
-                request.Method = new HttpMethod("GET");
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
-                request.Headers.Add("x-page", page.ToString());
-                request.Headers.Add("x-size", pageSize.ToString());
+                CheckAuthorizedResponce(response);
 
-                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+                switch (response.StatusCode)
                 {
-                    CheckAuthorizedResponce(response);
-
-                    switch (response.StatusCode)
-                    {
-                        case HttpStatusCode.OK:
-                            return await ExtractDataAsync<IEnumerable<Notification>>(response).ConfigureAwait(false);
-                        default:
-                            throw new ServerErrorException(response);
-                    }
+                    case HttpStatusCode.OK:
+                        return await ExtractDataAsync<IEnumerable<Notification>>(response).ConfigureAwait(false);
+                    default:
+                        throw new ServerErrorException(response);
                 }
             }
         }
@@ -92,30 +76,21 @@ namespace LuKaSo.Zonky.Api
         /// <param name="authorizationToken"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<WalletTransaction>> GetWalletTransactionsAsync(int page, int pageSize, AuthorizationToken authorizationToken, FilterOptions filter = null, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<WalletTransaction>> GetWalletTransactionsAsync(int page, int pageSize, AuthorizationToken authorizationToken, FilterOptions filter = null, CancellationToken ct = default)
         {
             CheckAuthorizationToken(authorizationToken);
 
-            using (var request = new HttpRequestMessage())
+            using (var request = PrepareAuthorizedRequest("/users/me/wallet/transactions", authorizationToken, page, pageSize))
+            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
             {
-                request.RequestUri = _baseUrl.Append("/users/me/wallet/transactions").AppendFilterOptions(filter);
-                request.Method = new HttpMethod("GET");
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
-                request.Headers.Add("x-page", page.ToString());
-                request.Headers.Add("x-size", pageSize.ToString());
+                CheckAuthorizedResponce(response);
 
-                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+                switch (response.StatusCode)
                 {
-                    CheckAuthorizedResponce(response);
-
-                    switch (response.StatusCode)
-                    {
-                        case HttpStatusCode.OK:
-                            return await ExtractDataAsync<IEnumerable<WalletTransaction>>(response).ConfigureAwait(false);
-                        default:
-                            throw new ServerErrorException(response);
-                    }
+                    case HttpStatusCode.OK:
+                        return await ExtractDataAsync<IEnumerable<WalletTransaction>>(response).ConfigureAwait(false);
+                    default:
+                        throw new ServerErrorException(response);
                 }
             }
         }
@@ -126,29 +101,21 @@ namespace LuKaSo.Zonky.Api
         /// <param name="authorizationToken"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<BlockedAmount>> GetBlockedAmountAsync(AuthorizationToken authorizationToken, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<BlockedAmount>> GetBlockedAmountAsync(AuthorizationToken authorizationToken, CancellationToken ct = default)
         {
             CheckAuthorizationToken(authorizationToken);
 
-            using (var request = new HttpRequestMessage())
+            using (var request = PrepareAuthorizedRequest("/users/me/wallet/blocked-amounts", authorizationToken).AddSize(int.MaxValue))
+            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
             {
-                request.RequestUri = _baseUrl.Append("/users/me/wallet/blocked-amounts");
-                request.Method = new HttpMethod("GET");
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
-                request.Headers.Add("x-size", "2147483647");
+                CheckAuthorizedResponce(response);
 
-                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+                switch (response.StatusCode)
                 {
-                    CheckAuthorizedResponce(response);
-
-                    switch (response.StatusCode)
-                    {
-                        case HttpStatusCode.OK:
-                            return await ExtractDataAsync<IEnumerable<BlockedAmount>>(response).ConfigureAwait(false);
-                        default:
-                            throw new ServerErrorException(response);
-                    }
+                    case HttpStatusCode.OK:
+                        return await ExtractDataAsync<IEnumerable<BlockedAmount>>(response).ConfigureAwait(false);
+                    default:
+                        throw new ServerErrorException(response);
                 }
             }
         }
@@ -159,28 +126,21 @@ namespace LuKaSo.Zonky.Api
         /// <param name="authorizationToken"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<InvestorOverview> GetInvestorOverviewAsync(AuthorizationToken authorizationToken, CancellationToken ct = default(CancellationToken))
+        public async Task<InvestorOverview> GetInvestorOverviewAsync(AuthorizationToken authorizationToken, CancellationToken ct = default)
         {
             CheckAuthorizationToken(authorizationToken);
 
-            using (var request = new HttpRequestMessage())
+            using (var request = PrepareAuthorizedRequest("/statistics/me/overview", authorizationToken))
+            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
             {
-                request.RequestUri = _baseUrl.Append("/statistics/me/overview");
-                request.Method = new HttpMethod("GET");
-                request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse("application/json"));
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authorizationToken.AccessToken.ToString());
+                CheckAuthorizedResponce(response);
 
-                using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+                switch (response.StatusCode)
                 {
-                    CheckAuthorizedResponce(response);
-
-                    switch (response.StatusCode)
-                    {
-                        case HttpStatusCode.OK:
-                            return await ExtractDataAsync<InvestorOverview>(response).ConfigureAwait(false);
-                        default:
-                            throw new ServerErrorException(response);
-                    }
+                    case HttpStatusCode.OK:
+                        return await ExtractDataAsync<InvestorOverview>(response).ConfigureAwait(false);
+                    default:
+                        throw new ServerErrorException(response);
                 }
             }
         }
