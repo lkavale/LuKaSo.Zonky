@@ -7,6 +7,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Threading;
 
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Blocker Code Smell", "S2699:Tests should include assertions", Justification = "If method fails, exception will be thrown, so test not will not pass", Scope = "member", Target = "~M:LuKaSo.Zonky.Tests.IntegrationApiaryMock.Api.InvestmentsTests.CreatePrimaryMarketInvestmentOk")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Blocker Code Smell", "S2699:Tests should include assertions", Justification = "If method fails, exception will be thrown, so test not will not pass", Scope = "member", Target = "~M:LuKaSo.Zonky.Tests.IntegrationApiaryMock.Api.InvestmentsTests.InreasePrimaryMarketInvestmentOk")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Blocker Code Smell", "S2699:Tests should include assertions", Justification = "If method fails, exception will be thrown, so test not will not pass", Scope = "member", Target = "~M:LuKaSo.Zonky.Tests.IntegrationApiaryMock.Api.InvestmentsTests.OfferInvestmentOnSecondaryMarketOk")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Blocker Code Smell", "S2699:Tests should include assertions", Justification = "If method fails, exception will be thrown, so test not will not pass", Scope = "member", Target = "~M:LuKaSo.Zonky.Tests.IntegrationApiaryMock.Api.InvestmentsTests.CancelOfferInvestmentOnSecondaryMarketOk")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Blocker Code Smell", "S2699:Tests should include assertions", Justification = "If method fails, exception will be thrown, so test not will not pass", Scope = "member", Target = "~M:LuKaSo.Zonky.Tests.IntegrationApiaryMock.Api.InvestmentsTests.BuyInvestmentOnSecondaryMarketOk")]
+
 namespace LuKaSo.Zonky.Tests.IntegrationApiaryMock.Api
 {
     [TestClass]
@@ -54,20 +60,6 @@ namespace LuKaSo.Zonky.Tests.IntegrationApiaryMock.Api
         }
 
         [TestMethod]
-        public void CreatePrimaryMarketInvestmentNotAuthorized()
-        {
-            var investmentRequest = new PrimaryMarketInvestment()
-            {
-                Amount = 200,
-                LoanId = 1,
-                CaptchaResponse = "..."
-            };
-
-            var token = new AuthorizationToken() { AccessToken = Guid.NewGuid() };
-            _zonkyApi.CreatePrimaryMarketInvestmentAsync(investmentRequest, token, CancellationToken.None).GetAwaiter().GetResult();
-        }
-
-        [TestMethod]
         public void InreasePrimaryMarketInvestmentOk()
         {
             var investmentRequest = new IncreasePrimaryMarketInvestment()
@@ -76,18 +68,6 @@ namespace LuKaSo.Zonky.Tests.IntegrationApiaryMock.Api
             };
 
             _zonkyApi.IncreasePrimaryMarketInvestmentAsync(1, investmentRequest, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
-        }
-
-        [TestMethod]
-        public void InreasePrimaryMarketInvestmentNotAuthorized()
-        {
-            var investmentRequest = new IncreasePrimaryMarketInvestment()
-            {
-                Amount = 200
-            };
-
-            var token = new AuthorizationToken() { AccessToken = Guid.NewGuid() };
-            _zonkyApi.IncreasePrimaryMarketInvestmentAsync(1, investmentRequest, token, CancellationToken.None).GetAwaiter().GetResult();
         }
 
         [TestMethod]
@@ -104,27 +84,7 @@ namespace LuKaSo.Zonky.Tests.IntegrationApiaryMock.Api
         }
 
         [TestMethod]
-        public void OfferInvestmentOnSecondaryMarketNotAuthorized()
-        {
-            var request = new SecondaryMarketOfferSell()
-            {
-                InvestmentId = 15822,
-                RemainingPrincipal = 199.66M,
-                FeeAmount = 21.98M
-            };
-
-            var token = new AuthorizationToken() { AccessToken = Guid.NewGuid() };
-            _zonkyApi.OfferInvestmentOnSecondaryMarketAsync(request, token, CancellationToken.None).GetAwaiter().GetResult();
-        }
-
-        [TestMethod]
         public void CancelOfferInvestmentOnSecondaryMarketOk()
-        {
-            _zonkyApi.CancelOfferInvestmentOnSecondaryMarketAsync(123, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
-        }
-
-        [TestMethod]
-        public void CancelOfferInvestmentOnSecondaryMarketNotAuthorized()
         {
             _zonkyApi.CancelOfferInvestmentOnSecondaryMarketAsync(123, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
         }
@@ -138,18 +98,6 @@ namespace LuKaSo.Zonky.Tests.IntegrationApiaryMock.Api
             };
 
             _zonkyApi.BuySecondaryMarketInvestmentAsync(1, request, _tokenProvider.GetToken(), CancellationToken.None).GetAwaiter().GetResult();
-        }
-
-        [TestMethod]
-        public void BuyInvestmentOnSecondaryMarketNotAuthorized()
-        {
-            var request = new SecondaryMarketInvestment()
-            {
-                Amount = 21.98M
-            };
-
-            var token = new AuthorizationToken() { AccessToken = Guid.NewGuid() };
-            _zonkyApi.BuySecondaryMarketInvestmentAsync(1, request, token, CancellationToken.None).GetAwaiter().GetResult();
         }
     }
 }
