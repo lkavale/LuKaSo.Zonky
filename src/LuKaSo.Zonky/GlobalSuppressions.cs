@@ -17,7 +17,3 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "Method for manupulation with URL could contains URL delimiters", Scope = "member", Target = "~M:LuKaSo.Zonky.Extesions.UriExtensions.Append(System.Uri,System.String)~System.Uri")]
 
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S125:Sections of code should not be commented out", Justification = "This properties are always empty, client's name and surename is secret", Scope = "member", Target = "~P:LuKaSo.Zonky.Models.Investments.Investment.LoanName")]
-
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S125:Sections of code should not be commented out", Justification = "Rating of loan removed", Scope = "member", Target = "~P:LuKaSo.Zonky.Models.Investments.Investment.InterestRate")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S125:Sections of code should not be commented out", Justification = "Rating of loan removed", Scope = "member", Target = "~P:LuKaSo.Zonky.Models.Loans.Loan.Region")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S125:Sections of code should not be commented out", Justification = "Rating of loan removed", Scope = "member", Target = "~P:LuKaSo.Zonky.Models.Markets.SecondaryMarketOffer.InterestRate")]

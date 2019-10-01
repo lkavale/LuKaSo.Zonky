@@ -25,6 +25,16 @@ namespace LuKaSo.Zonky.Api
         Task<AuthorizationToken> GetTokenExchangePasswordAsync(User user, CancellationToken ct = default(CancellationToken));
 
         /// <summary>
+        /// Get access token exchange with password and MFA token
+        /// </summary>
+        /// <param name="user">User</param>
+        /// <param name="code">MFA code</param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        Task<AuthorizationToken> GetTokenExchangePasswordMfaAsync(User user, MfaCode code, CancellationToken ct = default(CancellationToken));
+
+
+        /// <summary>
         /// Get access token exchange with refresh token
         /// </summary>
         /// <param name="authorizationToken"></param>

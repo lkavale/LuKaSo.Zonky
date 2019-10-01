@@ -13,7 +13,7 @@ namespace LuKaSo.Zonky.Client
         /// </summary>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<LoanbookItem>> GetLoanbookAsync(CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<LoanbookItem>> GetLoanbookAsync(CancellationToken ct = default)
         {
             var file = await ZonkyApi.GetLoanbookFileAddressAsync().ConfigureAwait(false);
             var processor = new SpreadsheetProcessor<LoanbookItem>();

@@ -76,5 +76,46 @@ namespace LuKaSo.Zonky.Tests.Common
 
             Assert.AreEqual(_address.AttachQueryParameters(parameters), _request.RequestUri);
         }
+
+        [TestMethod]
+        public void AddRequestParametersMultipletimes()
+        {
+            var parameters1 = new Dictionary<string, string>()
+            {
+                { "x", "10" },
+                { "y", "20" }
+            };
+
+            var parameters2 = new Dictionary<string, string>()
+            {
+                { "z", "30" }
+            };
+
+            _request.AddRequestParameters(parameters1);
+            _request.AddRequestParameters(parameters2);
+
+            var allParameters = parameters1.Concat(parameters2).ToDictionary(x => x.Key, x => x.Value);
+
+            Assert.AreEqual(_address.AttachQueryParameters(allParameters), _request.RequestUri);
+        }
+
+        [TestMethod]
+        public void AddRequestParametersRewrite()
+        {
+            var parameters1 = new Dictionary<string, string>()
+            {
+                { "x", "10" }
+            };
+
+            var parameters2 = new Dictionary<string, string>()
+            {
+                { "x", "30" }
+            };
+
+            _request.AddRequestParameters(parameters1);
+            _request.AddRequestParameters(parameters2);
+
+            Assert.AreEqual(_address.AttachQueryParameters(parameters2), _request.RequestUri);
+        }
     }
 }

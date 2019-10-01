@@ -20,11 +20,11 @@ namespace LuKaSo.Zonky.Client
         /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Loan>> GetPrimaryMarketPlaceAsync(int page, int pageSize, FilterOptions filter = null, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<Loan>> GetPrimaryMarketPlaceAsync(int page, int pageSize, FilterOptions filter = null, CancellationToken ct = default)
         {
             if (_marketplaceRequestsAuthorized)
             {
-                return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetPrimaryMarketPlaceAsync(page, pageSize, _authorizationToken, filter, ct), ct).ConfigureAwait(false);
+                return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetPrimaryMarketPlaceAsync(page, pageSize, AuthorizationToken, filter, ct), ct).ConfigureAwait(false);
             }
 
             return await ZonkyApi.GetPrimaryMarketPlaceAsync(page, pageSize, filter, ct).ConfigureAwait(false);
@@ -36,7 +36,7 @@ namespace LuKaSo.Zonky.Client
         /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Loan>> GetAllPrimaryMarketPlaceAsync(FilterOptions filter = null, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<Loan>> GetAllPrimaryMarketPlaceAsync(FilterOptions filter = null, CancellationToken ct = default)
         {
             _log.Debug($"Get all primary market loans request.");
 
@@ -54,7 +54,7 @@ namespace LuKaSo.Zonky.Client
         /// </summary>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Loan>> GetAllUncoveredPrimaryMarketPlaceAsync(CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<Loan>> GetAllUncoveredPrimaryMarketPlaceAsync(CancellationToken ct = default)
         {
             var filter = new FilterOptions();
             filter.Add("nonReservedRemainingInvestment__gt", "0");
@@ -67,7 +67,7 @@ namespace LuKaSo.Zonky.Client
         /// </summary>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Loan>> GetAllCoveredPrimaryMarketPlaceAsync(CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<Loan>> GetAllCoveredPrimaryMarketPlaceAsync(CancellationToken ct = default)
         {
             var filter = new FilterOptions();
             filter.Add("nonReservedRemainingInvestment__gt", "1");
@@ -83,11 +83,11 @@ namespace LuKaSo.Zonky.Client
         /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<SecondaryMarketOffer>> GetSecondaryMarketplaceAsync(int page, int pageSize, FilterOptions filter = null, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<SecondaryMarketOffer>> GetSecondaryMarketplaceAsync(int page, int pageSize, FilterOptions filter = null, CancellationToken ct = default)
         {
             if (_marketplaceRequestsAuthorized)
             {
-                return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetSecondaryMarketplaceAsync(page, pageSize, _authorizationToken, filter, ct), ct).ConfigureAwait(false);
+                return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetSecondaryMarketplaceAsync(page, pageSize, AuthorizationToken, filter, ct), ct).ConfigureAwait(false);
             }
             
             return await ZonkyApi.GetSecondaryMarketplaceAsync(page, pageSize, filter, ct).ConfigureAwait(false);
@@ -99,7 +99,7 @@ namespace LuKaSo.Zonky.Client
         /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<SecondaryMarketOffer>> GetAllSecondaryMarketplaceAsync(FilterOptions filter = null, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<SecondaryMarketOffer>> GetAllSecondaryMarketplaceAsync(FilterOptions filter = null, CancellationToken ct = default)
         {
             _log.Debug($"Get all secondary market offers request.");
 

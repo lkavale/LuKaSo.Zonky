@@ -49,7 +49,25 @@ namespace LuKaSo.Zonky.Client
         /// <summary>
         /// Authorization token
         /// </summary>
+        private object _authorizationTokenLock = new object();
         private AuthorizationToken _authorizationToken;
+        private AuthorizationToken AuthorizationToken
+        {
+            get
+            {
+                lock (_authorizationTokenLock)
+                {
+                    return _authorizationToken;
+                }
+            }
+            set
+            {
+                lock (_authorizationTokenLock)
+                {
+                    _authorizationToken = value;
+                }
+            }
+        }
 
         /// <summary>
         /// Log
@@ -81,9 +99,7 @@ namespace LuKaSo.Zonky.Client
         /// </summary>
         /// <param name="user">User</param>
         /// <param name="enableTrading">Enable trading</param>
-        public ZonkyClient(User user, bool enableTrading) : this(user, enableTrading, false)
-        {
-        }
+        public ZonkyClient(User user, bool enableTrading) : this(user, enableTrading, false) { }
 
         /// <summary>
         /// Zonky client
@@ -106,9 +122,7 @@ namespace LuKaSo.Zonky.Client
         /// <param name="userName">User name</param>
         /// <param name="password">Password</param>
         /// <param name="enableTrading">Enable trading</param>
-        public ZonkyClient(string userName, string password, bool enableTrading) : this(new User(userName, password), enableTrading)
-        {
-        }
+        public ZonkyClient(string userName, string password, bool enableTrading) : this(new User(userName, password), enableTrading) { }
 
         /// <summary>
         /// Zonky client
@@ -117,8 +131,55 @@ namespace LuKaSo.Zonky.Client
         /// <param name="password">Password</param>
         /// <param name="enableTrading">Enable trading</param>
         /// <param name="marketplaceRequestsAuthorized">Marketplace requests authorized</param>
-        public ZonkyClient(string userName, string password, bool enableTrading, bool marketplaceRequestsAuthorized) : this(new User(userName, password), enableTrading, marketplaceRequestsAuthorized)
+        public ZonkyClient(string userName, string password, bool enableTrading, bool marketplaceRequestsAuthorized) : this(new User(userName, password), enableTrading, marketplaceRequestsAuthorized) { }
+
+        /// <summary>
+        /// Login
+        /// </summary>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        private async Task LoginAsync(CancellationToken ct = default)
         {
+            CheckAuthorizationPrerequisites();
+
+            try
+            {
+                _log.Debug($"Client requests login user {_user.Name}.");
+                AuthorizationToken = await ZonkyApi.GetTokenExchangePasswordAsync(_user, ct).ConfigureAwait(false);
+                _log.Debug($"User {_user.Name} logged in, new access token is {AuthorizationToken.AccessToken.ToString()}, refresh token {AuthorizationToken.RefreshToken.ToString()}.");
+            }
+            catch (MultiFactorAuthenticationRequiredException ex)
+            {
+                _log.Error(ex, $"Client requested for MFA with token {ex.MfaToken}");
+                throw;
+            }
+            catch (BadLoginException ex)
+            {
+                _log.Error(ex, $"Client has wrong password for user {_user.Name}, another login tries are disabled.");
+                _wrongPassword = false;
+            }
+        }
+
+        /// <summary>
+        /// Refresh token
+        /// </summary>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        private async Task RefreshTokenAsync(CancellationToken ct = default)
+        {
+            CheckAuthorizationPrerequisites();
+
+            try
+            {
+                _log.Debug($"Client requests refresh token for user {_user.Name}, refresh token {AuthorizationToken.RefreshToken.ToString()}.");
+                AuthorizationToken = await ZonkyApi.GetTokenExchangeRefreshTokenAsync(AuthorizationToken, ct).ConfigureAwait(false);
+                _log.Debug($"Refresh token for user {_user.Name}, new access token is {AuthorizationToken.AccessToken.ToString()}, refresh token {AuthorizationToken.RefreshToken.ToString()}.");
+            }
+            catch (BadRefreshTokenException ex)
+            {
+                _log.Info(ex, $"Client retrying login as {_user.Name} after unsuccessful refresh token request.");
+                await LoginAsync(ct).ConfigureAwait(false);
+            }
         }
 
         /// <summary>
@@ -128,7 +189,7 @@ namespace LuKaSo.Zonky.Client
         /// <param name="action"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        protected async Task<T> HandleAuthorizedRequestAsync<T>(Func<Task<T>> action, CancellationToken ct = default(CancellationToken))
+        protected async Task<T> HandleAuthorizedRequestAsync<T>(Func<Task<T>> action, CancellationToken ct = default)
         {
             CheckAuthorizationPrerequisites();
 
@@ -178,6 +239,24 @@ namespace LuKaSo.Zonky.Client
 
             _log.Debug($"Client retrying request after refresh authorization token for user {_user.Name}.");
             await action().ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Check authorization prerequisites
+        /// </summary>
+        private void CheckAuthorizationPrerequisites()
+        {
+            if (_user == null)
+            {
+                _log.Debug($"Zonky client could not make authorized request due to disabled login.");
+                throw new LoginNotAllowedException();
+            }
+
+            if (_wrongPassword)
+            {
+                _log.Debug($"Zonky client could not make authorized request for user {_user.Name} due to wrong password.");
+                throw new BadLoginException(_user);
+            }
         }
 
         /// <summary>

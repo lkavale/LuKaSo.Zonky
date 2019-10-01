@@ -17,9 +17,9 @@ namespace LuKaSo.Zonky.Client
         /// </summary>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<Wallet> GetWalletAsync(CancellationToken ct = default(CancellationToken))
+        public async Task<Wallet> GetWalletAsync(CancellationToken ct = default)
         {
-            return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetWalletAsync(_authorizationToken, ct), ct).ConfigureAwait(false);
+            return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetWalletAsync(AuthorizationToken, ct), ct).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -29,9 +29,9 @@ namespace LuKaSo.Zonky.Client
         /// <param name="pageSize">Number of messages</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Notification>> GetNotificationsAsync(int page, int pageSize, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<Notification>> GetNotificationsAsync(int page, int pageSize, CancellationToken ct = default)
         {
-            return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetNotificationsAsync(page, pageSize, _authorizationToken, ct), ct).ConfigureAwait(false);
+            return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetNotificationsAsync(page, pageSize, AuthorizationToken, ct), ct).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace LuKaSo.Zonky.Client
         /// </summary>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Notification>> GetAllNotificationsAsync(CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<Notification>> GetAllNotificationsAsync(CancellationToken ct = default)
         {
             _log.Debug($"Get all investor's notifications request.");
 
@@ -60,9 +60,9 @@ namespace LuKaSo.Zonky.Client
         /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<WalletTransaction>> GetWalletTransactionsAsync(int page, int pageSize, FilterOptions filter = null, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<WalletTransaction>> GetWalletTransactionsAsync(int page, int pageSize, FilterOptions filter = null, CancellationToken ct = default)
         {
-            return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetWalletTransactionsAsync(page, pageSize, _authorizationToken, filter, ct), ct).ConfigureAwait(false);
+            return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetWalletTransactionsAsync(page, pageSize, AuthorizationToken, filter, ct), ct).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace LuKaSo.Zonky.Client
         /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<WalletTransaction>> GetAllWalletTransactionsAsync(FilterOptions filter = null, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<WalletTransaction>> GetAllWalletTransactionsAsync(FilterOptions filter = null, CancellationToken ct = default)
         {
             _log.Debug($"Get all investor's wallet transactions request.");
 
@@ -89,9 +89,9 @@ namespace LuKaSo.Zonky.Client
         /// </summary>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<BlockedAmount>> GetBlockedAmountAsync(CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<BlockedAmount>> GetBlockedAmountAsync(CancellationToken ct = default)
         {
-            return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetBlockedAmountAsync(_authorizationToken, ct), ct).ConfigureAwait(false);
+            return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetBlockedAmountAsync(AuthorizationToken, ct), ct).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -99,9 +99,9 @@ namespace LuKaSo.Zonky.Client
         /// </summary>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<InvestorOverview> GetInvestorOverviewAsync(CancellationToken ct = default(CancellationToken))
+        public async Task<InvestorOverview> GetInvestorOverviewAsync(CancellationToken ct = default)
         {
-            return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetInvestorOverviewAsync(_authorizationToken, ct), ct).ConfigureAwait(false);
+            return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetInvestorOverviewAsync(AuthorizationToken, ct), ct).ConfigureAwait(false);
         }
     }
 }

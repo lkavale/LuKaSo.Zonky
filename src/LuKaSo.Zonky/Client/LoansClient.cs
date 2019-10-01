@@ -13,7 +13,7 @@ namespace LuKaSo.Zonky.Client
         /// <param name="loanId">Loan Id</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<Loan> GetLoanAsync(int loanId, CancellationToken ct = default(CancellationToken))
+        public async Task<Loan> GetLoanAsync(int loanId, CancellationToken ct = default)
         {
             return await ZonkyApi.GetLoanAsync(loanId, ct).ConfigureAwait(false);
         }
@@ -24,9 +24,9 @@ namespace LuKaSo.Zonky.Client
         /// <param name="loanId">Loan Id</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<LoanInvestment>> GetLoanInvestmentsAsync(int loanId, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<LoanInvestment>> GetLoanInvestmentsAsync(int loanId, CancellationToken ct = default)
         {
-            return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetLoanInvestmentsAsync(loanId, _authorizationToken, ct), ct).ConfigureAwait(false);
+            return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetLoanInvestmentsAsync(loanId, AuthorizationToken, ct), ct).ConfigureAwait(false);
         }
     }
 }

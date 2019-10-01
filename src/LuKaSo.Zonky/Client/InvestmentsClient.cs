@@ -18,9 +18,9 @@ namespace LuKaSo.Zonky.Client
         /// <param name="pageSize">Items per page</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Investment>> GetInvestmentsAsync(int page, int pageSize, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<Investment>> GetInvestmentsAsync(int page, int pageSize, CancellationToken ct = default)
         {
-            return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetInvestmentsAsync(page, pageSize, _authorizationToken, ct), ct).ConfigureAwait(false);
+            return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetInvestmentsAsync(page, pageSize, AuthorizationToken, ct), ct).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -28,12 +28,12 @@ namespace LuKaSo.Zonky.Client
         /// </summary>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Investment>> GetAllInvestmentsAsync(CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<Investment>> GetAllInvestmentsAsync(CancellationToken ct = default)
         {
             _log.Debug($"Get all investor's participations request.");
 
             // Get data
-            var data = await GetDataSplitRequestAsync<Investment>(_maxPageSize, (page, pageSize) => GetInvestmentsAsync(page, pageSize, ct), ct).ConfigureAwait(false);
+            var data = await GetDataSplitRequestAsync(_maxPageSize, (page, pageSize) => GetInvestmentsAsync(page, pageSize, ct), ct).ConfigureAwait(false);
 
             // Distinct result for situation when new item is added during querying data 
             data = data.DistinctBy(l => l.Id).ToList();
@@ -47,9 +47,9 @@ namespace LuKaSo.Zonky.Client
         /// <param name="loanId">Loan Id</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<InvestmentEvent>> GetInvestmentEventsAsync(int loanId, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<InvestmentEvent>> GetInvestmentEventsAsync(int loanId, CancellationToken ct = default)
         {
-            return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetInvestmentEventsAsync(loanId, _authorizationToken, ct), ct).ConfigureAwait(false);
+            return await HandleAuthorizedRequestAsync(() => ZonkyApi.GetInvestmentEventsAsync(loanId, AuthorizationToken, ct), ct).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -58,11 +58,11 @@ namespace LuKaSo.Zonky.Client
         /// <param name="investment">Primary market investment</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task CreatePrimaryMarketInvestmentAsync(PrimaryMarketInvestment investment, CancellationToken ct = default(CancellationToken))
+        public async Task CreatePrimaryMarketInvestmentAsync(PrimaryMarketInvestment investment, CancellationToken ct = default)
         {
             CheckTradingPrerequisites();
 
-            await HandleAuthorizedRequestAsync(() => ZonkyApi.CreatePrimaryMarketInvestmentAsync(investment, _authorizationToken, ct), ct).ConfigureAwait(false);
+            await HandleAuthorizedRequestAsync(() => ZonkyApi.CreatePrimaryMarketInvestmentAsync(investment, AuthorizationToken, ct), ct).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -72,11 +72,11 @@ namespace LuKaSo.Zonky.Client
         /// <param name="increaseInvestment">Primary market increase investment</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task IncreasePrimaryMarketInvestmentAsync(int investmentId, IncreasePrimaryMarketInvestment increaseInvestment, CancellationToken ct = default(CancellationToken))
+        public async Task IncreasePrimaryMarketInvestmentAsync(int investmentId, IncreasePrimaryMarketInvestment increaseInvestment, CancellationToken ct = default)
         {
             CheckTradingPrerequisites();
 
-            await HandleAuthorizedRequestAsync(() => ZonkyApi.IncreasePrimaryMarketInvestmentAsync(investmentId, increaseInvestment, _authorizationToken, ct), ct).ConfigureAwait(false);
+            await HandleAuthorizedRequestAsync(() => ZonkyApi.IncreasePrimaryMarketInvestmentAsync(investmentId, increaseInvestment, AuthorizationToken, ct), ct).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -86,11 +86,11 @@ namespace LuKaSo.Zonky.Client
         /// <param name="secondaryMarketInvestment">Secondary market investment</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task BuySecondaryMarketInvestmentAsync(int offerId, SecondaryMarketInvestment secondaryMarketInvestment, CancellationToken ct = default(CancellationToken))
+        public async Task BuySecondaryMarketInvestmentAsync(int offerId, SecondaryMarketInvestment secondaryMarketInvestment, CancellationToken ct = default)
         {
             CheckTradingPrerequisites();
 
-            await HandleAuthorizedRequestAsync(() => ZonkyApi.BuySecondaryMarketInvestmentAsync(offerId, secondaryMarketInvestment, _authorizationToken, ct), ct).ConfigureAwait(false);
+            await HandleAuthorizedRequestAsync(() => ZonkyApi.BuySecondaryMarketInvestmentAsync(offerId, secondaryMarketInvestment, AuthorizationToken, ct), ct).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -99,11 +99,11 @@ namespace LuKaSo.Zonky.Client
         /// <param name="secondaryMarketOfferSell">Secondary market offer to sell</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task OfferInvestmentOnSecondaryMarketAsync(SecondaryMarketOfferSell secondaryMarketOfferSell, CancellationToken ct = default(CancellationToken))
+        public async Task OfferInvestmentOnSecondaryMarketAsync(SecondaryMarketOfferSell secondaryMarketOfferSell, CancellationToken ct = default)
         {
             CheckTradingPrerequisites();
 
-            await HandleAuthorizedRequestAsync(() => ZonkyApi.OfferInvestmentOnSecondaryMarketAsync(secondaryMarketOfferSell, _authorizationToken, ct), ct).ConfigureAwait(false);
+            await HandleAuthorizedRequestAsync(() => ZonkyApi.OfferInvestmentOnSecondaryMarketAsync(secondaryMarketOfferSell, AuthorizationToken, ct), ct).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -112,11 +112,11 @@ namespace LuKaSo.Zonky.Client
         /// <param name="offerId">Secondary market offer Id</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task CancelOfferInvestmentOnSecondaryMarketAsync(int offerId, CancellationToken ct = default(CancellationToken))
+        public async Task CancelOfferInvestmentOnSecondaryMarketAsync(int offerId, CancellationToken ct = default)
         {
             CheckTradingPrerequisites();
 
-            await HandleAuthorizedRequestAsync(() => ZonkyApi.CancelOfferInvestmentOnSecondaryMarketAsync(offerId, _authorizationToken, ct), ct).ConfigureAwait(false);
+            await HandleAuthorizedRequestAsync(() => ZonkyApi.CancelOfferInvestmentOnSecondaryMarketAsync(offerId, AuthorizationToken, ct), ct).ConfigureAwait(false);
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Net.Http.Headers;
 
 namespace LuKaSo.Zonky.Common
 {
-    public class ZonkyHttpRequestMessage : HttpRequestMessage
+    internal class ZonkyHttpRequestMessage : HttpRequestMessage
     {
         public ZonkyHttpRequestMessage(HttpMethod method, Uri address) : base(method, address)
         {
