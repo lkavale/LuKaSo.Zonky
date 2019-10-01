@@ -332,5 +332,5 @@ ASALocalRun/
 
 # Local History for Visual Studio
 .localhistory/
-tests/LuKaSo.Zonky.Tests/secrets.json
 examples/LuKaSo.Zonky.ExampleApp/secrets.json
+tests/LuKaSo.Zonky.Tests.IntegrationProduction/secrets.json
