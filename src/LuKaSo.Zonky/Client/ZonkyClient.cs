@@ -49,7 +49,7 @@ namespace LuKaSo.Zonky.Client
         /// <summary>
         /// Authorization token
         /// </summary>
-        private object _authorizationTokenLock = new object();
+        private readonly object _authorizationTokenLock = new object();
         private AuthorizationToken _authorizationToken;
         private AuthorizationToken AuthorizationToken
         {
@@ -218,7 +218,7 @@ namespace LuKaSo.Zonky.Client
         /// <param name="action"></param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        protected async Task HandleAuthorizedRequestAsync(Func<Task> action, CancellationToken ct = default(CancellationToken))
+        protected async Task HandleAuthorizedRequestAsync(Func<Task> action, CancellationToken ct = default)
         {
             CheckAuthorizationPrerequisites();
 

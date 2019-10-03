@@ -22,9 +22,13 @@ namespace LuKaSo.Zonky.Api
         public async Task<AuthorizationToken> GetTokenExchangePasswordAsync(User user, CancellationToken ct = default)
         {
             using (var request = PrepareLoginRequest(user))
-            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead, ct).ConfigureAwait(false))
             {
-                return await ExtractAuthorizationDataAsync(response, user).ConfigureAwait(false);
+                return await _resolverFactory.Create<AuthorizationToken>(Settings, true)
+                    .ConfigureStatusResponce(HttpStatusCode.OK)
+                    .ConfigureStatusResponce<AuthorizationError>(HttpStatusCode.BadRequest, (error, message) => HandleAuthorizationError(error, message, user))
+                    .ConfigureDefaultResponce((message) => throw new ServerErrorException(message))
+                    .ExtractDataAsync(response);
             }
         }
 
@@ -38,9 +42,13 @@ namespace LuKaSo.Zonky.Api
         public async Task<AuthorizationToken> GetTokenExchangePasswordMfaAsync(User user, MfaCode code, CancellationToken ct = default)
         {
             using (var request = PrepareMfaLoginRequest(user, code))
-            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead, ct).ConfigureAwait(false))
             {
-                return await ExtractAuthorizationDataAsync(response, user).ConfigureAwait(false);
+                return await _resolverFactory.Create<AuthorizationToken>(Settings, true)
+                    .ConfigureStatusResponce(HttpStatusCode.OK)
+                    .ConfigureStatusResponce<AuthorizationError>(HttpStatusCode.BadRequest, (error, message) => HandleAuthorizationError(error, message, user))
+                    .ConfigureDefaultResponce((message) => throw new ServerErrorException(message))
+                    .ExtractDataAsync(response);
             }
         }
 
@@ -55,9 +63,13 @@ namespace LuKaSo.Zonky.Api
             CheckAuthorizationToken(authorizationToken);
 
             using (var request = PrepareRefreshTokenRequest(authorizationToken))
-            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead, ct).ConfigureAwait(false))
             {
-                return await ExtractRefreshTokenDataAsync(response, authorizationToken).ConfigureAwait(false);
+                return await _resolverFactory.Create<AuthorizationToken>(Settings, true)
+                    .ConfigureStatusResponce(HttpStatusCode.OK)
+                    .ConfigureStatusResponce(HttpStatusCode.BadRequest, (message) => throw new BadRefreshTokenException(message, authorizationToken))
+                    .ConfigureDefaultResponce((message) => throw new ServerErrorException(message))
+                    .ExtractDataAsync(response);
             }
         }
 
@@ -127,60 +139,23 @@ namespace LuKaSo.Zonky.Api
         }
 
         /// <summary>
-        /// Extract authorization data
+        /// Handle authorization error
         /// </summary>
-        /// <param name="response"></param>
+        /// <param name="error"></param>
+        /// <param name="message"></param>
         /// <param name="user"></param>
         /// <returns></returns>
-        private async Task<AuthorizationToken> ExtractAuthorizationDataAsync(HttpResponseMessage response, User user)
+        private void HandleAuthorizationError(AuthorizationError error, HttpResponseMessage message, User user)
         {
-            switch (response.StatusCode)
-            {
-                case HttpStatusCode.OK:
-                    return await ExtractDataAsync<AuthorizationToken>(response).ConfigureAwait(false);
-                case HttpStatusCode.BadRequest:
-                    await ExtractAuthorizationErrorAsync(response, user).ConfigureAwait(false);
-                    throw new BadResponceException(response);
-                default:
-                    throw new ServerErrorException(response);
-            }
-        }
-
-        /// <summary>
-        /// Extract authorization error
-        /// </summary>
-        /// <param name="response"></param>
-        /// <param name="user"></param>
-        /// <returns></returns>
-        private async Task ExtractAuthorizationErrorAsync(HttpResponseMessage response, User user)
-        {
-            var error = await ExtractDataAsync<AuthorizationError>(response).ConfigureAwait(false);
-
             switch (error.Code)
             {
                 case AuthorizationErrorCode.MFA_REQUIRED:
                     throw new MultiFactorAuthenticationRequiredException((Guid)error.MfaToken);
                 case AuthorizationErrorCode.CAPTCHA_REQUIRED:
-                    throw new BadLoginException(response, user);
-            }
-        }
-
-        /// <summary>
-        /// Extract refresh token data
-        /// </summary>
-        /// <param name="response"></param>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        private async Task<AuthorizationToken> ExtractRefreshTokenDataAsync(HttpResponseMessage response, AuthorizationToken token)
-        {
-            switch (response.StatusCode)
-            {
-                case HttpStatusCode.OK:
-                    return await ExtractDataAsync<AuthorizationToken>(response).ConfigureAwait(false);
-                case HttpStatusCode.BadRequest:
-                    throw new BadRefreshTokenException(response, token);
+                    throw new BadLoginException(message, user);
                 default:
-                    throw new ServerErrorException(response);
+                    throw new BadResponceException(message);
+
             }
         }
     }

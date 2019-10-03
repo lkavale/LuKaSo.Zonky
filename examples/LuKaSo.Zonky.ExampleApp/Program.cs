@@ -36,6 +36,17 @@ namespace LuKaSo.Zonky.ExampleApp
 
             Console.WriteLine("Press ENTER to exit...");
             Console.ReadLine();
+
+            timer1.Stop();
+            timer1.Dispose();
+
+            timer2.Stop();
+            timer2.Dispose();
+
+            timer3.Stop();
+            timer3.Dispose();
+
+            client.Dispose();
         }
     }
 }

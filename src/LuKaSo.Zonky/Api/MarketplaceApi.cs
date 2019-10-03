@@ -1,12 +1,9 @@
 ﻿using LuKaSo.Zonky.Common;
-using LuKaSo.Zonky.Exceptions;
-using LuKaSo.Zonky.Extesions;
 using LuKaSo.Zonky.Models;
 using LuKaSo.Zonky.Models.Loans;
 using LuKaSo.Zonky.Models.Login;
 using LuKaSo.Zonky.Models.Markets;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,12 +20,12 @@ namespace LuKaSo.Zonky.Api
         /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Loan>> GetPrimaryMarketPlaceAsync(int page, int pageSize, FilterOptions filter = null, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<Loan>> GetPrimaryMarketPlaceAsync(int page, int pageSize, FilterOptions filter = null, CancellationToken ct = default)
         {
             using (var request = PreparePrimaryMarketplaceRequest(page, pageSize, filter))
-            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead, ct).ConfigureAwait(false))
             {
-                return await ExtractMarketplaceDataAsync<Loan>(response);
+                return await ExtractResponceOkErrorDataAsync<IEnumerable<Loan>>(response);
             }
         }
 
@@ -41,15 +38,14 @@ namespace LuKaSo.Zonky.Api
         /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Loan>> GetPrimaryMarketPlaceAsync(int page, int pageSize, AuthorizationToken authorizationToken, FilterOptions filter = null, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<Loan>> GetPrimaryMarketPlaceAsync(int page, int pageSize, AuthorizationToken authorizationToken, FilterOptions filter = null, CancellationToken ct = default)
         {
             CheckAuthorizationToken(authorizationToken);
 
             using (var request = PreparePrimaryMarketplaceRequest(page, pageSize, filter).AddBearerAuthorization(authorizationToken))
-            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead, ct).ConfigureAwait(false))
             {
-                CheckAuthorizedResponce(response);
-                return await ExtractMarketplaceDataAsync<Loan>(response);
+                return await ExtractResponceOkErrorDataAsync<IEnumerable<Loan>>(response, true);
             }
         }
 
@@ -61,12 +57,12 @@ namespace LuKaSo.Zonky.Api
         /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<SecondaryMarketOffer>> GetSecondaryMarketplaceAsync(int page, int pageSize, FilterOptions filter = null, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<SecondaryMarketOffer>> GetSecondaryMarketplaceAsync(int page, int pageSize, FilterOptions filter = null, CancellationToken ct = default)
         {
             using (var request = PrepareSecondaryMarketplaceRequest(page, pageSize, filter))
-            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead, ct).ConfigureAwait(false))
             {
-                return await ExtractMarketplaceDataAsync<SecondaryMarketOffer>(response);
+                return await ExtractResponceOkErrorDataAsync<IEnumerable<SecondaryMarketOffer>>(response);
             }
         }
 
@@ -79,15 +75,14 @@ namespace LuKaSo.Zonky.Api
         /// <param name="filter">Filter options</param>
         /// <param name="ct"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<SecondaryMarketOffer>> GetSecondaryMarketplaceAsync(int page, int pageSize, AuthorizationToken authorizationToken, FilterOptions filter = null, CancellationToken ct = default(CancellationToken))
+        public async Task<IEnumerable<SecondaryMarketOffer>> GetSecondaryMarketplaceAsync(int page, int pageSize, AuthorizationToken authorizationToken, FilterOptions filter = null, CancellationToken ct = default)
         {
             CheckAuthorizationToken(authorizationToken);
 
             using (var request = PrepareSecondaryMarketplaceRequest(page, pageSize, filter).AddBearerAuthorization(authorizationToken))
-            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead, ct).ConfigureAwait(false))
             {
-                CheckAuthorizedResponce(response);
-                return await ExtractMarketplaceDataAsync<SecondaryMarketOffer>(response);
+                return await ExtractResponceOkErrorDataAsync<IEnumerable<SecondaryMarketOffer>>(response, true);
             }
         }
 
@@ -113,23 +108,6 @@ namespace LuKaSo.Zonky.Api
         private ZonkyHttpRequestMessage PreparePrimaryMarketplaceRequest(int page, int pageSize, FilterOptions filter = null)
         {
             return PreparePagingFilterRequest("/loans/marketplace", page, pageSize, filter);
-        }
-
-        /// <summary>
-        /// Extract marketplace data
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="response"></param>
-        /// <returns></returns>
-        private async Task<IEnumerable<T>> ExtractMarketplaceDataAsync<T>(HttpResponseMessage response)
-        {
-            switch (response.StatusCode)
-            {
-                case HttpStatusCode.OK:
-                    return await ExtractDataAsync<IEnumerable<T>>(response).ConfigureAwait(false);
-                default:
-                    throw new ServerErrorException(response);
-            }
         }
     }
 }

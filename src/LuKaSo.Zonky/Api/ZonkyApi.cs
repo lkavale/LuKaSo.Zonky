@@ -5,7 +5,6 @@ using LuKaSo.Zonky.Models;
 using LuKaSo.Zonky.Models.Login;
 using Newtonsoft.Json;
 using System;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -27,12 +26,17 @@ namespace LuKaSo.Zonky.Api
         /// <summary>
         /// Used HTTP client
         /// </summary>
-        private HttpClient _httpClient;
+        private readonly HttpClient _httpClient;
+
+        /// <summary>
+        /// Responce resolver factory
+        /// </summary>
+        private readonly ZonkyResponseResolverFactory _resolverFactory;
 
         /// <summary>
         /// JSON serializer settings
         /// </summary>
-        private Lazy<JsonSerializerSettings> _settings;
+        private readonly Lazy<JsonSerializerSettings> _settings;
         private JsonSerializerSettings Settings
         {
             get
@@ -54,7 +58,17 @@ namespace LuKaSo.Zonky.Api
         /// </summary>
         /// <param name="baseUrl">Base URL of service</param>
         /// <param name="httpClient">HTTP client</param>
-        public ZonkyApi(Uri baseUrl, HttpClient httpClient)
+        public ZonkyApi(Uri baseUrl, HttpClient httpClient) : this(baseUrl, httpClient, new ZonkyResponseResolverFactory())
+        {
+        }
+
+        /// <summary>
+        /// Zonky API constructor
+        /// </summary>
+        /// <param name="baseUrl">Base URL of service</param>
+        /// <param name="httpClient">HTTP client</param>
+        /// <param name="resolverFactory">Resolver factory</param>
+        internal ZonkyApi(Uri baseUrl, HttpClient httpClient, ZonkyResponseResolverFactory resolverFactory)
         {
             _httpClient = httpClient;
             _baseUrl = baseUrl;
@@ -63,6 +77,7 @@ namespace LuKaSo.Zonky.Api
                 var settings = new JsonSerializerSettings();
                 return settings;
             });
+            _resolverFactory = resolverFactory;
         }
 
         /// <summary>
@@ -129,23 +144,18 @@ namespace LuKaSo.Zonky.Api
         }
 
         /// <summary>
-        /// Extract data payload from message content and try to serialize
+        /// Extract responce data with HTTP 200, other status codes are common errors.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="response"></param>
+        /// <param name="responce"></param>
+        /// <param name="isAuthorized"></param>
         /// <returns></returns>
-        public async Task<T> ExtractDataAsync<T>(HttpResponseMessage response)
+        private async Task<T> ExtractResponceOkErrorDataAsync<T>(HttpResponseMessage responce, bool isAuthorized = false)
         {
-            var responseData = response.Content == null ? null : await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-            try
-            {
-                return JsonConvert.DeserializeObject<T>(responseData, Settings);
-            }
-            catch (JsonException ex)
-            {
-                throw new BadResponceException(response, ex);
-            }
+            return await _resolverFactory.Create<T>(Settings, isAuthorized)
+                .ConfigureStatusResponce(HttpStatusCode.OK)
+                .ConfigureDefaultResponce((message) => throw new ServerErrorException(message))
+                .ExtractDataAsync(responce);
         }
 
         /// <summary>
@@ -157,21 +167,6 @@ namespace LuKaSo.Zonky.Api
             if (authorizationToken == null)
             {
                 throw new NotAuthorizedException();
-            }
-        }
-
-        /// <summary>
-        /// Check responce for authorization errors
-        /// </summary>
-        /// <param name="response"></param>
-        protected void CheckAuthorizedResponce(HttpResponseMessage response)
-        {
-            if (response != null && response.Headers != null &&
-                (response.StatusCode == HttpStatusCode.Unauthorized ||
-                (response.Headers.TryGetValues("WWW-Authenticate", out var authHeader) &&
-                authHeader.Any(s => s.Contains("Bearer error=\"invalid_token\"")))))
-            {
-                throw new BadAccessTokenException();
             }
         }
 

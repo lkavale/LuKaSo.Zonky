@@ -59,6 +59,7 @@ namespace LuKaSo.Zonky.Tests.IntegrationProduction.Api
         }
 
         [TestMethod]
+        [TestCategory("SMS")]
         public void GetWalletTransactionsAsyncOk()
         {
             var walletTransations = _zonkyApi.GetWalletTransactionsAsync(0, 1000, _tokenProvider.GetToken(), null, CancellationToken.None).GetAwaiter().GetResult();
@@ -67,6 +68,7 @@ namespace LuKaSo.Zonky.Tests.IntegrationProduction.Api
         }
 
         [TestMethod]
+        [TestCategory("SMS")]
         public void GetWalletTransactionsAsyncLongTermOk()
         {
             var date = DateTime.Now.AddDays(-10);

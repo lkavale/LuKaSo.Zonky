@@ -25,17 +25,9 @@ namespace LuKaSo.Zonky.Api
             CheckAuthorizationToken(authorizationToken);
 
             using (var request = PrepareAuthorizedRequest("/users/me/investments", authorizationToken, page, pageSize))
-            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead, ct).ConfigureAwait(false))
             {
-                CheckAuthorizedResponce(response);
-
-                switch (response.StatusCode)
-                {
-                    case HttpStatusCode.OK:
-                        return await ExtractDataAsync<IEnumerable<Investment>>(response).ConfigureAwait(false);
-                    default:
-                        throw new ServerErrorException(response);
-                }
+                return await ExtractResponceOkErrorDataAsync<IEnumerable<Investment>>(response, true);
             }
         }
 
@@ -51,17 +43,9 @@ namespace LuKaSo.Zonky.Api
             CheckAuthorizationToken(authorizationToken);
 
             using (var request = PrepareAuthorizedRequest($"/collections/loans/{loanId}/investor-events", authorizationToken))
-            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead, ct).ConfigureAwait(false))
             {
-                CheckAuthorizedResponce(response);
-
-                switch (response.StatusCode)
-                {
-                    case HttpStatusCode.OK:
-                        return await ExtractDataAsync<IEnumerable<InvestmentEvent>>(response).ConfigureAwait(false);
-                    default:
-                        throw new ServerErrorException(response);
-                }
+                return await ExtractResponceOkErrorDataAsync<IEnumerable<InvestmentEvent>>(response, true);
             }
         }
 
@@ -77,21 +61,14 @@ namespace LuKaSo.Zonky.Api
             CheckAuthorizationToken(authorizationToken);
 
             using (var request = PrepareAuthorizedRequest("/marketplace/investment", HttpMethod.Post, authorizationToken).AddJsonContent(investment, Settings))
-            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead, ct).ConfigureAwait(false))
             {
-                CheckAuthorizedResponce(response);
-
-                switch (response.StatusCode)
-                {
-                    case HttpStatusCode.OK:
-                        return;
-                    case HttpStatusCode.BadRequest:
-                        throw new PrimaryMarketInvestmentException(investment, response);
-                    case HttpStatusCode.Forbidden:
-                        throw new CaptchaValidationException(response);
-                    default:
-                        throw new ServerErrorException(response);
-                }
+                await _resolverFactory.Create(Settings, true)
+                    .ConfigureStatusResponce(HttpStatusCode.OK, (message) => { })
+                    .ConfigureStatusResponce(HttpStatusCode.BadRequest, (message) => throw new PrimaryMarketInvestmentException(investment, message))
+                    .ConfigureStatusResponce(HttpStatusCode.Forbidden, (message) => throw new CaptchaValidationException(message))
+                    .ConfigureDefaultResponce((message) => throw new ServerErrorException(message))
+                    .ExtractDataAsync(response);
             }
         }
 
@@ -108,19 +85,13 @@ namespace LuKaSo.Zonky.Api
             CheckAuthorizationToken(authorizationToken);
 
             using (var request = PrepareAuthorizedRequest($"/marketplace/investment/{investmentId}", new HttpMethod("PATCH"), authorizationToken).AddJsonContent(increaseInvestment, Settings))
-            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead, ct).ConfigureAwait(false))
             {
-                CheckAuthorizedResponce(response);
-
-                switch (response.StatusCode)
-                {
-                    case HttpStatusCode.OK:
-                        return;
-                    case HttpStatusCode.BadRequest:
-                        throw new PrimaryMarketInvestmentException(investmentId, increaseInvestment, response);
-                    default:
-                        throw new ServerErrorException(response);
-                }
+                await _resolverFactory.Create(Settings, true)
+                    .ConfigureStatusResponce(HttpStatusCode.OK, (message) => { })
+                    .ConfigureStatusResponce(HttpStatusCode.BadRequest, (message) => throw new PrimaryMarketInvestmentException(investmentId, increaseInvestment, message))
+                    .ConfigureDefaultResponce((message) => throw new ServerErrorException(message))
+                    .ExtractDataAsync(response);
             }
         }
 
@@ -137,23 +108,15 @@ namespace LuKaSo.Zonky.Api
             CheckAuthorizationToken(authorizationToken);
 
             using (var request = PrepareAuthorizedRequest($"/smp/investments/{offerId}/shares", HttpMethod.Post, authorizationToken).AddJsonContent(secondaryMarketInvestment, Settings))
-            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead, ct).ConfigureAwait(false))
             {
-                CheckAuthorizedResponce(response);
-
-                switch (response.StatusCode)
-                {
-                    case HttpStatusCode.OK:
-                    case HttpStatusCode.NoContent:
-                        return;
-                    case HttpStatusCode.BadRequest:
-                        var secondaryMarketBuyError = await ExtractDataAsync<SecondaryMarketBuyError>(response).ConfigureAwait(false);
-                        throw new BuySecondaryMarketInvestmentException(offerId, secondaryMarketInvestment, secondaryMarketBuyError);
-                    case HttpStatusCode.NotFound:
-                        throw new NotFoundSecondaryMarketInvestmentException(offerId);
-                    default:
-                        throw new ServerErrorException(response);
-                }
+                await _resolverFactory.Create(Settings, true)
+                    .ConfigureStatusResponce(HttpStatusCode.OK, (message) => { })
+                    .ConfigureStatusResponce(HttpStatusCode.NoContent, (message) => { })
+                    .ConfigureStatusResponce<SecondaryMarketBuyError>(HttpStatusCode.BadRequest, (error, message) => throw new BuySecondaryMarketInvestmentException(offerId, secondaryMarketInvestment, error))
+                    .ConfigureStatusResponce(HttpStatusCode.NotFound, (message) => throw new NotFoundSecondaryMarketInvestmentException(offerId))
+                    .ConfigureDefaultResponce((message) => throw new ServerErrorException(message))
+                    .ExtractDataAsync(response);
             }
         }
 
@@ -169,21 +132,14 @@ namespace LuKaSo.Zonky.Api
             CheckAuthorizationToken(authorizationToken);
 
             using (var request = PrepareAuthorizedRequest($"/users/me/traded-investments", HttpMethod.Post, authorizationToken).AddJsonContent(secondaryMarketOfferSell, Settings))
-            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead, ct).ConfigureAwait(false))
             {
-                CheckAuthorizedResponce(response);
-
-                switch (response.StatusCode)
-                {
-                    case HttpStatusCode.OK:
-                    case HttpStatusCode.NoContent:
-                        return;
-                    case HttpStatusCode.BadRequest:
-                        var secondaryMarketOfferSellError = await ExtractDataAsync<SecondaryMarketOfferSellError>(response).ConfigureAwait(false);
-                        throw new OfferInvestmentSecondaryMarketException(secondaryMarketOfferSell, secondaryMarketOfferSellError);
-                    default:
-                        throw new ServerErrorException(response);
-                }
+                await _resolverFactory.Create(Settings, true)
+                    .ConfigureStatusResponce(HttpStatusCode.OK, (message) => { })
+                    .ConfigureStatusResponce(HttpStatusCode.NoContent, (message) => { })
+                    .ConfigureStatusResponce<SecondaryMarketOfferSellError>(HttpStatusCode.BadRequest, (error, message) => throw new OfferInvestmentSecondaryMarketException(secondaryMarketOfferSell, error))
+                    .ConfigureDefaultResponce((message) => throw new ServerErrorException(message))
+                    .ExtractDataAsync(response);
             }
         }
 
@@ -199,19 +155,14 @@ namespace LuKaSo.Zonky.Api
             CheckAuthorizationToken(authorizationToken);
 
             using (var request = PrepareAuthorizedRequest($"/users/me/traded-investments/{offerId}", HttpMethod.Delete, authorizationToken))
-            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false))
+            using (var response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead, ct).ConfigureAwait(false))
             {
-                switch (response.StatusCode)
-                {
-                    case HttpStatusCode.OK:
-                    case HttpStatusCode.NoContent:
-                        return;
-                    case HttpStatusCode.Gone:
-                        var secondaryMarketOfferCancelError = await ExtractDataAsync<SecondaryMarketOfferCancelError>(response).ConfigureAwait(false);
-                        throw new CancelSecondartMarketOfferException(offerId, secondaryMarketOfferCancelError);
-                    default:
-                        throw new ServerErrorException(response);
-                }
+                await _resolverFactory.Create(Settings, true)
+                    .ConfigureStatusResponce(HttpStatusCode.OK, (message) => { })
+                    .ConfigureStatusResponce(HttpStatusCode.NoContent, (message) => { })
+                    .ConfigureStatusResponce<SecondaryMarketOfferCancelError>(HttpStatusCode.Gone, (error, message) => throw new CancelSecondartMarketOfferException(offerId, error))
+                    .ConfigureDefaultResponce((message) => throw new ServerErrorException(message))
+                    .ExtractDataAsync(response);
             }
         }
     }

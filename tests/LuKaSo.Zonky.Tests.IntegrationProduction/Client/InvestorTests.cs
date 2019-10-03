@@ -30,6 +30,7 @@ namespace LuKaSo.Zonky.Tests.IntegrationProduction.Client
         }
 
         [TestMethod]
+        [TestCategory("SMS")]
         public void GetAllWalletTransactionsAsynLongTermOk()
         {
             var date = DateTime.Now.AddDays(-10);
