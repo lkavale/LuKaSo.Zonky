@@ -106,7 +106,8 @@ namespace LuKaSo.Zonky.Client
         /// </summary>
         /// <param name="user">User</param>
         /// <param name="enableTrading">Enable trading</param>
-        public ZonkyClient(User user, bool enableTrading) : this(user, enableTrading, false) { }
+        /// <param name="oAuth2Secret">OAuth2 application access "appId:appSecret" encoded in base64</param>
+        public ZonkyClient(User user, bool enableTrading, string oAuth2Secret = "d2ViOndlYg==") : this(user, enableTrading, false, oAuth2Secret) { }
 
         /// <summary>
         /// Zonky client
@@ -114,9 +115,11 @@ namespace LuKaSo.Zonky.Client
         /// <param name="user">User</param>
         /// <param name="enableTrading">Enable trading</param>
         /// <param name="marketplaceRequestsAuthorized">Marketplace requests authorized</param>
-        public ZonkyClient(User user, bool enableTrading, bool marketplaceRequestsAuthorized) : this()
+        /// <param name="oAuth2Secret">OAuth2 application access "appId:appSecret" encoded in base64</param>
+        public ZonkyClient(User user, bool enableTrading, bool marketplaceRequestsAuthorized, string oAuth2Secret = "d2ViOndlYg==") : this()
         {
             _user = user ?? throw new ArgumentNullException(nameof(user));
+            _oAuth2Secret = oAuth2Secret;
             _enableTrading = enableTrading;
             _marketplaceRequestsAuthorized = marketplaceRequestsAuthorized;
 
@@ -129,7 +132,8 @@ namespace LuKaSo.Zonky.Client
         /// <param name="userName">User name</param>
         /// <param name="password">Password</param>
         /// <param name="enableTrading">Enable trading</param>
-        public ZonkyClient(string userName, string password, bool enableTrading) : this(new User(userName, password), enableTrading) { }
+        /// <param name="oAuth2Secret">OAuth2 application access "appId:appSecret" encoded in base64</param>
+        public ZonkyClient(string userName, string password, bool enableTrading, string oAuth2Secret = "d2ViOndlYg==") : this(new User(userName, password), enableTrading, oAuth2Secret) { }
 
         /// <summary>
         /// Zonky client
@@ -138,7 +142,8 @@ namespace LuKaSo.Zonky.Client
         /// <param name="password">Password</param>
         /// <param name="enableTrading">Enable trading</param>
         /// <param name="marketplaceRequestsAuthorized">Marketplace requests authorized</param>
-        public ZonkyClient(string userName, string password, bool enableTrading, bool marketplaceRequestsAuthorized) : this(new User(userName, password), enableTrading, marketplaceRequestsAuthorized) { }
+        /// <param name="oAuth2Secret">OAuth2 application access "appId:appSecret" encoded in base64</param>
+        public ZonkyClient(string userName, string password, bool enableTrading, bool marketplaceRequestsAuthorized, string oAuth2Secret = "d2ViOndlYg==") : this(new User(userName, password), enableTrading, marketplaceRequestsAuthorized, oAuth2Secret) { }
 
         /// <summary>
         /// Login
