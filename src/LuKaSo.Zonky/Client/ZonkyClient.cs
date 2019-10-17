@@ -47,6 +47,11 @@ namespace LuKaSo.Zonky.Client
         private bool _wrongPassword;
 
         /// <summary>
+        /// OAuth preshared secret
+        /// </summary>
+        private readonly string _oAuth2Secret;
+
+        /// <summary>
         /// Authorization token
         /// </summary>
         private readonly object _authorizationTokenLock = new object();
@@ -86,10 +91,12 @@ namespace LuKaSo.Zonky.Client
         /// <summary>
         /// Zonky client
         /// </summary>
-        public ZonkyClient()
+        /// <param name="oAuth2Secret">OAuth2 application access "appId:appSecret" encoded in base64</param>
+        public ZonkyClient(string oAuth2Secret = "d2ViOndlYg==")
         {
             _log = LogProvider.For<ZonkyClient>();
-            _zonkyApi = new Lazy<IZonkyApi>(() => new ZonkyApi(new HttpClient()));
+            _oAuth2Secret = oAuth2Secret;
+            _zonkyApi = new Lazy<IZonkyApi>(() => new ZonkyApi(_oAuth2Secret, new HttpClient()));
 
             _log.Debug($"Created Zonky client.");
         }

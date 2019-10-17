@@ -8,7 +8,7 @@ namespace LuKaSo.Zonky.Tests.IntegrationApiaryMock.Common
     {
         public static ZonkyApi Create()
         {
-            return new ZonkyApi(new Uri("http://private-4c0953-zonky.apiary-mock.com"), new HttpClient());
+            return new ZonkyApi(new Uri("http://private-4c0953-zonky.apiary-mock.com"), "d2ViOndlYg==", new HttpClient());
         }
     }
 }
