@@ -21,7 +21,7 @@ namespace LuKaSo.Zonky.Api
         /// <summary>
         /// OAuth preshared secret
         /// </summary>
-        private const string _oAuth2Secret = "d2ViOndlYg==";
+        private readonly string _oAuth2Secret;
 
         /// <summary>
         /// Used HTTP client
@@ -49,7 +49,7 @@ namespace LuKaSo.Zonky.Api
         /// Zonky API constructor with default production address of service
         /// </summary>
         /// <param name="httpClient">HTTP client</param>
-        public ZonkyApi(HttpClient httpClient) : this(new Uri("https://api.zonky.cz/"), httpClient)
+        public ZonkyApi(string oAuth2Secret, HttpClient httpClient) : this(new Uri("https://api.zonky.cz/"), oAuth2Secret, httpClient)
         {
         }
 
@@ -58,7 +58,7 @@ namespace LuKaSo.Zonky.Api
         /// </summary>
         /// <param name="baseUrl">Base URL of service</param>
         /// <param name="httpClient">HTTP client</param>
-        public ZonkyApi(Uri baseUrl, HttpClient httpClient) : this(baseUrl, httpClient, new ZonkyResponseResolverFactory())
+        public ZonkyApi(Uri baseUrl, string oauth2Secret, HttpClient httpClient) : this(baseUrl, oauth2Secret, httpClient, new ZonkyResponseResolverFactory())
         {
         }
 
@@ -68,9 +68,10 @@ namespace LuKaSo.Zonky.Api
         /// <param name="baseUrl">Base URL of service</param>
         /// <param name="httpClient">HTTP client</param>
         /// <param name="resolverFactory">Resolver factory</param>
-        internal ZonkyApi(Uri baseUrl, HttpClient httpClient, ZonkyResponseResolverFactory resolverFactory)
+        internal ZonkyApi(Uri baseUrl, string oauth2Secret, HttpClient httpClient, ZonkyResponseResolverFactory resolverFactory)
         {
             _httpClient = httpClient;
+            _oAuth2Secret = oauth2Secret;
             _baseUrl = baseUrl;
             _settings = new Lazy<JsonSerializerSettings>(() =>
             {
